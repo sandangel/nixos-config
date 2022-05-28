@@ -1,0 +1,69 @@
+format = """\
+  $username\
+  $hostname\
+  $directory\
+  $git_branch\
+  $git_commit\
+  $git_state\
+  $git_metrics\
+  $git_status\
+  $docker_context\
+  $container\
+  $package\
+  $golang\
+  $nodejs\
+  $rust\
+  $lua\
+  $python\
+  $terraform\
+  $nix_shell\
+  $memory_usage\
+  $kubernetes\
+  $aws\
+  $gcloud\
+  $env_var\
+  $cmd_duration\
+  $custom\
+  $jobs\
+  $battery\
+  $time\
+  $line_break\
+  $character\
+  """
+
+[character]
+success_symbol = "[λ](bold green)"
+error_symbol = "[✗](bold red)"
+
+[directory]
+truncate_to_repo = false
+fish_style_pwd_dir_length = 3
+
+[battery]
+full_symbol = "🔋"
+charging_symbol = "⚡️"
+discharging_symbol = "💀"
+
+[[battery.display]]
+threshold = 50
+style = "bold red"
+
+[[battery.display]]
+threshold = 80
+style = "bold yellow"
+
+[kubernetes]
+disabled = false
+format = 'on [⛵ $context \($namespace\)](green) '
+
+[time]
+disabled = false
+format = '🕙 [\[$time\]]($style) '
+time_format = "%T"
+utc_time_offset = "+9"
+
+[nix_shell]
+disabled = false
+impure_msg = "[impure shell](bold red)"
+pure_msg = "[pure shell](bold green)"
+format = 'via [☃️ $state( \($name\))](bold blue) '

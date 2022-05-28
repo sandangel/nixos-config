@@ -1,5 +1,9 @@
 # NixOS System Configurations
 
+## TODO
+- add pbcopy
+- switch to wayland
+
 This repository contains my NixOS system configurations. This repository
 isn't meant to be a turnkey solution to copying my setup or learning Nix,
 so I want to apologize to anyone trying to look for something "easy". I've
