@@ -25,7 +25,7 @@ let
   i686 = stdenv.hostPlatform.system == "i686-linux";
 in
 stdenv.mkDerivation rec {
-  version = "${prl_major}.1.2-51548";
+  version = "${prl_major}.1.3-51565";
   prl_major = "17";
   pname = "prl-tools";
 
@@ -33,7 +33,7 @@ stdenv.mkDerivation rec {
   # => ${dmg}/Parallels\ Desktop.app/Contents/Resources/Tools/prl-tools-lin.iso
   src = fetchurl {
     url = "https://download.parallels.com/desktop/v${prl_major}/${version}/ParallelsDesktop-${version}.dmg";
-    sha256 = "sha256-OyfjFPiaEjFWi3/RxX+lgRoXn1aFH3mEC/jr/pcHsqw=";
+    sha256 = "sha256-9CNp2c4gA5/XwcKuth+H7kaavTqybpjI1x22yejOaW0=";
   };
 
   hardeningDisable = [ "pic" "format" ];
@@ -57,7 +57,7 @@ stdenv.mkDerivation rec {
     fi
   '';
 
-  patches = if lib.versionAtLeast kernel.version "5.17" then [ ./prl-tools.patch ] else [ ];
+  patches = [ ];
 
   kernelVersion = if libsOnly then "" else lib.getVersion kernel.name;
   kernelDir = if libsOnly then "" else "${kernel.dev}/lib/modules/${kernelVersion}";

@@ -14,6 +14,7 @@
       name = "comic-code";
       version = "0.1.0";
       src = /home/sand/.dotfiles/pkgs/comic-code/comic-code.tar.gz;
+      phases = [ "unpackPhase" "installPhase" ];
       installPhase = ''
         mkdir -p $out/share/fonts/truetype
         mkdir -p $out/share/fonts/opentype

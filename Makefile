@@ -21,7 +21,7 @@ SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o Strict
 switch:
 	nixos-rebuild switch --use-remote-sudo --impure --flake ".#${NIXNAME}"
 	home-manager switch --impure --flake ".#${NIXUSER}"
-	rsync -av $(MAKEFILE_DIR)/users/sand/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
+	# rsync -av $(MAKEFILE_DIR)/users/sand/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
 
 # bootstrap a brand new VM. The VM should have NixOS ISO on the CD drive
 # and just set the password of the root user to "root". This will install
@@ -59,8 +59,8 @@ vm/bootstrap0:
 # after bootstrap0, run this to finalize. After this, do everything else
 # in the VM unless secrets change.
 vm/bootstrap:
-	$(MAKE) vm/copy
-	$(MAKE) vm/switch
+	NIXUSER=root $(MAKE) vm/copy
+	NIXUSER=root $(MAKE) vm/switch
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR) " \
 		sudo reboot; \
 	"
@@ -68,6 +68,7 @@ vm/bootstrap:
 # copy the Nix configurations into the VM.
 vm/copy:
 	rsync -av -e 'ssh $(SSH_OPTIONS) -p$(NIXPORT)' \
+		--exclude="flake.lock" \
 		--rsync-path="sudo rsync" \
 		$(MAKEFILE_DIR)/ $(NIXUSER)@$(NIXADDR):/nix-config
 
@@ -75,5 +76,5 @@ vm/copy:
 # have to run vm/copy before.
 vm/switch:
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR) " \
-		sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake \"/nix-config#${NIXNAME}\" \
+		sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --impure --flake \"/nix-config#${NIXNAME}\" \
 	"

@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, pkgs-22-05, ... }:
 
 {
   home.packages = with pkgs; [
@@ -34,6 +34,7 @@
   };
 
   home.file.".gitconfig-woven".source = ./gitconfig-woven;
+  home.file.".mozilla/native-messaging-hosts/org.gnome.chrome_gnome_shell.json".source = "${pkgs-22-05.chrome-gnome-shell}/lib/mozilla/native-messaging-hosts/org.gnome.chrome_gnome_shell.json";
 
   home.sessionVariables = rec {
     LANG = "en_US.UTF-8";

@@ -5,7 +5,10 @@
     # Pin our primary nixpkgs repository. This is the main nixpkgs repository
     # we'll use for our configurations. Be very careful changing this because
     # it'll impact your entire system.
-    nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
+    nixpkgs.url = "github:nixos/nixpkgs/release-22.05";
+
+    # Use this linux kernel so parallels-tools can work
+    nixpkgs-21-11.url = "github:nixos/nixpkgs/release-21.11";
 
     # We use the unstable nixpkgs repo for some packages.
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -30,6 +33,15 @@
     system = "aarch64-linux";
     username = "sand";
     machine = "vm-aarch64-prl";
+    pkgs-22-05 = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+      config.allowUnsupportedSystem = true;
+    };
+    pkgs-21-11 = import inputs.nixpkgs-21-11 {
+      inherit system;
+      config.allowUnfree = true;
+    };
     pkgs = import nixpkgs-unstable {
       inherit system;
       config.allowUnfree = true;
@@ -42,14 +54,14 @@
     homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
       inherit system username pkgs;
       configuration = import ./users/${username}/home.nix;
-      extraSpecialArgs = { inherit username; };
+      extraSpecialArgs = { inherit pkgs-22-05; };
       homeDirectory = "/home/${username}";
       stateVersion = "22.05";
     };
     nixosConfigurations.${machine} = nixpkgs.lib.nixosSystem rec {
       inherit system;
-      extraArgs = { inherit username; };
       modules = [
+        { config._module.args = { inherit pkgs-21-11; }; }
         {
           nixpkgs.overlays = [
             (final: prev: {

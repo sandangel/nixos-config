@@ -1,8 +1,8 @@
-{ config, pkgs, lib, username, ... }:
+{ config, pkgs, lib, pkgs-21-11, ... }:
 
 {
   # Be careful updating this.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs-21-11.linuxPackages_latest;
   boot.initrd.kernelModules = [ "virtio-gpu" ];
   boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
 
@@ -36,7 +36,7 @@
   networking.useDHCP = false;
 
   # Don't require password for sudo
-  security.sudo.wheelNeedsPassword = false;
+  security.sudo.wheelNeedsPassword = true;
 
   # Virtualization settings
   virtualisation.docker.enable = true;
@@ -47,9 +47,7 @@
   services.xserver.enable = true;
   services.xserver.layout = "us";
   services.xserver.dpi = 254;
-  # Enable after upgrading to 22.05
-  # services.xserver.excludePackages = [ pkgs.xterm ];
-  services.xserver.desktopManager.xterm.enable = false;
+  services.xserver.excludePackages = [ pkgs.xterm ];
   services.xserver.desktopManager.wallpaper.mode = "fill";
   services.xserver.desktopManager.gnome = {
     enable = true;
@@ -100,7 +98,16 @@
 
       [org.gnome.settings-daemon.plugins.power]
       sleep-inactive-battery-timeout=0
+      sleep-inactive-battery-type='nothing'
       sleep-inactive-ac-timeout=0
+      sleep-inactive-ac-type='nothing'
+      power-saver-profile-on-low-battery=false
+      power-button-action='nothing'
+      idle-dim=false
+      ambient-enabled=false
+
+      [org.gnome.desktop.session]
+      idle-delay=0
 
       [org.gnome.settings-daemon.plugins.xsettings]
       overrides={'Gdk/WindowScalingFactor': <2>}
@@ -115,18 +122,9 @@
     ];
   };
 
-  nixpkgs.config.firefox.enableGnomeExtensions = true;
   services.gnome.chrome-gnome-shell.enable = true;
-  services.gnome.core-developer-tools.enable = true;
-  services.gnome.core-os-services.enable = true;
-  services.gnome.core-shell.enable = true;
-  services.gnome.core-utilities.enable = true;
-  services.gnome.gnome-initial-setup.enable = true;
-  services.gnome.gnome-keyring.enable = true;
   services.gnome.gnome-settings-daemon.enable = true;
-
-  services.dbus.packages = [ pkgs.gnome.dconf ];
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.gnome.gnome-keyring.enable = true;
   services.accounts-daemon.enable = true;
 
   programs.dconf.enable = true;
@@ -160,7 +158,6 @@
         </configuration>
       </monitors>
     ''}"
-    "L+ /home/${username}/.mozilla/native-messaging-hosts - - - - ${pkgs.chrome-gnome-shell}/lib/mozilla/native-messaging-hosts"
   ];
 
   # List packages installed in system profile. To search, run:
@@ -169,6 +166,7 @@
     gnumake
     killall
     wl-clipboard
+    xclip
     gnome.dconf-editor
     gnome.gnome-tweaks
     vim
@@ -204,5 +202,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "21.11"; # Did you read the comment?
+  system.stateVersion = "22.05"; # Did you read the comment?
 }
