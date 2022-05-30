@@ -1,8 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, pkgs-21-11, ... }:
 
 {
   # Be careful updating this.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs-21-11.linuxPackages_latest;
   boot.initrd.kernelModules = [ "virtio-gpu" ];
   boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
 

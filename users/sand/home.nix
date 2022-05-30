@@ -20,20 +20,16 @@
     neovim-nightly
   ];
 
-  xdg = {
-    enable = true;
-    configFile."wezterm/wezterm.lua".source = ./wezterm/wezterm.lua;
-    configFile."nvim/init.lua".source = ./init.lua;
-    configFile."starship.toml".source = ./starship.toml;
-    configFile."lazygit/config.yml".source = ./lazygit/config.yml;
-    configFile."bat.conf".source = ./bat.conf;
+  xdg.enable = true;
+  xdg.configFile."wezterm/wezterm.lua".source = ./wezterm/wezterm.lua;
+  xdg.configFile."nvim/init.lua".source = ./init.lua;
+  xdg.configFile."lazygit/config.yml".source = ./lazygit/config.yml;
+  xdg.configFile."bat.conf".source = ./bat.conf;
 
-    configFile."kitty".source = ./kitty;
-    configFile."kitty".recursive = true;
-    dataFile."applications/kitty.desktop".source = ./kitty/kitty.desktop;
-  };
+  xdg.configFile."kitty".source = ./kitty;
+  xdg.configFile."kitty".recursive = true;
+  xdg.dataFile."applications/kitty.desktop".source = ./kitty/kitty.desktop;
 
-  home.file.".gitconfig-woven".source = ./gitconfig-woven;
   home.file.".mozilla/native-messaging-hosts/org.gnome.chrome_gnome_shell.json".source = "${pkgs-22-05.chrome-gnome-shell}/lib/mozilla/native-messaging-hosts/org.gnome.chrome_gnome_shell.json";
 
   home.sessionVariables = rec {
@@ -67,6 +63,8 @@
       set -x DIRENV_LOG_FORMAT ""
     '';
     shellAliases = {
+      tf = "terraform";
+      tfinfra = "aws-woven-auth infra run terraform";
       lg = "lazygit";
       g = "git";
       ga = "git add";
@@ -81,6 +79,59 @@
       pbpaste = "wl-paste";
     };
     functions = {
+      direnv-hook = {
+        description = "Add alias support for direnv";
+        body = ''
+          function __direnv_export
+            command direnv export fish | source
+
+            if test "$direnv_set_aliases" != "$DIRENV_ALIASES"
+              for name in $direnv_alias_names
+                functions --erase $name
+              end
+              set -e direnv_alias_names
+
+              for cmd in (echo $DIRENV_ALIASES | string split --no-empty ':alias:')
+                eval alias $cmd
+                set parts (echo $cmd | string split --no-empty ' ')
+                ! contains $parts[1] $direnv_alias_names; and set -g -a direnv_alias_names $parts[1]
+              end
+              set -q direnv_alias_names; and echo "direnv: alias " +$direnv_alias_names
+
+              set -g direnv_set_aliases $DIRENV_ALIASES
+            end
+          end
+
+          function __direnv_export_eval --on-event fish_prompt
+            # Run on each prompt to update the state
+            __direnv_export
+
+            if test "$direnv_fish_mode" != "disable_arrow"
+              # Handle cd history arrows between now and the next prompt
+              function __direnv_cd_hook --on-variable PWD
+                if test "$direnv_fish_mode" = "eval_after_arrow"
+                  set -g __direnv_export_again 0
+                else
+                  # default mode (eval_on_pwd)
+                  __direnv_export
+                end
+              end
+            end
+          end
+
+          function __direnv_export_eval_2 --on-event fish_preexec
+            if set -q __direnv_export_again
+              set -e __direnv_export_again
+              __direnv_export
+              echo
+            end
+
+            # Once we're running commands, stop monitoring cd changes
+            # until we get to the prompt again
+            functions --erase __direnv_cd_hook
+          end
+        '';
+      };
       gfco = {
         description = "Git checkout local or remote branch with fzf interactive select";
         body = ''
@@ -163,6 +214,7 @@
     };
   };
 
+  home.file.".gitconfig-woven".source = ./gitconfig-woven;
   programs.git = {
     enable = true;
     extraConfig = {
@@ -199,11 +251,14 @@
     };
   };
 
+  xdg.configFile."starship.toml".source = ./starship.toml;
   programs.starship.enable = true;
   programs.zoxide.enable = true;
 
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
+  programs.bash.enable = true;
+  xdg.configFile."direnv/lib/direnv.sh".source = ./direnv.sh;
 
   programs.home-manager.enable = true;
 }

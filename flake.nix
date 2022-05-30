@@ -60,6 +60,7 @@
     nixosConfigurations.${machine} = nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
+        { config._module.args = { inherit pkgs-21-11; }; }
         {
           nixpkgs.overlays = [
             (final: prev: {
