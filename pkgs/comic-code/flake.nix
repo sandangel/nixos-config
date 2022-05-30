@@ -13,7 +13,7 @@
     packages.${system}.comic-code = pkgs.stdenvNoCC.mkDerivation {
       name = "comic-code";
       version = "0.1.0";
-      src = /home/sand/.dotfiles/pkgs/comic-code/comic-code.tar.gz;
+      src = /nix-config/pkgs/comic-code/comic-code.tar.gz;
       phases = [ "unpackPhase" "installPhase" ];
       installPhase = ''
         mkdir -p $out/share/fonts/truetype

@@ -7,7 +7,8 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-pFvWQvrJNA08j9GPVco0RQAV+x3/gW8WA+ddDIfi7Sc=",
+        "lastModified": 1,
+        "narHash": "sha256-wRJwfLmkglUrRafVb0V5Q05V3EXXs7EpC6FotAXh+o8=",
         "path": "./pkgs/comic-code",
         "type": "path"
       },
@@ -70,7 +71,10 @@
     "neovim-flake": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "neovim-nightly-overlay",
+          "nixpkgs"
+        ]
       },
       "locked": {
         "dir": "contrib",
@@ -92,7 +96,7 @@
       "inputs": {
         "flake-compat": "flake-compat",
         "neovim-flake": "neovim-flake",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "lastModified": 1653812172,
@@ -158,27 +162,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1653581809,
-        "narHash": "sha256-Uvka0V5MTGbeOfWte25+tfRL3moECDh1VwokWSZUdoY=",
+        "lastModified": 1653866570,
+        "narHash": "sha256-eOvl3ojAqj/XlABucxJqoFsea9GFeWn47L3NzeVkAOg=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "83658b28fe638a170a19b8933aa008b30640fbd1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1653839503,
-        "narHash": "sha256-Y8wyMClnSZi+1MZeZBT9+TyrRoB4rJFZm9C5DOsGV48=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "489b52c6b7e3aebe6cb0c355886babc9cc9dffcd",
+        "rev": "7f7e833e0bde6f418c85d9cfcf39c6f71268a170",
         "type": "github"
       },
       "original": {
@@ -193,7 +181,7 @@
         "comic-code": "comic-code",
         "home-manager": "home-manager",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_2",
         "nixpkgs-21-11": "nixpkgs-21-11",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }

@@ -36,7 +36,6 @@
     pkgs-22-05 = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
-      config.allowUnsupportedSystem = true;
     };
     pkgs-21-11 = import inputs.nixpkgs-21-11 {
       inherit system;
@@ -61,7 +60,6 @@
     nixosConfigurations.${machine} = nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
-        { config._module.args = { inherit pkgs-21-11; }; }
         {
           nixpkgs.overlays = [
             (final: prev: {

@@ -3,7 +3,7 @@ local os = require 'os'
 local CTRL = '\x17'
 
 local move_around = function(window, pane, direction_wez, direction_nvim)
-  local cmd = '/home/sand/.dotfiles/users/sand/wezterm/wezterm.nvim /tmp/nvim_wezterm_pane_'
+  local cmd = '/nix-config/users/sand/wezterm/wezterm.nvim /tmp/nvim_wezterm_pane_'
       .. pane:pane_id() .. ' ' .. direction_nvim
   local result = os.execute(cmd)
   if result then

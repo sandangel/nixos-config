@@ -1,6 +1,6 @@
 vim.g.mapleader = ' '
 
-vim.o.runtimepath = vim.env.HOME .. '/.dotfiles/users/' .. vim.env.USER .. '/nvim,' .. vim.o.runtimepath
+vim.o.runtimepath = '/nix-config/users/' .. vim.env.USER .. '/nvim,' .. vim.o.runtimepath
 
 vim.g.neovide_input_use_logo = 1
 
@@ -103,7 +103,7 @@ local function keymap()
   vim.keymap.set('x', '>', '>gv', opts)
   vim.keymap.set('x', '<', '<gv', opts)
   vim.keymap.set('n', 'vv', 'vg_', opts)
-  vim.keymap.set('n', 'gj', '<c-w><c-w>', opts)
+  vim.keymap.set('n', 'gj', '<c-w>W', opts)
 
   vim.keymap.set('i', '<a-left>', '<c-left>', opts)
   vim.keymap.set('i', '<a-right>', '<c-right>', opts)

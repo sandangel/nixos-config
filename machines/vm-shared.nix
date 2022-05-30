@@ -1,8 +1,8 @@
-{ config, pkgs, lib, pkgs-21-11, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Be careful updating this.
-  boot.kernelPackages = pkgs-21-11.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.kernelModules = [ "virtio-gpu" ];
   boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
 
@@ -114,11 +114,15 @@
 
       [org.gnome.desktop.interface]
       scaling-factor=2
+
+      [org.gnome.mutter]
+      overlay-key='Super_R'
     '';
 
     extraGSettingsOverridePackages = [
       pkgs.gsettings-desktop-schemas
       pkgs.gnome.gnome-shell
+      pkgs.gnome.mutter
     ];
   };
 
