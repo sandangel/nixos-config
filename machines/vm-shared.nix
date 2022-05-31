@@ -8,7 +8,6 @@
 
   # use unstable nix so we can access flakes
   nix = {
-    package = pkgs.nixUnstable;
     extraOptions = ''
       experimental-features = nix-command flakes
       keep-outputs = true
@@ -40,6 +39,8 @@
 
   # Virtualization settings
   virtualisation.docker.enable = true;
+  virtualisation.docker.rootless.enable = true;
+  virtualisation.docker.rootless.setSocketVariable = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";

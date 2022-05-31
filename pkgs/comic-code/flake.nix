@@ -1,10 +1,6 @@
 {
   description = "Comic Code Font Family self package";
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-  };
-
   outputs = { self, nixpkgs, ... }:
   let
     system = "aarch64-linux";
