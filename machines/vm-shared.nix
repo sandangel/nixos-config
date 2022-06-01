@@ -120,10 +120,10 @@
       overlay-key='Super_R'
     '';
 
-    extraGSettingsOverridePackages = [
-      pkgs.gsettings-desktop-schemas
-      pkgs.gnome.gnome-shell
-      pkgs.gnome.mutter
+    extraGSettingsOverridePackages = with pkgs; [
+      gsettings-desktop-schemas
+      gnome.gnome-shell
+      gnome.mutter
     ];
   };
 
@@ -174,6 +174,7 @@
     xclip
     gnome.dconf-editor
     gnome.gnome-tweaks
+    yaru-theme
     vim
     gcc
     firefox
@@ -200,6 +201,8 @@
   # Disable the firewall since we're in a VM and we want to make it
   # easy to visit stuff in here. We only use NAT networking anyways.
   networking.firewall.enable = false;
+
+  documentation.nixos.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

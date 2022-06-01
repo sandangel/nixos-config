@@ -10,20 +10,18 @@
     jq
     gh
     kubectl
-    terraform
     tree-sitter
     zoxide
     gh
     kubie
-    yaru-theme
     neovim-nightly
     (let src = fetchgit {
       url = "https://github.com/leungbk/nixpkgs";
       sparseCheckout = ''
         pkgs/applications/terminal-emulators/kitty
       '';
-      rev = "f3c611217c8973317b671c95274bcb5e86de0527";
-      sha256 = "sha256-6a3FntHp8VNTe4ZJEZoOM0chHd40jUA7gjEafZimD1s=";
+      rev = "b22c2113df12d785e784a131baf944d4f9cf4784";
+      sha256 = "sha256-V5gnXEZLGE+C1f4DPDarA4rTFE1nqckKxRxE/wGxdjg=";
     };
     in callPackage "${src}/pkgs/applications/terminal-emulators/kitty" {
       inherit (darwin.apple_sdk.frameworks) Cocoa CoreGraphics Foundation IOKit Kernel OpenGL;
