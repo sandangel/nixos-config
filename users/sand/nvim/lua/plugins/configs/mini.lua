@@ -19,7 +19,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 })
 vim.api.nvim_create_autocmd('FileType', {
   group = 'MiniNvimUser',
-  pattern = 'neo-tree',
+  pattern = 'NvimTree,neo-tree',
   callback = function()
     vim.b.miniindentscope_disable = true
     vim.b.minicursorword_disable = true

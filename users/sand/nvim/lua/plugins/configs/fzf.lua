@@ -4,6 +4,26 @@ if vim.fn.isdirectory(fzf_history_dir) == 0 then
 end
 local fzf_lua = require 'fzf-lua'
 
+local function fzf_quickfix(selected, opts)
+  if #selected > 1 then
+    local qf_list = {}
+    for i = 1, #selected do
+      local file = require 'fzf-lua'.path.entry_to_file(selected[i])
+      local text = selected[i]:match ':%d+:%d?%d?%d?%d?:?(.*)$'
+      table.insert(qf_list, {
+        filename = file.path,
+        lnum = file.line,
+        col = file.col,
+        text = text,
+      })
+    end
+    vim.fn.setqflist(qf_list)
+    vim.cmd 'FzfLua quickfix'
+  else
+    require 'fzf-lua'.actions.file_edit(selected, opts)
+  end
+end
+
 fzf_lua.setup {
   keymap = {
     builtin = {
@@ -26,6 +46,11 @@ fzf_lua.setup {
     ['--history'] = fzf_history_dir .. '/fzf-lua',
     ['--history-size'] = '2000',
   },
+  files = {
+    actions = {
+      ['default'] = fzf_quickfix
+    }
+  },
   grep = {
     git_icons = false,
     file_icons = false,
@@ -36,6 +61,9 @@ fzf_lua.setup {
       ['--delimiter'] = ':',
       ['--nth'] = '4..',
     },
+    actions = {
+      ['default'] = fzf_quickfix
+    },
   },
   oldfiles = {
     cwd_only = true,
@@ -45,6 +73,9 @@ fzf_lua.setup {
 
 local opts = { silent = true }
 local get_visual_selection = require('fzf-lua.utils').get_visual_selection
+
+vim.keymap.set('n', 'gl', '<cmd>FzfLua loclist<cr>', opts)
+vim.keymap.set('n', 'gq', '<cmd>FzfLua quickfix<cr>', opts)
 
 vim.keymap.set('n', '<leader>cc', function()
   fzf_lua.git_commits()

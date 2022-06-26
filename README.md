@@ -1,9 +1,5 @@
 # NixOS System Configurations
 
-## TODO
-- add pbcopy
-- switch to wayland
-
 This repository contains my NixOS system configurations. This repository
 isn't meant to be a turnkey solution to copying my setup or learning Nix,
 so I want to apologize to anyone trying to look for something "easy". I've
@@ -156,8 +152,3 @@ in my VM and I use the other Make tasks such as `make test`, `make switch`, etc.
 to make changes my VM.
 
 ## FAQ
-
-### Why do you still use `niv`?
-
-I am still transitioning into a fully flaked setup. During this transition
-(which is indefinite, I'm in no rush), I'm using both.

@@ -1,6 +1,6 @@
 vim.g.bufferline = {
   icons = 'both',
-  exclude_ft = { 'neo-tree' },
+  exclude_ft = { 'NvimTree', 'neo-tree' },
   icon_close_tab_modified = '',
 }
 

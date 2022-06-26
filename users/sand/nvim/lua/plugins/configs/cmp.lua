@@ -29,7 +29,7 @@ cmp.setup {
   mapping = cmp.mapping.preset.insert({
     ['<c-b>'] = cmp.mapping.scroll_docs(-4),
     ['<c-f>'] = cmp.mapping.scroll_docs(4),
-    ['<c-c>'] = cmp.mapping.complete(),
+    ['<c-c>'] = cmp.mapping.complete({ reason = 'triggerOnly' }),
     ['<tab>'] = function(fallback)
       if cmp.visible() then
         cmp.confirm { behavior = cmp.ConfirmBehavior.Replace, select = true }

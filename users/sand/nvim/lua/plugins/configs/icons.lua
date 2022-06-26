@@ -98,7 +98,7 @@ require('nvim-web-devicons').setup {
       name = 'toml',
     },
     tf = {
-      icon = 'ﭨ',
+      icon = '',
       color = colors.pink,
       name = 'tf',
     },

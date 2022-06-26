@@ -1,19 +1,26 @@
-{ config, pkgs, lib, pkgs-21-11, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Be careful updating this.
-  boot.kernelPackages = pkgs-21-11.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.kernelModules = [ "virtio-gpu" ];
   boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
 
   # use unstable nix so we can access flakes
   nix = {
+    autoOptimiseStore = true;
     extraOptions = ''
       experimental-features = nix-command flakes
       keep-outputs = true
       keep-derivations = true
+      min-free = ${toString (10 * 1024 * 1024 * 1024)}
     '';
-   };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+  };
 
   # We expect to run the VM on hidpi machines.
   hardware.video.hidpi.enable = true;
@@ -39,8 +46,6 @@
 
   # Virtualization settings
   virtualisation.docker.enable = true;
-  virtualisation.docker.rootless.enable = true;
-  virtualisation.docker.rootless.setSocketVariable = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -127,12 +132,23 @@
     ];
   };
 
-  services.gnome.chrome-gnome-shell.enable = true;
-  services.gnome.gnome-settings-daemon.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-  services.accounts-daemon.enable = true;
-
-  programs.dconf.enable = true;
+  environment.gnome.excludePackages = with pkgs.gnome; [
+    cheese
+    eog
+    epiphany
+    evince
+    pkgs.gnome-text-editor
+    geary
+    gnome-calculator
+    gnome-contacts
+    gnome-maps
+    gnome-music
+    pkgs.gnome-photos
+    pkgs.gnome-connections
+    simple-scan
+    totem
+    yelp
+  ];
 
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.wayland = true;
@@ -177,7 +193,6 @@
     yaru-theme
     vim
     gcc
-    firefox
     # To install home-manager initially, then will switch to the user version
     home-manager
   ];
