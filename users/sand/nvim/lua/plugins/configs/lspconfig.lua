@@ -21,12 +21,21 @@ vim.keymap.set('n', 'gq', '<cmd>FzfLua quickfix<cr>', opts)
 vim.api.nvim_create_augroup('LSPConfigUser', { clear = true })
 
 local on_attach = function(client, bufnr)
-  if client.name == 'sumneko_lua' or client.name == 'gopls' then
+  if client.supports_method 'textDocument/formatting' then
     vim.api.nvim_create_autocmd('BufWritePre', {
       group = 'LSPConfigUser',
       buffer = bufnr,
       callback = function()
-        vim.lsp.buf.format()
+        local has_null_ls = not vim.tbl_isempty(vim.lsp.get_active_clients({ bufnr = bufnr, name = 'null-ls' }))
+        vim.lsp.buf.format {
+          bufnr = bufnr,
+          filter = function(c)
+            if has_null_ls then
+              return c.name == 'null-ls'
+            end
+            return true
+          end
+        }
       end,
     })
   end
@@ -62,6 +71,7 @@ local servers = {
   'yamlls',
   'jsonls',
   'rnix',
+  'pyright',
 }
 
 for _, lsp in ipairs(servers) do
@@ -122,39 +132,10 @@ lspconfig.sumneko_lua.setup {
   },
 }
 
-function _G.set_python_path(client)
-  local virtual_env_path = ''
-  local virtual_env_dirctory = ''
-  local Job = require 'plenary.job'
-  local j1 = Job:new({
-    command = 'poetry',
-    args = { 'config', 'virtualenvs.path' },
-    on_stdout = function(_, data)
-      virtual_env_path = vim.trim(data)
-    end,
-  })
-  local j2 = Job:new({
-    command = 'poetry',
-    args = { 'env', 'list' },
-    on_stdout = function(_, data)
-      virtual_env_dirctory = string.gsub(vim.trim(data), ' %(Activated%)', '')
-      local python_path = 'python'
-      if #vim.split(virtual_env_dirctory, '\n') == 1 then
-        python_path = string.format('%s/%s/bin/python', virtual_env_path, virtual_env_dirctory)
-      end
-      client.config.settings.python.pythonPath = python_path
-      client.notify 'workspace/didChangeConfiguration'
-    end,
-  })
-
-  j1:and_then(j2)
-  j1:start()
-end
-
-lspconfig.pyright.setup {
-  on_attach = function(client, bufnr)
-    set_python_path(client)
-    on_attach(client, bufnr)
-  end,
-  capabilities = capabilities,
+require('null-ls').setup {
+  sources = {
+    require('null-ls').builtins.formatting.black,
+    require('null-ls').builtins.diagnostics.flake8,
+  },
+  on_attach = on_attach,
 }
