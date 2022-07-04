@@ -22,6 +22,7 @@
     terraform-ls
     tflint
     dconf2nix
+    grpcurl
   ];
 
   xdg.enable = true;
