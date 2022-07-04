@@ -1,6 +1,9 @@
-{ pkgs, lib, pkgs-unstable, config, ... }:
+{ pkgs, lib, pkgs-unstable, config, username, ... }:
 
 {
+  home.username = username;
+  home.stateVersion = "22.05";
+  home.homeDirectory = "/home/${username}";
   home.packages = with pkgs-unstable; [
     ripgrep
     fd
@@ -16,8 +19,9 @@
     rnix-lsp
     nodejs
     nodePackages.pyright
-    poetry
-    python3
+    terraform-ls
+    tflint
+    dconf2nix
   ];
 
   xdg.enable = true;

@@ -6,24 +6,21 @@
     # we'll use for our configurations. Be very careful changing this because
     # it'll impact your entire system.
     nixpkgs.url = "github:nixos/nixpkgs/release-22.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    lib.url = "github:nix-community/lib-aggregate";
 
     home-manager = {
       url = "github:nix-community/home-manager";
       # We want home-manager to use the latest nixpkgs.
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # Other packages
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-
-    comic-code = {
-      url = "path:./pkgs/comic-code";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
-
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, lib, ... }@inputs:
     let
       system = "aarch64-linux";
       username = "sand";
@@ -34,7 +31,7 @@
         config.allowUnsupportedSystem = true;
         overlays = [
           (final: prev: {
-            comic-code = inputs.comic-code.packages.${prev.system}.default;
+            inherit comic-code;
           })
         ];
       };
@@ -77,20 +74,26 @@
           cp -r $src/scripts $out/
         '';
       };
+      comic-code = with pkgs; stdenvNoCC.mkDerivation {
+        name = "comic-code";
+        version = "0.1.0";
+        src = /nix-config/pkgs/comic-code/comic-code.tar.gz;
+        phases = [ "unpackPhase" "installPhase" ];
+        installPhase = ''
+          mkdir -p $out/share/fonts/truetype
+          mkdir -p $out/share/fonts/opentype
+          install -m444 -Dt $out/share/fonts/truetype ./*.ttf
+          install -m444 -Dt $out/share/fonts/opentype ./*.otf
+        '';
+        meta = { description = "A Comic Code Font Family derivation with Nerd font."; };
+      };
     in
     {
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = { inherit pkgs-unstable; };
+        extraSpecialArgs = { inherit pkgs-unstable username; };
         modules = [
           ./users/${username}/home.nix
-          {
-            home = {
-              inherit username;
-              homeDirectory = "/home/${username}";
-              stateVersion = "22.05";
-            };
-          }
         ];
       };
       nixosConfigurations.${machine} = nixpkgs.lib.nixosSystem rec {
@@ -109,14 +112,17 @@
               initialPassword = username;
               useDefaultShell = false;
             };
+            users.users.root.initialPassword = "root";
           }
         ];
       };
-      devShell.${system} = pkgs.mkShell {
-        packages = with pkgs; [
-          sumneko-lua-language-server
-        ];
-      };
-      formatter.${system} = pkgs.nixpkgs-fmt;
-    };
+    } //
+    lib.lib.flake-utils.eachSystem [ system ]
+      (system: {
+        devShells.default = with pkgs; mkShell {
+          packages = [
+            sumneko-lua-language-server
+          ];
+        };
+      });
 }

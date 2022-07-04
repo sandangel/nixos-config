@@ -1,5 +1,5 @@
 # Connectivity info for Linux VM
-NIXADDR ?= 10.211.55.6
+NIXADDR ?= 10.211.55.3
 NIXPORT ?= 22
 NIXUSER ?= sand
 
@@ -19,9 +19,9 @@ NIXNAME ?= vm-aarch64-prl
 SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 switch:
-	nixos-rebuild switch --use-remote-sudo --impure --flake ".#${NIXNAME}"
-	home-manager switch --impure --flake ".#${NIXUSER}"
-	# rsync -av $(MAKEFILE_DIR)/users/sand/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
+	nixos-rebuild switch --use-remote-sudo --impure --flake ".#$(NIXNAME)"
+	home-manager switch --impure --flake ".#$(NIXUSER)"
+	rsync -av $(MAKEFILE_DIR)/users/$(NIXUSER)/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
 
 # bootstrap a brand new VM. The VM should have NixOS ISO on the CD drive
 # and just set the password of the root user to "root". This will install
@@ -51,6 +51,7 @@ vm/bootstrap0:
 			services.openssh.passwordAuthentication = true;\n \
 			services.openssh.permitRootLogin = \"yes\";\n \
 			users.users.root.initialPassword = \"root\";\n \
+			environment.systemPackages = with pkgs; [ gnumake git home-manager ];\n \
 		' /mnt/etc/nixos/configuration.nix; \
 		nixos-install --no-root-passwd; \
 		reboot; \
@@ -61,9 +62,6 @@ vm/bootstrap0:
 vm/bootstrap:
 	NIXUSER=root $(MAKE) vm/copy
 	NIXUSER=root $(MAKE) vm/switch
-	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR) " \
-		sudo reboot; \
-	"
 
 # copy the Nix configurations into the VM.
 vm/copy:
@@ -76,5 +74,13 @@ vm/copy:
 # have to run vm/copy before.
 vm/switch:
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR) " \
-		sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --impure --flake \"/nix-config#${NIXNAME}\" \
+		cd /nix-config; \
+		make switch; \
+		sudo reboot; \
 	"
+
+ssh:
+	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR)
+
+ssh-root:
+	ssh $(SSH_OPTIONS) -p$(NIXPORT) root@$(NIXADDR)

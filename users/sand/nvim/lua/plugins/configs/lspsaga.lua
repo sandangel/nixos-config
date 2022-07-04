@@ -1,6 +1,5 @@
 local lspsaga = require 'lspsaga'
 lspsaga.init_lsp_saga {
-  debug = false,
   -- Error,Warn,Info,Hint
   diagnostic_header = { ' ', ' ', ' ', ' ' },
   show_diagnostic_source = true,

@@ -151,4 +151,13 @@ At this point, I never use Mac terminals ever again. I clone this repository
 in my VM and I use the other Make tasks such as `make test`, `make switch`, etc.
 to make changes my VM.
 
+**Config for macOS host:**
+
+```sh
+xcode-select --install
+defaults write -g KeyRepeat -float 0.7 && defaults write -g InitialKeyRepeat -int 10
+```
+
+Then install Raycast, Shottr, Firefox, Karabiner
+
 ## FAQ

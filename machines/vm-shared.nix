@@ -8,6 +8,7 @@
 
   # use unstable nix so we can access flakes
   nix = {
+    package = pkgs.nixUnstable;
     autoOptimiseStore = true;
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -193,7 +194,7 @@
     yaru-theme
     vim
     gcc
-    # To install home-manager initially, then will switch to the user version
+    git
     home-manager
   ];
 
