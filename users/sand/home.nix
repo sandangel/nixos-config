@@ -5,24 +5,25 @@
   home.stateVersion = "22.05";
   home.homeDirectory = "/home/${username}";
   home.packages = with pkgs-unstable; [
-    ripgrep
-    fd
-    kubectl
-    tree-sitter
-    neovim-nightly
-    pinniped
-    kubeswitch
+    dconf2nix
     exa
+    fd
+    grpcurl
+    istioctl
     kitty
-    yaml-language-server
-    trash-cli
-    rnix-lsp
-    nodejs
+    kubectl
+    kubeswitch
+    neovim-nightly
     nodePackages.pyright
+    nodejs
+    pinniped
+    ripgrep
+    rnix-lsp
     terraform-ls
     tflint
-    dconf2nix
-    grpcurl
+    trash-cli
+    tree-sitter
+    yaml-language-server
   ];
 
   xdg.enable = true;
@@ -99,6 +100,7 @@
     };
     userName = "San Nguyen";
     userEmail = "vinhsannguyen91@gmail.com";
+    lfs.enable = true;
     delta = {
       enable = true;
       options = {

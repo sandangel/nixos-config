@@ -76,12 +76,12 @@ local config = {
     --      print(args.source, " moved to ", args.destination)
     --    end
     --  },
-    {
-      event = 'neo_tree_buffer_enter',
-      handler = function()
-        vim.wo.signcolumn = 'no'
-      end,
-    },
+    --  {
+    --    event = 'neo_tree_buffer_enter',
+    --    handler = function()
+    --      vim.wo.signcolumn = 'no'
+    --    end,
+    --  },
     --  {
     --    event = "neo_tree_buffer_leave",
     --    handler = function()

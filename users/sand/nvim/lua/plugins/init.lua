@@ -84,9 +84,7 @@ require('packer').startup(function(use)
     end, { silent = true })
   end }
 
-  use { 'akinsho/git-conflict.nvim', config = function()
-    require('git-conflict').setup()
-  end }
+  use { 'whiteinge/diffconflicts' }
 
   use {
     'nvim-neo-tree/neo-tree.nvim',
