@@ -14,7 +14,6 @@ lspsaga.init_lsp_saga {
     sign_priority = 40,
     virtual_text = true,
   },
-  finder_separator = '  ',
   max_preview_lines = 10,
   finder_action_keys = {
     open = '<cr>',

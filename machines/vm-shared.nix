@@ -9,7 +9,7 @@
   # use unstable nix so we can access flakes
   nix = {
     package = pkgs.nixUnstable;
-    autoOptimiseStore = true;
+    settings.auto-optimise-store = true;
     extraOptions = ''
       experimental-features = nix-command flakes
       keep-outputs = true
@@ -29,6 +29,7 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "auto";
+  boot.loader.systemd-boot.configurationLimit = 3;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Define your hostname.
@@ -59,71 +60,115 @@
   services.xserver.desktopManager.gnome = {
     enable = true;
     extraGSettingsOverrides = ''
+      [org.gnome.desktop.interface]
+      color-scheme='prefer-dark'
+      cursor-theme='Yaru'
+      font-antialiasing='grayscale'
+      font-hinting='slight'
+      gtk-theme='Yaru-dark'
+      icon-theme='Yaru-dark'
+      scaling-factor=2
+
       [org.gnome.desktop.peripherals.keyboard]
+      numlock-state=false
       repeat-interval=3
-      delay=200
+      delay=150
+
+      [org.gnome.desktop.sound]
+      theme-name='Yaru'
 
       [org.gnome.desktop.wm.keybindings]
-      activate-window-menu=[]
-      begin-move=[]
-      begin-resize=[]
-      close=[]
-      cycle-group=[]
-      cycle-group-backward=[]
-      cycle-panels=[]
-      cycle-panels-backward=[]
-      cycle-windows=[]
-      cycle-windows-backward=[]
-      maximize=[]
-      minimize=[]
-      move-to-monitor-down=[]
-      move-to-monitor-left=[]
-      move-to-monitor-right=[]
-      move-to-monitor-up=[]
-      move-to-workspace-down=[]
-      move-to-workspace-last=[]
-      move-to-workspace-left=[]
-      move-to-workspace-right=[]
-      move-to-workspace-up=[]
-      panel-run-dialog=[]
-      switch-applications=[]
-      switch-applications-backward=[]
-      switch-group=[]
-      switch-group-backward=[]
-      switch-input-source=[]
-      switch-input-source-backward=[]
-      switch-panels=[]
-      switch-panels-backward=[]
-      switch-to-workspace-1=[]
-      switch-to-workspace-down=[]
-      switch-to-workspace-last=[]
-      switch-to-workspace-left=[]
-      switch-to-workspace-right=[]
-      switch-to-workspace-up=[]
-      toggle-maximized=[]
-      unmaximize=[]
-
-      [org.gnome.settings-daemon.plugins.power]
-      sleep-inactive-battery-timeout=0
-      sleep-inactive-battery-type='nothing'
-      sleep-inactive-ac-timeout=0
-      sleep-inactive-ac-type='nothing'
-      power-saver-profile-on-low-battery=false
-      power-button-action='nothing'
-      idle-dim=false
-      ambient-enabled=false
-
-      [org.gnome.desktop.session]
-      idle-delay=0
-
-      [org.gnome.settings-daemon.plugins.xsettings]
-      overrides={'Gdk/WindowScalingFactor': <2>}
-
-      [org.gnome.desktop.interface]
-      scaling-factor=2
+      activate-window-menu=@as []
+      begin-move=@as []
+      begin-resize=@as []
+      close=@as []
+      cycle-group=@as []
+      cycle-group-backward=@as []
+      cycle-panels=@as []
+      cycle-panels-backward=@as []
+      cycle-windows=@as []
+      cycle-windows-backward=@as []
+      maximize=@as []
+      minimize=@as []
+      move-to-monitor-down=@as []
+      move-to-monitor-left=@as []
+      move-to-monitor-right=@as []
+      move-to-monitor-up=@as []
+      move-to-workspace-down=@as []
+      move-to-workspace-last=@as []
+      move-to-workspace-left=@as []
+      move-to-workspace-right=@as []
+      move-to-workspace-up=@as []
+      panel-run-dialog=@as []
+      switch-applications=@as []
+      switch-applications-backward=@as []
+      switch-group=@as []
+      switch-group-backward=@as []
+      switch-input-source=@as []
+      switch-input-source-backward=@as []
+      switch-panels=@as []
+      switch-panels-backward=@as []
+      switch-to-workspace-1=@as []
+      switch-to-workspace-down=@as []
+      switch-to-workspace-last=@as []
+      switch-to-workspace-left=@as []
+      switch-to-workspace-right=@as []
+      switch-to-workspace-up=@as []
+      toggle-maximized=@as []
+      unmaximize=@as []
 
       [org.gnome.mutter]
       overlay-key='Super_R'
+
+      [org.gnome.mutter.keybindings]
+      toggle-tiled-left=@as []
+      toggle-tiled-right=@as []
+
+      [org.gnome.mutter.wayland.keybindings]
+      restore-shortcuts=@as []
+
+      [org.gnome.nautilus.window-state]
+      maximized=true
+
+      [org.gnome.settings-daemon.plugins.media-keys]
+      help=@as []
+      logout=@as []
+      magnifier=@as []
+      magnifier-zoom-in=@as []
+      magnifier-zoom-out=@as []
+      screenreader=@as []
+      screensaver=@as []
+
+      [org.gnome.settings-daemon.plugins.power]
+      ambient-enabled=false
+      idle-dim=false
+      power-button-action='nothing'
+      power-saver-profile-on-low-battery=false
+      sleep-inactive-ac-timeout=0
+      sleep-inactive-ac-type='nothing'
+      sleep-inactive-battery-timeout=0
+      sleep-inactive-battery-type='nothing'
+
+      [org.gnome.settings-daemon.plugins.xsettings]
+      overrides="{'Gdk/WindowScalingFactor': <2>}"
+
+      [org.gnome.shell]
+      enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com']
+      favorite-apps=['org.gnome.Calendar.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.gnome.Extensions.desktop', 'org.gnome.Settings.desktop', 'kitty.desktop', 'gnome-system-monitor.desktop', 'org.gnome.tweaks.desktop', 'org.gnome.baobab.desktop']
+
+      [org.gnome.shell.extensions.user-theme]
+      name='Yaru-dark'
+
+      [org.gnome.shell.keybindings]
+      focus-active-notification=@as []
+      open-application-menu=@as []
+      screenshot=@as []
+      screenshot-window=@as []
+      show-screen-recording-ui=@as []
+      show-screenshot-ui=@as []
+      toggle-application-view=@as []
+      toggle-message-tray=@as []
+      toggle-overview=@as []
     '';
 
     extraGSettingsOverridePackages = with pkgs; [

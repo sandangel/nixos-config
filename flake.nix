@@ -5,54 +5,42 @@
     # Pin our primary nixpkgs repository. This is the main nixpkgs repository
     # we'll use for our configurations. Be very careful changing this because
     # it'll impact your entire system.
-    nixpkgs.url = "github:nixos/nixpkgs/release-22.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     lib.url = "github:nix-community/lib-aggregate";
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      # We want home-manager to use the latest nixpkgs.
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Other packages
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    mach-nix.url = "mach-nix/3.5.0";
+    mach-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    neovim.url = "github:neovim/neovim?dir=contrib";
+    neovim.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, home-manager, lib, ... }@inputs:
+  outputs = { self, nixpkgs, neovim, home-manager, lib, ... }@inputs:
     let
       system = "aarch64-linux";
       username = "sand";
       machine = "vm-aarch64-prl";
+      mach-nix = import inputs.mach-nix { python = "python310"; inherit pkgs; };
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
         config.allowUnsupportedSystem = true;
         overlays = [
           (final: prev: {
-            inherit comic-code;
+            inherit comic-code pinniped kubeswitch neovim-nightly;
           })
         ];
       };
-      pkgs-unstable = import inputs.nixpkgs-unstable {
-        inherit system;
-        config.allowUnfree = true;
-        overlays = [
-          inputs.neovim-nightly-overlay.overlay
-          (final: prev: {
-            inherit pinniped kubeswitch;
-          })
-        ];
-      };
+      neovim-nightly = neovim.packages.${system}.neovim;
       pinniped = with pkgs; buildGoModule rec {
         pname = "pinniped";
         version = "0.18.0";
-        src = fetchFromGitHub {
-          owner = "vmware-tanzu";
-          repo = "pinniped";
-          rev = "v${version}";
-          sha256 = "sha256-S3JTxHeZ0QrhtakIaTOoQGU08qwjva8qcu2Bef+kMrA=";
+        src = builtins.fetchGit {
+          url = "https://github.com/vmware-tanzu/pinniped";
+          ref = "refs/tags/v${version}";
         };
         subPackages = [ "cmd/pinniped" ];
         vendorSha256 = "sha256-V36b6x+wz5MeJzp/GPhX2sPATosOMEqGkeQdz4RbiEQ=";
@@ -60,11 +48,9 @@
       kubeswitch = with pkgs; buildGoModule rec {
         pname = "kubeswitch";
         version = "0.7.1";
-        src = fetchFromGitHub {
-          owner = "danielfoehrKn";
-          repo = "kubeswitch";
-          rev = "${version}";
-          sha256 = "sha256-IV21VvvjnhTMSYDpRflkqXfbKYPgNeIC/igBoXVwVLo=";
+        src = builtins.fetchGit {
+          url = "https://github.com/danielfoehrKn/kubeswitch";
+          ref = "refs/tags/${version}";
         };
         subPackages = [ "cmd" ];
         vendorSha256 = null;
@@ -91,7 +77,7 @@
     {
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = { inherit pkgs-unstable username; };
+        extraSpecialArgs = { inherit mach-nix username; };
         modules = [
           ./users/${username}/home.nix
         ];
@@ -108,7 +94,7 @@
               isSystemUser = false;
               home = "/home/${username}";
               extraGroups = [ "docker" "wheel" ];
-              shell = pkgs-unstable.zsh;
+              shell = pkgs.zsh;
               initialPassword = username;
               useDefaultShell = false;
             };

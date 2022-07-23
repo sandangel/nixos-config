@@ -172,14 +172,12 @@ require('packer').startup(function(use)
     config = [[ require 'plugins.configs.fzf' ]],
   }
   use { 'glepnir/lspsaga.nvim', branch = 'main', config = [[ require 'plugins.configs.lspsaga' ]] }
-  use { 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+  use { 'ray-x/lsp_signature.nvim' }
   use { 'neovim/nvim-lspconfig', requires = {
     'glepnir/lspsaga.nvim',
     'ibhagwan/fzf-lua',
     'nvim-lua/plenary.nvim',
-    'jose-elias-alvarez/null-ls.nvim',
   }, config = [[ require 'plugins.configs.lspconfig' ]] }
-
   use { 'iamcco/markdown-preview.nvim', run = 'cd app && npm install', ft = { 'markdown' }, setup = function()
     vim.g.mkdp_filetypes = { 'markdown' }
   end }

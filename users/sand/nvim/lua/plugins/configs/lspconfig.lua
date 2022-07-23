@@ -15,7 +15,7 @@ vim.diagnostic.config {
 
 local opts = { silent = true }
 
-vim.keymap.set('n', 'gl', '<cmd>FzfLua loclist<cr>', opts)
+vim.keymap.set('n', 'gL', '<cmd>FzfLua loclist<cr>', opts)
 vim.keymap.set('n', 'gq', '<cmd>FzfLua quickfix<cr>', opts)
 
 vim.api.nvim_create_augroup('LSPConfigUser', { clear = true })
@@ -26,18 +26,12 @@ local on_attach = function(client, bufnr)
       group = 'LSPConfigUser',
       buffer = bufnr,
       callback = function()
-        local has_null_ls = not vim.tbl_isempty(vim.lsp.get_active_clients({ bufnr = bufnr, name = 'null-ls' }))
-        vim.lsp.buf.format {
-          bufnr = bufnr,
-          filter = function(c)
-            if has_null_ls then
-              return c.name == 'null-ls'
-            end
-            return true
-          end
-        }
+        vim.lsp.buf.format { bufnr = bufnr }
       end,
     })
+  end
+  if client.supports_method 'textDocument/signatureHelp' then
+    require 'lsp_signature'.on_attach()
   end
 
   -- Mappings.
@@ -47,17 +41,19 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gd', '<cmd>FzfLua lsp_definitions<cr>', opts)
   vim.keymap.set('n', 'gi', '<cmd>FzfLua lsp_implementations<cr>', opts)
   vim.keymap.set('n', 'gR', '<cmd>FzfLua lsp_references<cr>', opts)
-  vim.keymap.set('n', 'gW', '<cmd>FzfLua lsp_document_diagnostics<cr>', opts)
-  vim.keymap.set('n', 'gw', '<cmd>FzfLua lsp_workspace_diagnostics<cr>', opts)
+  vim.keymap.set('n', 'gw', '<cmd>FzfLua lsp_document_diagnostics<cr>', opts)
+  vim.keymap.set('n', 'gW', '<cmd>FzfLua lsp_workspace_diagnostics<cr>', opts)
   vim.keymap.set('n', 'gp', '<cmd>Lspsaga preview_definition<cr>', opts)
+  vim.keymap.set('n', 'gl', '<cmd>Lspsaga show_line_diagnostics<cr>', opts)
   vim.keymap.set('n', 'gh', '<cmd>Lspsaga hover_doc<cr>', opts)
   vim.keymap.set('n', 'gk', '<cmd>Lspsaga signature_help<cr>', opts)
   vim.keymap.set('n', 'gr', '<cmd>Lspsaga rename<cr>', opts)
   vim.keymap.set('n', 'gA', '<cmd>Lspsaga code_action<cr>', opts)
   vim.keymap.set('x', 'gx', '<cmd>Lspsaga range_code_action<cr>', opts)
-  vim.keymap.set('n', '[d', '<cmd>Lspsaga diagnostic_jump_next<cr>', opts)
-  vim.keymap.set('n', ']d', '<cmd>Lspsaga diagnostic_jump_prev<cr>', opts)
+  vim.keymap.set('n', ']d', '<cmd>Lspsaga diagnostic_jump_next<cr>', opts)
+  vim.keymap.set('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<cr>', opts)
   vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<cr>', opts)
+  vim.keymap.set('x', 'gf', '<cmd>lua vim.lsp.buf.range_formatting()<cr>', opts)
   vim.keymap.set('n', '<c-f>', "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-f>')<cr>", opts)
   vim.keymap.set('n', '<c-b>', "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-b>')<cr>", opts)
 end
@@ -71,7 +67,6 @@ local servers = {
   'yamlls',
   'jsonls',
   'rnix',
-  'pyright',
 }
 
 for _, lsp in ipairs(servers) do
@@ -132,10 +127,40 @@ lspconfig.sumneko_lua.setup {
   },
 }
 
-require('null-ls').setup {
-  sources = {
-    require('null-ls').builtins.formatting.black,
-    require('null-ls').builtins.diagnostics.flake8,
-  },
+lspconfig.pylsp.setup {
   on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    pylsp = {
+      configurationSources = { 'flake8' },
+      plugins = {
+        flake8 = { enabled = true },
+        black = { enabled = true },
+        pylsp_mypy = { enabled = true },
+        pyls_isort = { enabled = true },
+        jedi_completion = { enabled = false },
+        jedi_definition = { enabled = false },
+        jedi_hover = { enabled = false },
+        jedi_references = { enabled = false },
+        jedi_rename = { enabled = false },
+        jedi_signature_help = { enabled = false },
+        jedi_symbols = { enabled = false },
+        pycodestyle = { enabled = false },
+        pyflakes = { enabled = false },
+        mccabe = { enabled = false },
+      },
+    },
+  },
+}
+
+lspconfig.pyright.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    python = {
+      analysis = {
+        typeCheckingMode = 'off',
+      },
+    },
+  }
 }

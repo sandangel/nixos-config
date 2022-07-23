@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, config, ... }:
+{ pkgs, config, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -9,7 +9,7 @@
     history.path = "${config.xdg.configHome}/zsh/.zsh_history";
     completionInit = "";
     initExtra = ''
-      __fzf_dir=${pkgs-unstable.fzf}
+      __fzf_dir=${pkgs.fzf}
       . $XDG_CONFIG_HOME/zsh/config/init.zsh
       unset __fzf_dir
       . $XDG_CONFIG_HOME/zsh/config/alias.zsh
@@ -19,8 +19,8 @@
 
       export DIRENV_LOG_FORMAT=""
 
-      source ${pkgs-unstable.kubeswitch}/scripts/cleanup_handler_zsh.sh
-      source ${pkgs-unstable.kubeswitch}/hack/switch/switch.sh
+      source ${pkgs.kubeswitch}/scripts/cleanup_handler_zsh.sh
+      source ${pkgs.kubeswitch}/hack/switch/switch.sh
     '';
   };
   xdg.configFile."zsh/config".source = ./.;

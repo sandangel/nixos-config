@@ -1,6 +1,7 @@
 vim.g.mapleader = ' '
 
 vim.g.neovide_input_use_logo = 1
+vim.g.python3_host_prog = vim.env.HOME .. '/.nix-profile/bin/python'
 
 vim.o.breakindent = true
 vim.o.expandtab = true
@@ -108,11 +109,6 @@ local function keymap()
 
   vim.keymap.set('i', '<a-left>', '<c-left>', opts)
   vim.keymap.set('i', '<a-right>', '<c-right>', opts)
-
-  -- vim.keymap.set({ 'n', 'x' }, '<c-h>', '<cmd>wincmd h<cr>', opts)
-  -- vim.keymap.set({ 'n', 'x' }, '<c-j>', '<cmd>wincmd j<cr>', opts)
-  -- vim.keymap.set({ 'n', 'x' }, '<c-k>', '<cmd>wincmd k<cr>', opts)
-  -- vim.keymap.set({ 'n', 'x' }, '<c-l>', '<cmd>wincmd l<cr>', opts)
 
   local c = 1
   while c <= 99 do

@@ -4,17 +4,10 @@
     # modules to get a lot of the stuff working.
     (modulesPath + "/profiles/qemu-guest.nix")
 
-    ../modules/parallels-guest.nix
     ./vm-shared.nix
   ];
 
-  # The official parallels guest support does not work currently.
-  # https://github.com/NixOS/nixpkgs/pull/153665
-  disabledModules = [ "virtualisation/parallels-guest.nix" ];
-  hardware.parallels = {
-    enable = true;
-    package = (config.boot.kernelPackages.callPackage ../pkgs/parallels-tools/default.nix { });
-  };
+  hardware.parallels.enable = true;
 
   # Interface is this on my M1
   networking.interfaces.enp0s5.useDHCP = true;

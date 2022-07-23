@@ -1,22 +1,40 @@
-{ pkgs, lib, pkgs-unstable, config, username, ... }:
+{ pkgs, lib, config, username, mach-nix, ... }:
 
 {
   home.username = username;
   home.stateVersion = "22.05";
   home.homeDirectory = "/home/${username}";
-  home.packages = with pkgs-unstable; [
+  home.packages = with pkgs; [
     dconf2nix
     exa
     fd
+    go
+    gopls
     grpcurl
     istioctl
     kitty
     kubectl
     kubeswitch
     neovim-nightly
-    nodePackages.pyright
     nodejs
     pinniped
+    nodePackages.pyright
+    (python3.withPackages (ps:
+      let
+        whatthepatch = mach-nix.mkPython {
+          requirements = ''
+            whatthepatch
+          '';
+        };
+        python-lsp-server = ps.callPackage ../../pkgs/python-lsp-server { inherit whatthepatch; };
+      in
+      with ps; [
+        pynvim
+        python-lsp-server
+        (pyls-isort.override { inherit python-lsp-server; })
+        (python-lsp-black.override { inherit python-lsp-server; })
+        (callPackage ../../pkgs/pylsp-mypy { inherit python-lsp-server; })
+      ]))
     ripgrep
     rnix-lsp
     terraform-ls
@@ -63,7 +81,7 @@
     PAGER = "less -FirSwX";
     MANPAGER = "sh -c 'col -bx | bat -l man -p'";
     MOZ_ENABLE_WAYLAND = "1";
-    TERMINFO_DIRS = "${pkgs-unstable.kitty.terminfo}/share/terminfo";
+    TERMINFO_DIRS = "${pkgs.kitty.terminfo}/share/terminfo";
     RG_IGNORE = "--glob '!.git/*' --glob '!node_modules/*' --glob '!*.lock' --glob '!*-lock.json' --glob '!*.min.{js,css}' --glob '!*.lock.hcl' --glob '!__snapshots__/*'";
     RG_LINE = "rg --column --line-number --no-heading --smart-case --hidden --follow --color always";
     RG_GREP = "${RG_LINE} ${RG_IGNORE} ";

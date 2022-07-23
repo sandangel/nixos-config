@@ -20,7 +20,7 @@ local function fzf_quickfix(selected, opts)
     vim.fn.setqflist(qf_list)
     vim.cmd 'FzfLua quickfix'
   else
-    require 'fzf-lua'.actions.file_edit(selected, opts)
+    fzf_lua.actions.file_edit(selected, opts)
   end
 end
 
@@ -90,30 +90,14 @@ vim.keymap.set('n', '<leader>hs', function()
   fzf_lua.search_history()
 end, opts)
 
-vim.keymap.set('n', '<leader>s', function()
-  fzf_lua.oldfiles()
-end, opts)
-vim.keymap.set('n', '<leader>j', function()
-  fzf_lua.files()
-end, opts)
-vim.keymap.set('n', '<leader>J', function()
-  fzf_lua.files { cwd = vim.fn.expand '%:p:h' }
-end, opts)
-vim.keymap.set('n', '<leader>g', function()
-  fzf_lua.git_status()
-end, opts)
-vim.keymap.set('n', '<leader>a', function()
-  fzf_lua.buffers()
-end, opts)
-vim.keymap.set('n', '<leader>f', function()
-  fzf_lua.grep_project()
-end, opts)
-vim.keymap.set('n', '<leader>F', function()
-  fzf_lua.grep_project { cwd = vim.fn.expand '%:p:h' }
-end, opts)
-vim.keymap.set('n', '<leader>l', function()
-  fzf_lua.blines()
-end, opts)
+vim.keymap.set('n', '<leader>s', function() fzf_lua.oldfiles() end, opts)
+vim.keymap.set('n', '<leader>j', function() fzf_lua.files() end, opts)
+vim.keymap.set('n', '<leader>J', function() fzf_lua.files { cwd = vim.fn.expand '%:p:h' } end, opts)
+vim.keymap.set('n', '<leader>g', function() fzf_lua.git_status() end, opts)
+vim.keymap.set('n', '<leader>a', function() fzf_lua.buffers() end, opts)
+vim.keymap.set('n', '<leader>f', function() fzf_lua.grep_project() end, opts)
+vim.keymap.set('n', '<leader>F', function() fzf_lua.grep_project { cwd = vim.fn.expand '%:p:h' } end, opts)
+vim.keymap.set('n', '<leader>l', function() fzf_lua.blines() end, opts)
 
 vim.keymap.set('n', '<leader>d', function()
   fzf_lua.grep_project { fzf_opts = { ['--query'] = vim.fn.expand '<cword>' } }
