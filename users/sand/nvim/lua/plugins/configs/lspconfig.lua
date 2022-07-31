@@ -2,15 +2,9 @@ local root_pattern = require('lspconfig.util').root_pattern
 local lspconfig = require 'lspconfig'
 local capabilities = require('plugins.configs.cmp').capabilities
 
-vim.lsp.set_log_level 'error'
-
-vim.diagnostic.config {
-  virtual_text = {
-    prefix = '',
-  },
-  signs = true,
-  underline = true,
-  update_in_insert = false,
+require 'nvchad_ui.lsp'
+require('lsp_signature').setup {
+  hint_enable = false,
 }
 
 local opts = { silent = true }
@@ -21,7 +15,7 @@ vim.keymap.set('n', 'gq', '<cmd>FzfLua quickfix<cr>', opts)
 vim.api.nvim_create_augroup('LSPConfigUser', { clear = true })
 
 local on_attach = function(client, bufnr)
-  if client.supports_method 'textDocument/formatting' then
+  if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_create_autocmd('BufWritePre', {
       group = 'LSPConfigUser',
       buffer = bufnr,
@@ -29,9 +23,6 @@ local on_attach = function(client, bufnr)
         vim.lsp.buf.format { bufnr = bufnr }
       end,
     })
-  end
-  if client.supports_method 'textDocument/signatureHelp' then
-    require 'lsp_signature'.on_attach()
   end
 
   -- Mappings.
@@ -49,7 +40,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gk', '<cmd>Lspsaga signature_help<cr>', opts)
   vim.keymap.set('n', 'gr', '<cmd>Lspsaga rename<cr>', opts)
   vim.keymap.set('n', 'gA', '<cmd>Lspsaga code_action<cr>', opts)
-  vim.keymap.set('x', 'gx', '<cmd>Lspsaga range_code_action<cr>', opts)
+  vim.keymap.set('x', 'gA', '<cmd>Lspsaga range_code_action<cr>', opts)
   vim.keymap.set('n', ']d', '<cmd>Lspsaga diagnostic_jump_next<cr>', opts)
   vim.keymap.set('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<cr>', opts)
   vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<cr>', opts)
@@ -63,7 +54,6 @@ local servers = {
   'tsserver',
   'gopls',
   'dockerls',
-  'vimls',
   'yamlls',
   'jsonls',
   'rnix',
@@ -109,7 +99,12 @@ lspconfig.sumneko_lua.setup {
         },
       },
       workspace = {
-        library = vim.api.nvim_get_runtime_file('', true),
+        library = {
+          [vim.fn.expand '$VIMRUNTIME/lua'] = true,
+          [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
+        },
+        maxPreload = 100000,
+        preloadFileSize = 10000,
       },
       telemetry = {
         enable = false,
@@ -135,7 +130,7 @@ lspconfig.pylsp.setup {
       configurationSources = { 'flake8' },
       plugins = {
         flake8 = { enabled = true },
-        black = { enabled = true },
+        black = { enabled = true, line_length = 120 },
         pylsp_mypy = { enabled = true },
         pyls_isort = { enabled = true },
         jedi_completion = { enabled = false },

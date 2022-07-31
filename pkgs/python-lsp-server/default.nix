@@ -27,13 +27,13 @@
 , whatthepatch
 , withAutopep8 ? true
 , withFlake8 ? true
-, withMccabe ? true
-, withPycodestyle ? true
-, withPydocstyle ? true
-, withPyflakes ? true
-, withPylint ? true
-, withRope ? true
-, withYapf ? true
+, withMccabe ? false
+, withPycodestyle ? false
+, withPydocstyle ? false
+, withPyflakes ? false
+, withPylint ? false
+, withRope ? false
+, withYapf ? false
 }:
 
 buildPythonPackage rec {

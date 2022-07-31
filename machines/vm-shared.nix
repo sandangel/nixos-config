@@ -230,17 +230,18 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    gnumake
-    killall
-    wl-clipboard
-    xclip
-    gnome.dconf-editor
-    gnome.gnome-tweaks
-    yaru-theme
-    vim
+    binutils
     gcc
     git
+    gnome.dconf-editor
+    gnome.gnome-tweaks
+    gnumake
     home-manager
+    killall
+    vim
+    wl-clipboard
+    xclip
+    yaru-theme
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

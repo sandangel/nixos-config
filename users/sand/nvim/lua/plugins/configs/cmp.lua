@@ -14,7 +14,7 @@ cmp.setup {
   },
   formatting = {
     format = function(entry, vim_item)
-      local lspkind_icons = require('plugins.configs.lspkind').icons
+      local lspkind_icons = require('nvchad_ui.icons').lspkind
       vim_item.kind = string.format('%s %s', lspkind_icons[vim_item.kind], vim_item.kind)
       vim_item.menu = ({
         buffer = '[Buffer]',
@@ -74,18 +74,22 @@ cmp.setup {
 local M = {}
 
 M.capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-M.capabilities.textDocument.completion.completionItem.preselectSupport = true
-M.capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-M.capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-M.capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-M.capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-M.capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-M.capabilities.textDocument.completion.completionItem.snippetSupport = true
-M.capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
+
+M.capabilities.textDocument.completion.completionItem = {
+  documentationFormat = { 'markdown', 'plaintext' },
+  snippetSupport = true,
+  preselectSupport = true,
+  insertReplaceSupport = true,
+  labelDetailsSupport = true,
+  deprecatedSupport = true,
+  commitCharactersSupport = true,
+  tagSupport = { valueSet = { 1 } },
+  resolveSupport = {
+    properties = {
+      'documentation',
+      'detail',
+      'additionalTextEdits',
+    },
   },
 }
 

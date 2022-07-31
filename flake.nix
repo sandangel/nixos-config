@@ -7,8 +7,6 @@
     # it'll impact your entire system.
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    lib.url = "github:nix-community/lib-aggregate";
-
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -18,7 +16,7 @@
     neovim.url = "github:neovim/neovim?dir=contrib";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, neovim, home-manager, lib, ... }@inputs:
+  outputs = { self, nixpkgs, neovim, home-manager, ... }@inputs:
     let
       system = "aarch64-linux";
       username = "sand";
@@ -102,13 +100,5 @@
           }
         ];
       };
-    } //
-    lib.lib.flake-utils.eachSystem [ system ]
-      (system: {
-        devShells.default = with pkgs; mkShell {
-          packages = [
-            sumneko-lua-language-server
-          ];
-        };
-      });
+    };
 }

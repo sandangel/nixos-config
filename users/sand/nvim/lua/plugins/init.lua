@@ -56,11 +56,6 @@ require('packer').startup(function(use)
 
   use { 'norcalli/nvim-colorizer.lua', event = 'BufRead', config = [[ require('plugins.configs.others').colorizer() ]] }
 
-  use 'markonm/traces.vim'
-  use { 'romainl/vim-cool', setup = function()
-    vim.g.CoolTotalMatches = 1
-  end }
-
   use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' },
     config = [[ require 'plugins.configs.gitsigns' ]],
   }
@@ -83,8 +78,6 @@ require('packer').startup(function(use)
       lazygit:toggle()
     end, { silent = true })
   end }
-
-  use { 'whiteinge/diffconflicts' }
 
   use {
     'nvim-neo-tree/neo-tree.nvim',
@@ -144,17 +137,26 @@ require('packer').startup(function(use)
     require('leap').set_default_keymaps()
   end }
 
+  use { 'numToStr/Comment.nvim', config = function()
+    require('Comment').setup()
+  end }
+
   use { 'knubie/vim-kitty-navigator', run = 'cp ./*.py ~/.config/kitty/' }
 
   use { 'echasnovski/mini.nvim', config = [[ require 'plugins.configs.mini' ]] }
 
-  use 'wellle/targets.vim'
   use 'matze/vim-move'
   use 'machakann/vim-textobj-delimited'
-  use 'tpope/vim-surround'
   use 'tpope/vim-rsi'
   use 'tpope/vim-repeat'
   use 'tpope/vim-abolish'
+  use 'markonm/traces.vim'
+  use 'junegunn/vim-slash'
+  use 'whiteinge/diffconflicts'
+
+  use { 'kylechui/nvim-surround', config = function()
+    require('nvim-surround').setup()
+  end }
 
   use { 'hrsh7th/nvim-cmp',
     requires = {
@@ -172,11 +174,12 @@ require('packer').startup(function(use)
     config = [[ require 'plugins.configs.fzf' ]],
   }
   use { 'glepnir/lspsaga.nvim', branch = 'main', config = [[ require 'plugins.configs.lspsaga' ]] }
-  use { 'ray-x/lsp_signature.nvim' }
   use { 'neovim/nvim-lspconfig', requires = {
     'glepnir/lspsaga.nvim',
     'ibhagwan/fzf-lua',
     'nvim-lua/plenary.nvim',
+    'ray-x/lsp_signature.nvim',
+    'NvChad/ui',
   }, config = [[ require 'plugins.configs.lspconfig' ]] }
   use { 'iamcco/markdown-preview.nvim', run = 'cd app && npm install', ft = { 'markdown' }, setup = function()
     vim.g.mkdp_filetypes = { 'markdown' }

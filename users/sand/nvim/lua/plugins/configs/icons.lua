@@ -2,6 +2,11 @@ local colors = require('plugins.configs.colors').get()
 
 require('nvim-web-devicons').setup {
   override = {
+    default_icon = {
+      icon = '',
+      color = colors.orange,
+      name = 'Default',
+    },
     css = {
       icon = '',
       color = colors.blue,
@@ -146,6 +151,41 @@ require('nvim-web-devicons').setup {
       icon = '',
       color = '#89e051',
       name = 'zshrc',
+    },
+    c = {
+      icon = '',
+      color = colors.orange,
+      name = 'c',
+    },
+    deb = {
+      icon = '',
+      color = colors.orange,
+      name = 'deb',
+    },
+    kt = {
+      icon = '󱈙',
+      color = colors.orange,
+      name = 'kt',
+    },
+    mp3 = {
+      icon = '',
+      color = colors.orange,
+      name = 'mp3',
+    },
+    mp4 = {
+      icon = '',
+      color = colors.orange,
+      name = 'mp4',
+    },
+    rb = {
+      icon = '',
+      color = colors.orange,
+      name = 'rb',
+    },
+    rpm = {
+      icon = '',
+      color = colors.orange,
+      name = 'rpm',
     },
   },
 }

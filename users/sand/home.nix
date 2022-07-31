@@ -5,7 +5,7 @@
   home.stateVersion = "22.05";
   home.homeDirectory = "/home/${username}";
   home.packages = with pkgs; [
-    dconf2nix
+    postgresql
     exa
     fd
     go
@@ -16,9 +16,16 @@
     kubectl
     kubeswitch
     neovim-nightly
-    nodejs
-    pinniped
+    nodejs_latest
     nodePackages.pyright
+    nodePackages.vscode-langservers-extracted
+    nodePackages.typescript
+    nodePackages.typescript-language-server
+    nodePackages.yaml-language-server
+    nodePackages.dockerfile-language-server-nodejs
+    nodePackages.pnpm
+    pinniped
+    sumneko-lua-language-server
     (python3.withPackages (ps:
       let
         whatthepatch = mach-nix.mkPython {
@@ -30,10 +37,11 @@
       in
       with ps; [
         pynvim
+        debugpy
         python-lsp-server
         (pyls-isort.override { inherit python-lsp-server; })
         (python-lsp-black.override { inherit python-lsp-server; })
-        (callPackage ../../pkgs/pylsp-mypy { inherit python-lsp-server; })
+        (pylsp-mypy.override { inherit python-lsp-server; })
       ]))
     ripgrep
     rnix-lsp
@@ -41,7 +49,6 @@
     tflint
     trash-cli
     tree-sitter
-    yaml-language-server
   ];
 
   xdg.enable = true;

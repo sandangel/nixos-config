@@ -1,8 +1,8 @@
 local modules = {
-  'comment',
   'cursorword',
   'indentscope',
   'trailspace',
+  'ai',
 }
 
 for _, m in ipairs(modules) do
@@ -24,6 +24,5 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.b.miniindentscope_disable = true
     vim.b.minicursorword_disable = true
     vim.b.minitrailspace_disable = true
-    vim.b.minicomment_disable = true
   end,
 })
