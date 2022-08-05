@@ -6,8 +6,8 @@
 {
   imports = [ ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" "sr_mod" ];
-  boot.initrd.kernelModules = [ "virtio-gpu" ];
+  boot.initrd.availableKernelModules = [ "uhci_hcd" "ahci" "xhci_pci" "nvme" "usbhid" "sr_mod" ];
+  boot.initrd.kernelModules = [ "vmwgfx" ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
@@ -24,5 +24,4 @@
     };
 
   swapDevices = [ ];
-
 }

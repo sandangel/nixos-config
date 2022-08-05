@@ -3,7 +3,6 @@
 {
   # Be careful updating this.
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.initrd.kernelModules = [ "virtio-gpu" ];
   boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
 
   # use unstable nix so we can access flakes
@@ -233,6 +232,7 @@
     binutils
     gcc
     git
+    glxinfo
     gnome.dconf-editor
     gnome.gnome-tweaks
     gnumake

@@ -20,7 +20,6 @@
     let
       system = "aarch64-linux";
       username = "sand";
-      machine = "vm-aarch64-prl";
       mach-nix = import inputs.mach-nix { python = "python310"; inherit pkgs; };
       pkgs = import nixpkgs {
         inherit system;
@@ -71,16 +70,7 @@
         '';
         meta = { description = "A Comic Code Font Family derivation with Nerd font."; };
       };
-    in
-    {
-      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit mach-nix username; };
-        modules = [
-          ./users/${username}/home.nix
-        ];
-      };
-      nixosConfigurations.${machine} = nixpkgs.lib.nixosSystem rec {
+      nixosConfigs = machine: nixpkgs.lib.nixosSystem rec {
         inherit system pkgs;
         modules = [
           (./. + "/hardware/${machine}.nix")
@@ -100,5 +90,16 @@
           }
         ];
       };
+    in
+    {
+      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = { inherit mach-nix username; };
+        modules = [
+          ./users/${username}/home.nix
+        ];
+      };
+      nixosConfigurations."vm-aarch64-prl" = nixosConfigs "vm-aarch64-prl";
+      nixosConfigurations."vm-aarch64" = nixosConfigs "vm-aarch64";
     };
 }

@@ -57,7 +57,8 @@ lspsaga.init_lsp_saga {
     quit = '<esc>',
     exec = '<cr>',
   },
-  rename_action_quit = 'q',
+  rename_action_quit = '<esc>',
+  rename_in_select = false,
   definition_preview_icon = '  ',
   -- show symbols in winbar must nightly
   symbol_in_winbar = {
