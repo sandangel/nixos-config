@@ -70,7 +70,7 @@
         '';
         meta = { description = "A Comic Code Font Family derivation with Nerd font."; };
       };
-      nixosConfigs = machine: nixpkgs.lib.nixosSystem rec {
+      mkMachine = machine: nixpkgs.lib.nixosSystem rec {
         inherit system pkgs;
         modules = [
           (./. + "/hardware/${machine}.nix")
@@ -99,7 +99,7 @@
           ./users/${username}/home.nix
         ];
       };
-      nixosConfigurations."vm-aarch64-prl" = nixosConfigs "vm-aarch64-prl";
-      nixosConfigurations."vm-aarch64" = nixosConfigs "vm-aarch64";
+      nixosConfigurations."vm-aarch64-prl" = mkMachine "vm-aarch64-prl";
+      nixosConfigurations."vm-aarch64" = mkMachine "vm-aarch64";
     };
 }
