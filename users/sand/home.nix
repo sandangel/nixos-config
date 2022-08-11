@@ -49,6 +49,7 @@
     tflint
     trash-cli
     tree-sitter
+    vault
   ];
 
   xdg.enable = true;

@@ -59,6 +59,21 @@
   services.xserver.desktopManager.gnome = {
     enable = true;
     extraGSettingsOverrides = ''
+      [org.gnome.desktop.background]
+      color-shading-type='solid'
+      picture-options='zoom'
+      picture-uri='file:///run/current-system/sw/share/backgrounds/gnome/libadwaita-l.jpg'
+      picture-uri-dark='file:///run/current-system/sw/share/backgrounds/gnome/libadwaita-d.jpg'
+      primary-color='#3465a4'
+      secondary-color='#000000'
+
+      [org.gnome.desktop.datetime]
+      automatic-timezone=true
+
+      [org.gnome.desktop.input-sources]
+      sources=[('xkb', 'us')]
+      xkb-options=['terminate:ctrl_alt_bksp']
+
       [org.gnome.desktop.interface]
       color-scheme='prefer-dark'
       cursor-theme='Yaru'
@@ -68,10 +83,37 @@
       icon-theme='Yaru-dark'
       scaling-factor=2
 
+      [org.gnome.desktop.notifications]
+      application-children=['firefox', 'kitty', 'org-gnome-baobab']
+      show-banners=false
+
+      [org.gnome.desktop.notifications.application.firefox]
+      application-id='firefox.desktop'
+
+      [org.gnome.desktop.notifications.application.kitty]
+      application-id='kitty.desktop'
+
+      [org.gnome.desktop.notifications.application.org-gnome-baobab]
+      application-id='org.gnome.baobab.desktop'
+
       [org.gnome.desktop.peripherals.keyboard]
+      delay=150
       numlock-state=false
       repeat-interval=3
-      delay=150
+
+      [org.gnome.desktop.privacy]
+      old-files-age=uint32 30
+      recent-files-max-age=-1
+
+      [org.gnome.desktop.screensaver]
+      color-shading-type='solid'
+      picture-options='zoom'
+      picture-uri='file:///run/current-system/sw/share/backgrounds/gnome/libadwaita-l.jpg'
+      primary-color='#3465a4'
+      secondary-color='#000000'
+
+      [org.gnome.desktop.session]
+      idle-delay=uint32 0
 
       [org.gnome.desktop.sound]
       theme-name='Yaru'
@@ -143,9 +185,9 @@
       idle-dim=false
       power-button-action='nothing'
       power-saver-profile-on-low-battery=false
-      sleep-inactive-ac-timeout=0
+      sleep-inactive-ac-timeout=3600
       sleep-inactive-ac-type='nothing'
-      sleep-inactive-battery-timeout=0
+      sleep-inactive-battery-timeout=1800
       sleep-inactive-battery-type='nothing'
 
       [org.gnome.settings-daemon.plugins.xsettings]
@@ -168,6 +210,18 @@
       toggle-application-view=@as []
       toggle-message-tray=@as []
       toggle-overview=@as []
+
+      [org.gnome.shell.world-clocks]
+      locations=@av []
+
+      [org.gnome.system.location]
+      enabled=true
+
+      [org.gnome.tweaks]
+      show-extensions-notice=false
+
+      [system.proxy]
+      mode='none'
     '';
 
     extraGSettingsOverridePackages = with pkgs; [
