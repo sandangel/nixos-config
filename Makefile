@@ -1,8 +1,8 @@
 # Connectivity info for Linux VM
 # Paralells
-NIXADDR ?= 10.211.55.3
+# NIXADDR ?= 10.211.55.3
 # VMware
-# NIXADDR ?= 172.16.129.128
+NIXADDR ?= 172.16.129.128
 NIXPORT ?= 22
 NIXUSER ?= sand
 
@@ -10,18 +10,18 @@ NIXUSER ?= sand
 #   - sda for SATA/IDE
 #   - vda for virtio
 # Parallels
-NIXBLOCKDEVICE ?= sda
+# NIXBLOCKDEVICE ?= sda
 # VMware
-# NIXBLOCKDEVICE ?= nvme0n1
+NIXBLOCKDEVICE ?= nvme0n1
 
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # The name of the nixosConfiguration in the flake
 # Parallels
-NIXNAME ?= vm-aarch64-prl
+# NIXNAME ?= vm-aarch64-prl
 # VMware
-# NIXNAME ?= vm-aarch64
+NIXNAME ?= vm-aarch64
 
 # SSH options that are used. These aren't meant to be overridden but are
 # reused a lot so we just store them up here.
@@ -30,7 +30,7 @@ SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o Strict
 switch:
 	nixos-rebuild switch --use-remote-sudo --impure --flake ".#$(NIXNAME)"
 	home-manager switch --impure --flake ".#$(NIXUSER)"
-	rsync -av $(MAKEFILE_DIR)/users/$(NIXUSER)/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
+	# rsync -av $(MAKEFILE_DIR)/users/$(NIXUSER)/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
 
 # bootstrap a brand new VM. The VM should have NixOS ISO on the CD drive
 # and just set the password of the root user to "root". This will install
@@ -46,9 +46,9 @@ vm/bootstrap0:
 		parted /dev/$(NIXBLOCKDEVICE) -- mkpart primary linux-swap -8GiB 100\%; \
 		parted /dev/$(NIXBLOCKDEVICE) -- mkpart ESP fat32 1MiB 512MiB; \
 		parted /dev/$(NIXBLOCKDEVICE) -- set 3 esp on; \
-		mkfs.ext4 -L nixos /dev/$(NIXBLOCKDEVICE)1; \
-		mkswap -L swap /dev/$(NIXBLOCKDEVICE)2; \
-		mkfs.fat -F 32 -n boot /dev/$(NIXBLOCKDEVICE)3; \
+		mkfs.ext4 -L nixos /dev/$(NIXBLOCKDEVICE)p1; \
+		mkswap -L swap /dev/$(NIXBLOCKDEVICE)p2; \
+		mkfs.fat -F 32 -n boot /dev/$(NIXBLOCKDEVICE)p3; \
 		mount /dev/disk/by-label/nixos /mnt; \
 		mkdir -p /mnt/boot; \
 		mount /dev/disk/by-label/boot /mnt/boot; \

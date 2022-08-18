@@ -28,12 +28,9 @@ local on_attach = function(client, bufnr)
   -- Mappings.
   opts.buffer = bufnr
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.keymap.set('n', 'gD', '<cmd>FzfLua lsp_declarations<cr>', opts)
-  vim.keymap.set('n', 'gd', '<cmd>FzfLua lsp_definitions<cr>', opts)
-  vim.keymap.set('n', 'gi', '<cmd>FzfLua lsp_implementations<cr>', opts)
-  vim.keymap.set('n', 'gR', '<cmd>FzfLua lsp_references<cr>', opts)
   vim.keymap.set('n', 'gw', '<cmd>FzfLua lsp_document_diagnostics<cr>', opts)
   vim.keymap.set('n', 'gW', '<cmd>FzfLua lsp_workspace_diagnostics<cr>', opts)
+  vim.keymap.set('n', 'gd', '<cmd>Lspsaga lsp_finder<cr>', opts)
   vim.keymap.set('n', 'gp', '<cmd>Lspsaga preview_definition<cr>', opts)
   vim.keymap.set('n', 'gl', '<cmd>Lspsaga show_line_diagnostics<cr>', opts)
   vim.keymap.set('n', 'gh', '<cmd>Lspsaga hover_doc<cr>', opts)

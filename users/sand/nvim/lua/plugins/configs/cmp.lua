@@ -1,5 +1,7 @@
 local cmp = require 'cmp'
-local snippy = require 'snippy'
+local luasnip = require 'luasnip'
+
+require('luasnip.loaders.from_vscode').lazy_load()
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -9,7 +11,7 @@ end
 cmp.setup {
   snippet = {
     expand = function(args)
-      require('snippy').expand_snippet(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   formatting = {
@@ -21,7 +23,7 @@ cmp.setup {
         nvim_lsp = '[LSP]',
         nvim_lua = '[Lua]',
         path = '[Path]',
-        snippy = '[Snippy]',
+        luasnip = '[LuaSnip]',
       })[entry.source.name]
       return vim_item
     end,
@@ -33,16 +35,20 @@ cmp.setup {
     ['<tab>'] = function(fallback)
       if cmp.visible() then
         cmp.confirm { behavior = cmp.ConfirmBehavior.Replace, select = true }
-      elseif snippy.can_expand_or_advance() then
-        snippy.expand_or_advance()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
       elseif has_words_before() then
         cmp.complete()
       else
         fallback()
       end
     end,
-    ['<s-tab>'] = function(_)
-      snippy.previous()
+    ['<s-tab>'] = function(fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
     end,
   }),
   sources = cmp.config.sources({
@@ -61,7 +67,7 @@ cmp.setup {
   }, {
     { name = 'path' },
   }, {
-    { name = 'snippy', max_item_count = 10 },
+    { name = 'luasnip', max_item_count = 10 },
   }),
   completion = {
     completeopt = 'menu,menuone,noinsert',

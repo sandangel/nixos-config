@@ -10,9 +10,6 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    mach-nix.url = "mach-nix/3.5.0";
-    mach-nix.inputs.nixpkgs.follows = "nixpkgs";
-
     neovim.url = "github:neovim/neovim?dir=contrib";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -20,7 +17,6 @@
     let
       system = "aarch64-linux";
       username = "sand";
-      mach-nix = import inputs.mach-nix { python = "python310"; inherit pkgs; };
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
@@ -28,6 +24,30 @@
         overlays = [
           (final: prev: {
             inherit comic-code pinniped kubeswitch neovim-nightly;
+            # We need Mesa on aarch64 to be built with "svga". The default Mesa
+            # build does not include this: https://github.com/Mesa3D/mesa/blob/49efa73ba11c4cacaed0052b984e1fb884cf7600/meson.build#L192
+            mesa = prev.callPackage "${nixpkgs}/pkgs/development/libraries/mesa" {
+              llvmPackages = final.llvmPackages_latest;
+              inherit (final.darwin.apple_sdk.frameworks) OpenGL;
+              inherit (final.darwin.apple_sdk.libs) Xplugin;
+
+              galliumDrivers = [
+                # From meson.build
+                "v3d"
+                "vc4"
+                "freedreno"
+                "etnaviv"
+                "nouveau"
+                "tegra"
+                "virgl"
+                "lima"
+                "panfrost"
+                "swrast"
+
+                # We add this so we get the vmwgfx module
+                "svga"
+              ];
+            };
           })
         ];
       };
@@ -94,7 +114,7 @@
     {
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = { inherit mach-nix username; };
+        extraSpecialArgs = { inherit username; };
         modules = [
           ./users/${username}/home.nix
         ];

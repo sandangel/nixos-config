@@ -1,4 +1,4 @@
-{ pkgs, lib, config, username, mach-nix, ... }:
+{ pkgs, lib, config, username, ... }:
 
 {
   home.username = username;
@@ -26,23 +26,14 @@
     nodePackages.pnpm
     pinniped
     sumneko-lua-language-server
-    (python3.withPackages (ps:
-      let
-        whatthepatch = mach-nix.mkPython {
-          requirements = ''
-            whatthepatch
-          '';
-        };
-        python-lsp-server = ps.callPackage ../../pkgs/python-lsp-server { inherit whatthepatch; };
-      in
-      with ps; [
-        pynvim
-        debugpy
-        python-lsp-server
-        (pyls-isort.override { inherit python-lsp-server; })
-        (python-lsp-black.override { inherit python-lsp-server; })
-        (pylsp-mypy.override { inherit python-lsp-server; })
-      ]))
+    (python3.withPackages (ps: with ps; [
+      pynvim
+      debugpy
+      python-lsp-server
+      pyls-isort
+      python-lsp-black
+      pylsp-mypy
+    ]))
     ripgrep
     rnix-lsp
     terraform-ls
@@ -82,7 +73,7 @@
   ];
 
   home.sessionVariables = rec {
-    LANG = "en_US.UTF-8";
+    LANG = "enUS.UTF-8";
     LC_CTYPE = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     EDITOR = "nvim";

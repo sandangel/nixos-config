@@ -164,8 +164,10 @@ require('packer').startup(function(use)
       'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
-      'dcampos/nvim-snippy',
-      'dcampos/cmp-snippy',
+      'saadparwaiz1/cmp_luasnip',
+      'rafamadriz/friendly-snippets',
+      'run-at-scale/vscode-terraform-doc-snippets',
+      'L3MON4D3/LuaSnip',
     },
     config = [[ require 'plugins.configs.cmp' ]]
   }

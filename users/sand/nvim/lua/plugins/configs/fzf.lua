@@ -46,24 +46,20 @@ fzf_lua.setup {
     ['--history'] = fzf_history_dir .. '/fzf-lua',
     ['--history-size'] = '2000',
   },
-  files = {
-    actions = {
-      ['default'] = fzf_quickfix
+  actions = {
+    files = {
+      ['default'] = fzf_quickfix,
+      ['ctrl-s']  = fzf_lua.actions.file_vsplit,
+    },
+    buffers = {
+      ['default'] = fzf_quickfix,
+      ['ctrl-s']  = fzf_lua.actions.buf_vsplit,
     }
   },
   grep = {
     git_icons = false,
     file_icons = false,
     color_icons = false,
-    rg_opts = '--column --line-number --no-heading --color=always --smart-case --hidden --follow --max-columns=512 '
-        .. vim.env.RG_IGNORE,
-    fzf_opts = {
-      ['--delimiter'] = ':',
-      ['--nth'] = '4..',
-    },
-    actions = {
-      ['default'] = fzf_quickfix
-    },
   },
   oldfiles = {
     cwd_only = true,

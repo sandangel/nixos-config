@@ -22,7 +22,7 @@ lspsaga.init_lsp_saga {
   -- add bracket or something with diagnostic source, just have 2 elements
   diagnostic_source_bracket = { '[', ']' },
   -- preview lines of lsp_finder and definition preview
-  max_preview_lines = 15,
+  max_preview_lines = 100,
   -- use emoji lightbulb in default
   code_action_icon = '💡',
   -- if true can press number to execute the codeaction in codeaction window
