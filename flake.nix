@@ -6,6 +6,7 @@
     # we'll use for our configurations. Be very careful changing this because
     # it'll impact your entire system.
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/release-22.05";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -13,7 +14,7 @@
     neovim.url = "github:neovim/neovim?dir=contrib";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, neovim, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, neovim, home-manager, ... }@inputs:
     let
       system = "aarch64-linux";
       username = "sand";
@@ -23,7 +24,40 @@
         config.allowUnsupportedSystem = true;
         overlays = [
           (final: prev: {
-            inherit comic-code pinniped kubeswitch neovim-nightly;
+            inherit pinniped kubeswitch neovim-nightly;
+            mesa = prev.callPackage "${nixpkgs}/pkgs/development/libraries/mesa" {
+              llvmPackages = final.llvmPackages_latest;
+              inherit (final.darwin.apple_sdk.frameworks) OpenGL;
+              inherit (final.darwin.apple_sdk.libs) Xplugin;
+
+              galliumDrivers = [
+                # From meson.build
+                "v3d"
+                "vc4"
+                "freedreno"
+                "etnaviv"
+                "nouveau"
+                "tegra"
+                "virgl"
+                "lima"
+                "panfrost"
+                "swrast"
+
+                # We add this so we get the vmwgfx module
+                "svga"
+              ];
+            };
+          })
+        ];
+      };
+      pkgs-stable = import nixpkgs-stable {
+        inherit system;
+        config.allowUnfree = true;
+        config.allowUnsupportedSystem = true;
+        overlays = [
+          (final: prev: {
+            inherit comic-code;
+            open-vm-tools = pkgs.open-vm-tools;
             # We need Mesa on aarch64 to be built with "svga". The default Mesa
             # build does not include this: https://github.com/Mesa3D/mesa/blob/49efa73ba11c4cacaed0052b984e1fb884cf7600/meson.build#L192
             mesa = prev.callPackage "${nixpkgs}/pkgs/development/libraries/mesa" {
@@ -91,7 +125,8 @@
         meta = { description = "A Comic Code Font Family derivation with Nerd font."; };
       };
       mkMachine = machine: nixpkgs.lib.nixosSystem rec {
-        inherit system pkgs;
+        inherit system;
+        pkgs = pkgs-stable;
         modules = [
           (./. + "/hardware/${machine}.nix")
           (./. + "/machines/${machine}.nix")

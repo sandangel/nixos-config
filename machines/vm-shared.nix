@@ -233,20 +233,16 @@
 
   environment.gnome.excludePackages = with pkgs.gnome; [
     cheese
-    eog
     epiphany
-    evince
     pkgs.gnome-text-editor
     geary
     gnome-calculator
     gnome-contacts
-    gnome-maps
     gnome-music
     pkgs.gnome-photos
     pkgs.gnome-connections
     simple-scan
     totem
-    yelp
   ];
 
   services.xserver.displayManager.gdm.enable = true;
