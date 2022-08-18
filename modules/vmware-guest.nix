@@ -5,8 +5,6 @@ with lib;
 let
   cfg = config.virtualisation.vmware.guest;
   open-vm-tools = if cfg.headless then pkgs.open-vm-tools-headless else pkgs.open-vm-tools;
-  xf86inputvmmouse = pkgs.xorg.xf86inputvmmouse;
-  xf86videovmware = pkgs.xorg.xf86videovmware;
 in
 {
   imports = [
@@ -62,7 +60,6 @@ in
     environment.etc.vmware-tools.source = "${open-vm-tools}/etc/vmware-tools/*";
 
     services.xserver = mkIf (!cfg.headless) {
-      modules = [ xf86inputvmmouse xf86videovmware ];
 
       config = ''
         Section "InputClass"
