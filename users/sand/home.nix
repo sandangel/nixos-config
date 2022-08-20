@@ -7,6 +7,7 @@
   home.packages = with pkgs; [
     exa
     fd
+    gh
     go
     gopls
     grpcurl
@@ -127,7 +128,6 @@
   };
 
   programs.zoxide.enable = true;
-  programs.gh.enable = true;
   programs.fzf.enable = true;
 
   programs.bat = {
