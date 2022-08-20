@@ -10,7 +10,7 @@ def main(_):
 
 
 @result_handler(no_ui=True)
-def handle_result(boss: Boss):
+def handle_result(args, answer, target_window_id, boss: Boss):
     tab = boss.active_tab
     active_win = tab.active_window
     win_count = len(tab.windows)

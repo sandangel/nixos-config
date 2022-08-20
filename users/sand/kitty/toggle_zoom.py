@@ -10,7 +10,7 @@ def main(_):
 
 
 @result_handler(no_ui=True)
-def handle_result(boss: Boss):
+def handle_result(args, result, target_window_id, boss: Boss):
     tab = boss.active_tab
     if tab is not None:
         if tab.current_layout.name == "stack":
