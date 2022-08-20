@@ -183,7 +183,7 @@ require('packer').startup(function(use)
     'ray-x/lsp_signature.nvim',
     'NvChad/ui',
   }, config = [[ require 'plugins.configs.lspconfig' ]] }
-  use { 'iamcco/markdown-preview.nvim', run = 'cd app && npm install', ft = { 'markdown' }, setup = function()
+  use { 'iamcco/markdown-preview.nvim', run = 'cd app && pnpm install', ft = { 'markdown' }, setup = function()
     vim.g.mkdp_filetypes = { 'markdown' }
   end }
 end)

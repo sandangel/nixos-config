@@ -5,7 +5,6 @@
   home.stateVersion = "22.05";
   home.homeDirectory = "/home/${username}";
   home.packages = with pkgs; [
-    postgresql
     exa
     fd
     go
@@ -16,16 +15,24 @@
     kubectl
     kubeswitch
     neovim-nightly
-    nodejs_latest
-    nodePackages.pyright
-    nodePackages.vscode-langservers-extracted
-    nodePackages.typescript
-    nodePackages.typescript-language-server
-    nodePackages.yaml-language-server
     nodePackages.dockerfile-language-server-nodejs
     nodePackages.pnpm
+    nodePackages.pyright
+    nodePackages.typescript
+    nodePackages.typescript-language-server
+    nodePackages.vscode-langservers-extracted
+    nodePackages.yaml-language-server
+    nodejs_latest
     pinniped
+    postgresql
+    ripgrep
+    rnix-lsp
     sumneko-lua-language-server
+    terraform-ls
+    tflint
+    trash-cli
+    tree-sitter
+    vault
     (python3.withPackages (ps: with ps; [
       pynvim
       debugpy
@@ -34,13 +41,6 @@
       python-lsp-black
       pylsp-mypy
     ]))
-    ripgrep
-    rnix-lsp
-    terraform-ls
-    tflint
-    trash-cli
-    tree-sitter
-    vault
   ];
 
   xdg.enable = true;
@@ -61,19 +61,12 @@
 
   home.file.".kube/switch-config.yaml".source = ./switch-config.yaml;
 
-  programs.firefox.enable = true;
-  programs.firefox.package = pkgs.firefox.override {
-    cfg = {
-      enableGnomeExtensions = true;
-    };
-  };
-
   imports = [
     ./zsh/zsh.nix
   ];
 
   home.sessionVariables = rec {
-    LANG = "enUS.UTF-8";
+    LANG = "en_US.UTF-8";
     LC_CTYPE = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     EDITOR = "nvim";

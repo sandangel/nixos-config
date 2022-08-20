@@ -128,6 +128,7 @@
         inherit system;
         pkgs = pkgs-stable;
         modules = [
+          { _module.args = { inherit machine; }; }
           (./. + "/hardware/${machine}.nix")
           (./. + "/machines/${machine}.nix")
           {

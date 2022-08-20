@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, machine, ... }:
 
 {
   # Be careful updating this.
@@ -34,9 +34,6 @@
   # Define your hostname.
   networking.hostName = "nixos";
 
-  # Set your time zone.
-  time.timeZone = "Asia/Tokyo";
-
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
@@ -53,7 +50,6 @@
 
   services.xserver.enable = true;
   services.xserver.layout = "us";
-  services.xserver.dpi = 254;
   services.xserver.excludePackages = [ pkgs.xterm ];
   services.xserver.desktopManager.wallpaper.mode = "fill";
   services.xserver.desktopManager.gnome = {
@@ -280,6 +276,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     binutils
+    firefox
     gcc
     git
     glxinfo
@@ -290,9 +287,8 @@
     killall
     vim
     wl-clipboard
-    xclip
     yaru-theme
-  ];
+  ] ++ lib.optionals (machine == "vm-aarch64") [ gtkmm3 ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = true;
