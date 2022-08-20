@@ -2,14 +2,15 @@
 # vim:fileencoding=utf-8
 
 from kittens.tui.handler import result_handler
+from kitty.boss import Boss
 
 
-def main(args):
+def main(_):
     pass
 
 
 @result_handler(no_ui=True)
-def handle_result(args, answer, target_window_id, boss):
+def handle_result(boss: Boss):
     tab = boss.active_tab
     active_win = tab.active_window
     win_count = len(tab.windows)
@@ -32,9 +33,7 @@ def handle_result(args, answer, target_window_id, boss):
                 tab.new_window(cwd=cwd)
             else:
                 if is_zoomed:
-                    neighbor_win = list(
-                        filter(lambda wd: wd.id != nvim_win.id, tab.windows)
-                    )[0]
+                    neighbor_win = list(filter(lambda wd: wd.id != nvim_win.id, tab.windows))[0]
                     tab.goto_layout("fat:bias=70")
                     tab.set_active_window(neighbor_win)
                 else:
