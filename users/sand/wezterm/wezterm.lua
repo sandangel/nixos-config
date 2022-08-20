@@ -31,7 +31,7 @@ end)
 
 return {
   window_decorations = 'NONE',
-  font = wezterm.font 'ComicCodeLigatures Nerd Font Mono',
+  font = wezterm.font 'Comic Code Ligatures',
   color_scheme = 'Snazzy',
   line_height = 1.2,
   font_size = 10.0,
@@ -43,7 +43,6 @@ return {
   debug_key_events = false,
   enable_wayland = true,
   key_map_preference = 'Physical',
-  dpi = 192.0,
   exit_behavior = 'Close',
   send_composed_key_when_right_alt_is_pressed = false,
   disable_default_key_bindings = true,
@@ -55,8 +54,7 @@ return {
     bottom = 0,
   },
   keys = {
-    { key = 'c', mods = 'CMD', action = wezterm.action { CopyTo = 'Clipboard' } },
-    { key = 'v', mods = 'CMD', action = wezterm.action { PasteFrom = 'Clipboard' } },
+    { key = 'v', mods = 'CTRL', action = wezterm.action { PasteFrom = 'Clipboard' } },
     { key = '-', mods = 'ALT', action = wezterm.action { SplitVertical = { domain = 'CurrentPaneDomain' } } },
     { key = '=', mods = 'ALT', action = wezterm.action { SplitHorizontal = { domain = 'CurrentPaneDomain' } } },
     { key = 'w', mods = 'ALT', action = wezterm.action { SpawnTab = 'DefaultDomain' } },
