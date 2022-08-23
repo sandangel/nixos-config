@@ -107,8 +107,8 @@ local function keymap()
   vim.keymap.set('n', 'vv', 'vg_', opts)
   vim.keymap.set('n', 'gj', '<c-w>W', opts)
 
-  vim.keymap.set('i', '<a-left>', '<c-left>', opts)
-  vim.keymap.set('i', '<a-right>', '<c-right>', opts)
+  vim.keymap.set({ 'i', 't' }, '<a-left>', '<c-left>', opts)
+  vim.keymap.set({ 'i', 't' }, '<a-right>', '<c-right>', opts)
 
   local c = 1
   while c <= 99 do

@@ -60,25 +60,6 @@ require('packer').startup(function(use)
     config = [[ require 'plugins.configs.gitsigns' ]],
   }
 
-  use { 'akinsho/toggleterm.nvim', keys = { 'n', '<leader>cl' }, config = function()
-    local Terminal = require('toggleterm.terminal').Terminal
-    local lazygit = Terminal:new {
-      cmd = 'lazygit',
-      direction = 'float',
-      close_on_exit = true,
-      float_opts = {
-        border = 'single',
-      },
-      hidden = true,
-      on_open = function()
-        vim.cmd 'startinsert!'
-      end,
-    }
-    vim.keymap.set('n', '<leader>cl', function()
-      lazygit:toggle()
-    end, { silent = true })
-  end }
-
   use {
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'main',
@@ -138,7 +119,16 @@ require('packer').startup(function(use)
   end }
 
   use { 'numToStr/Comment.nvim', config = function()
-    require('Comment').setup()
+    require('Comment').setup {
+      mappings = {
+        basic = true,
+        extra = true,
+        extended = true,
+      },
+    }
+    local api = require 'Comment.api'
+    vim.keymap.set('n', 'gcc', api.toggle.linewise.current)
+    vim.keymap.set('n', 'gbc', api.toggle.blockwise.current)
   end }
 
   use { 'knubie/vim-kitty-navigator', run = 'cp ./*.py ~/.config/kitty/' }
@@ -161,6 +151,7 @@ require('packer').startup(function(use)
   use { 'hrsh7th/nvim-cmp',
     requires = {
       'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',

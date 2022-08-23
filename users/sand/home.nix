@@ -34,6 +34,7 @@
     trash-cli
     tree-sitter
     vault
+    wezterm
     (python3.withPackages (ps: with ps; [
       pynvim
       debugpy
@@ -59,6 +60,9 @@
     icon = "kitty";
     categories = [ "System" "TerminalEmulator" ];
   };
+
+  # xdg.configFile."wezterm".source = ./wezterm;
+  # xdg.configFile."wezterm".recursive = true;
 
   home.file.".kube/switch-config.yaml".source = ./switch-config.yaml;
 

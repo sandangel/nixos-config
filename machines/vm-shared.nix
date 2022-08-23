@@ -8,7 +8,16 @@
   # use unstable nix so we can access flakes
   nix = {
     package = pkgs.nixUnstable;
-    settings.auto-optimise-store = true;
+    settings = {
+      auto-optimise-store = true;
+      substituters = [
+        "https://nix-community.cachix.org"
+        "https://cache.nixos.org"
+      ];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+    };
     extraOptions = ''
       experimental-features = nix-command flakes
       keep-outputs = true
@@ -275,7 +284,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    bind
     binutils
+    cachix
     firefox
     gcc
     git

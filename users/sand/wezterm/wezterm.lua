@@ -31,12 +31,12 @@ end)
 
 return {
   window_decorations = 'NONE',
-  font = wezterm.font 'Comic Code Ligatures',
-  color_scheme = 'Snazzy',
+  font = wezterm.font { family = 'Comic Code Ligatures', weight = 'Regular', style = 'Normal' },
+  color_scheme = 'OneDark (base16)',
   line_height = 1.2,
-  font_size = 10.0,
+  font_size = 11.0,
   tab_bar_at_bottom = true,
-  use_fancy_tab_bar = false,
+  use_fancy_tab_bar = true,
   use_ime = false,
   use_dead_keys = false,
   scrollback_lines = 100000,
