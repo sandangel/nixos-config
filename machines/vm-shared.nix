@@ -297,7 +297,8 @@
     home-manager
     killall
     vim
-    wl-clipboard
+    # wl-clipboard
+    xclip
     yaru-theme
   ] ++ lib.optionals (machine == "vm-aarch64") [ gtkmm3 ];
 
