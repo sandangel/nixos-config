@@ -47,13 +47,13 @@
             };
             pinniped = prev.buildGoModule rec {
               pname = "pinniped";
-              version = "0.18.0";
+              version = "0.19.0";
               src = builtins.fetchGit {
                 url = "https://github.com/vmware-tanzu/pinniped";
                 ref = "refs/tags/v${version}";
               };
               subPackages = [ "cmd/pinniped" ];
-              vendorSha256 = "sha256-V36b6x+wz5MeJzp/GPhX2sPATosOMEqGkeQdz4RbiEQ=";
+              vendorSha256 = "sha256-7jQRUYJiRdYuAy3x+VPK4Nh5GF6ME7juloagm85oOVg=";
             };
             kubeswitch = prev.buildGoModule rec {
               pname = "kubeswitch";

@@ -300,7 +300,7 @@
     # wl-clipboard
     xclip
     yaru-theme
-  ] ++ lib.optionals (machine == "vm-aarch64") [ gtkmm3 ];
+  ] ++ lib.optionals (machine == "vm-aarch64") [ gtkmm3 gtkmm4 ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = true;

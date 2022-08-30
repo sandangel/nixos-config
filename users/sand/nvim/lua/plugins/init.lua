@@ -119,16 +119,7 @@ require('packer').startup(function(use)
   end }
 
   use { 'numToStr/Comment.nvim', config = function()
-    require('Comment').setup {
-      mappings = {
-        basic = true,
-        extra = true,
-        extended = true,
-      },
-    }
-    local api = require 'Comment.api'
-    vim.keymap.set('n', 'gcc', api.toggle.linewise.current)
-    vim.keymap.set('n', 'gbc', api.toggle.blockwise.current)
+    require('Comment').setup()
   end }
 
   use { 'knubie/vim-kitty-navigator', run = 'cp ./*.py ~/.config/kitty/' }

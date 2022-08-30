@@ -23,3 +23,4 @@ alias gp="git push";
 alias gst="git status";
 alias pbcopy="wl-copy";
 alias pbpaste="wl-paste";
+alias sw="switch";
