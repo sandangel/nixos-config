@@ -297,10 +297,14 @@
     home-manager
     killall
     vim
-    # wl-clipboard
     xclip
     yaru-theme
-  ] ++ lib.optionals (machine == "vm-aarch64") [ gtkmm3 gtkmm4 ];
+  ] ++ lib.optionals (machine == "vm-aarch64") [
+    gtkmm3
+    gtkmm4
+  ] ++ lib.optionals (machine == "vm-aarch64-prl") [
+    wl-clipboard
+  ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = true;
@@ -318,7 +322,7 @@
   services.openssh.passwordAuthentication = true;
   services.openssh.permitRootLogin = "no";
 
-  services.timesyncd.enable = true;
+  services.timesyncd.enable = machine == "vm-aarch64";
 
   # Disable the firewall since we're in a VM and we want to make it
   # easy to visit stuff in here. We only use NAT networking anyways.

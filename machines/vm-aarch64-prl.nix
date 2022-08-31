@@ -4,10 +4,16 @@
     # modules to get a lot of the stuff working.
     (modulesPath + "/profiles/qemu-guest.nix")
 
+    ../modules/parallels-guest.nix
     ./vm-shared.nix
   ];
 
+  # Disable the default module and import our override. We have
+  # customizations to make this work on aarch64.
+  disabledModules = [ "virtualisation/parallels-guest.nix" ];
+
   hardware.parallels.enable = true;
+  hardware.parallels.package = pkgs.prl-tools;
 
   # Interface is this on my M1
   networking.interfaces.enp0s5.useDHCP = true;

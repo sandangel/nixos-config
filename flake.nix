@@ -95,6 +95,8 @@
             mesa = pkgs.mesa;
             open-vm-tools = pkgs.open-vm-tools;
             comic-code = pkgs.comic-code;
+            linuxPackages_latest = pkgs.linuxPackages_latest;
+            prl-tools = pkgs.linuxPackages_latest.prl-tools;
           })
         ];
       };
