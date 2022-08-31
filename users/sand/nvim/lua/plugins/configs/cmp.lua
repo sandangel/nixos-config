@@ -57,6 +57,7 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
   }, {
+    { name = 'path' },
     {
       name = 'buffer',
       max_item_count = 10,
@@ -66,8 +67,6 @@ cmp.setup {
         end,
       },
     },
-  }, {
-    { name = 'path' },
   }, {
     { name = 'luasnip', max_item_count = 10 },
   }),
