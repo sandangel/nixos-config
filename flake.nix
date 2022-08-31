@@ -2,11 +2,7 @@
   description = "NixOS systems and tools by sandangel";
 
   inputs = {
-    # Pin our primary nixpkgs repository. This is the main nixpkgs repository
-    # we'll use for our configurations. Be very careful changing this because
-    # it'll impact your entire system.
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/release-22.05";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -14,7 +10,7 @@
     neovim.url = "github:neovim/neovim?dir=contrib";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, nixpkgs-stable, neovim, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, neovim, home-manager, ... }@inputs:
     let
       system = "aarch64-linux";
       username = "sand";
@@ -86,23 +82,8 @@
           })
         ];
       };
-      pkgs-stable = import nixpkgs-stable {
-        inherit system;
-        config.allowUnfree = true;
-        config.allowUnsupportedSystem = true;
-        overlays = [
-          (final: prev: {
-            mesa = pkgs.mesa;
-            open-vm-tools = pkgs.open-vm-tools;
-            comic-code = pkgs.comic-code;
-            linuxPackages_latest = pkgs.linuxPackages_latest;
-            prl-tools = pkgs.linuxPackages_latest.prl-tools;
-          })
-        ];
-      };
       mkMachine = machine: nixpkgs.lib.nixosSystem rec {
-        inherit system;
-        pkgs = pkgs-stable;
+        inherit system pkgs;
         modules = [
           { _module.args = { inherit machine; }; }
           (./. + "/hardware/${machine}.nix")

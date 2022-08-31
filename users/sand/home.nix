@@ -162,7 +162,7 @@
   programs.jq.enable = true;
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-  programs.direnv.enableZshIntegration = true;
+  programs.direnv.enableZshIntegration = false;
   programs.direnv.stdlib = ''
     : ''${XDG_CACHE_HOME:=$HOME/.cache}
     declare -A direnv_layout_dirs

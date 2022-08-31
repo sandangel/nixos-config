@@ -45,11 +45,11 @@
       },
       "locked": {
         "dir": "contrib",
-        "lastModified": 1661849998,
-        "narHash": "sha256-+iNyilHNGKjNfdOi/bgy9nAkFw4x6aTR1UviH/JYZ9Q=",
+        "lastModified": 1661910060,
+        "narHash": "sha256-/0zjNyRC7p1kNf5tEG6Yn3mCNX92i5fyHIMjrxZTuYQ=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "f9c183c0cad95f0370067e849af6bdbada7b6517",
+        "rev": "f4274d0f62625683486d3912dcd6e8e45877c6a4",
         "type": "github"
       },
       "original": {
@@ -75,28 +75,11 @@
         "type": "github"
       }
     },
-    "nixpkgs-stable": {
-      "locked": {
-        "lastModified": 1661825248,
-        "narHash": "sha256-3A5W95RnB8aELcapCalM8zJhyIo+iNyN77uRJfkbFig=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "f4924a0a1fba98b6721792f2a5b1d71e11664dfa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "release-22.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "neovim": "neovim",
-        "nixpkgs": "nixpkgs",
-        "nixpkgs-stable": "nixpkgs-stable"
+        "nixpkgs": "nixpkgs"
       }
     },
     "utils": {
