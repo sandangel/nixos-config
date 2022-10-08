@@ -1,5 +1,6 @@
 local lspsaga = require 'lspsaga'
 lspsaga.init_lsp_saga {
+  debug_print = false,
   border_style = 'single',
   saga_winblend = 0,
   -- when cusor in saga float window
@@ -10,8 +11,6 @@ lspsaga.init_lsp_saga {
   },
   -- Error,Warn,Info,Hint
   diagnostic_header = { '😡', '😥', '😤', '😐' },
-  show_diagnostic_source = true,
-  diagnostic_source_bracket = { '❴', '❵' },
   -- code action title icon
   code_action_icon = '💡',
   -- if true can press number to execute the codeaction in codeaction window
@@ -26,30 +25,36 @@ lspsaga.init_lsp_saga {
     virtual_text = true,
   },
   max_preview_lines = 100,
+  scroll_in_preview = {
+    scroll_down = '<c-f>',
+    scroll_up = '<c-b>',
+  },
   finder_icons = {
     def = ' ',
     imp = ' ',
     ref = ' ',
   },
   finder_request_timeout = 1500,
-  -- nvim 0.8 only
-  finder_preview_hl_ns = 0,
   finder_action_keys = {
     open = '<cr>',
     vsplit = 's',
     split = 'i',
     tabe = 't',
     quit = '<esc>',
-    scroll_down = '<c-f>',
-    scroll_up = '<c-b>',
   },
   code_action_keys = {
     quit = '<esc>',
     exec = '<cr>',
   },
+  definition_action_keys = {
+    edit = '<C-c>o',
+    vsplit = '<C-c>v',
+    split = '<C-c>i',
+    tabe = '<C-c>t',
+    quit = '<esc>',
+  },
   rename_action_quit = '<esc>',
   rename_in_select = false,
-  definition_preview_icon = '  ',
   -- winbar must nightly
   symbol_in_winbar = {
     in_custom = false,

@@ -132,7 +132,7 @@ require('packer').startup(function(use)
   use 'tpope/vim-repeat'
   use 'tpope/vim-abolish'
   use 'markonm/traces.vim'
-  use 'junegunn/vim-slash'
+  use 'romainl/vim-cool'
   use 'whiteinge/diffconflicts'
 
   use { 'kylechui/nvim-surround', config = function()

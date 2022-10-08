@@ -287,7 +287,6 @@
     bind
     binutils
     cachix
-    firefox
     gcc
     git
     glxinfo
@@ -297,13 +296,12 @@
     home-manager
     killall
     vim
+    wl-clipboard
     xclip
     yaru-theme
   ] ++ lib.optionals (machine == "vm-aarch64") [
     gtkmm3
     gtkmm4
-  ] ++ lib.optionals (machine == "vm-aarch64-prl") [
-    wl-clipboard
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -324,6 +322,9 @@
 
   # NTP service for automatic time sync
   services.chrony.enable = true;
+
+  # Intall apps using flatpak to avoid recompile
+  services.flatpak.enable = true;
 
   # Disable the firewall since we're in a VM and we want to make it
   # easy to visit stuff in here. We only use NAT networking anyways.

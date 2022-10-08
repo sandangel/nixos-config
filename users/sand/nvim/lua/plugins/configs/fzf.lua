@@ -8,7 +8,7 @@ local function fzf_quickfix(selected, opts)
   if #selected > 1 then
     local qf_list = {}
     for i = 1, #selected do
-      local file = require 'fzf-lua'.path.entry_to_file(selected[i])
+      local file = require 'fzf-lua'.path.entry_to_file(selected[i], opts)
       local text = selected[i]:match ':%d+:%d?%d?%d?%d?:?(.*)$'
       table.insert(qf_list, {
         filename = file.path,

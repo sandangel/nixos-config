@@ -7,6 +7,7 @@
   home.packages = with pkgs; [
     exa
     fd
+    filezilla
     gh
     go
     gopls

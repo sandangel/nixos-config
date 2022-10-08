@@ -21,35 +21,15 @@
         overlays = [
           (final: prev: {
             neovim-nightly = neovim.packages.${system}.neovim;
-            # We need Mesa on aarch64 to be built with "svga". The default Mesa
-            # build does not include this: https://github.com/Mesa3D/mesa/blob/49efa73ba11c4cacaed0052b984e1fb884cf7600/meson.build#L192
-            mesa = prev.mesa.override {
-              galliumDrivers = [
-                # From meson.build
-                "v3d"
-                "vc4"
-                "freedreno"
-                "etnaviv"
-                "nouveau"
-                "tegra"
-                "virgl"
-                "lima"
-                "panfrost"
-                "swrast"
-
-                # We add this so we get the vmwgfx module
-                "svga"
-              ];
-            };
             pinniped = prev.buildGoModule rec {
               pname = "pinniped";
-              version = "0.19.0";
+              version = "0.20.0";
               src = builtins.fetchGit {
                 url = "https://github.com/vmware-tanzu/pinniped";
                 ref = "refs/tags/v${version}";
               };
               subPackages = [ "cmd/pinniped" ];
-              vendorSha256 = "sha256-7jQRUYJiRdYuAy3x+VPK4Nh5GF6ME7juloagm85oOVg=";
+              vendorSha256 = "sha256-szv/B7LG/In0j6MT6KCnuUfaCnK7RsJOLeuOtJ/ig9w=";
             };
             kubeswitch = prev.buildGoModule rec {
               pname = "kubeswitch";
