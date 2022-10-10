@@ -102,7 +102,7 @@
       application-id='org.gnome.baobab.desktop'
 
       [org.gnome.desktop.peripherals.keyboard]
-      delay=150
+      delay=220
       numlock-state=false
       repeat-interval=3
 
