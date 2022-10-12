@@ -102,9 +102,9 @@
       application-id='org.gnome.baobab.desktop'
 
       [org.gnome.desktop.peripherals.keyboard]
-      delay=220
+      delay=210
       numlock-state=false
-      repeat-interval=3
+      repeat-interval=10
 
       [org.gnome.desktop.privacy]
       old-files-age=uint32 30
