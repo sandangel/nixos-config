@@ -1,5 +1,3 @@
-vim.g.mapleader = ' '
-
 vim.g.neovide_input_use_logo = 1
 vim.g.python3_host_prog = vim.env.HOME .. '/.nix-profile/bin/python'
 
@@ -18,6 +16,7 @@ vim.o.showbreak = '> '
 vim.o.showcmd = false
 vim.o.showmatch = true
 vim.o.showmode = false
+vim.o.showtabline = false
 vim.o.signcolumn = 'yes:2'
 vim.o.splitbelow = true
 vim.o.splitright = true
@@ -31,12 +30,12 @@ vim.o.writebackup = false
 vim.wo.foldenable = false
 vim.wo.foldmethod = 'expr'
 
-vim.opt.shortmess:append 'm'
 vim.opt.dictionary:append '/usr/share/dict/words'
 vim.opt.diffopt:append 'vertical,algorithm:patience'
+vim.opt.listchars = { tab = '» ', trail = '∙', eol = '¬', nbsp = '▪', precedes = '⟨', extends = '⟩' }
+vim.opt.shortmess:append 'm'
 vim.opt.whichwrap:append '<,>,[,]'
 vim.opt.wildignore:append '.DS_Store,Icon?,*.dmg,*.git,*.pyc,*.o,*.obj,*.so,*.swp,*.zip'
-vim.opt.listchars = { tab = '» ', trail = '∙', eol = '¬', nbsp = '▪', precedes = '⟨', extends = '⟩' }
 
 vim.api.nvim_create_augroup('NeoVimUser', { clear = true })
 vim.api.nvim_create_autocmd('VimResized', {

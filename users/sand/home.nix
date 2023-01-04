@@ -7,12 +7,12 @@
   home.packages = with pkgs; [
     exa
     fd
-    filezilla
     gh
     go
     gopls
     grpcurl
     istioctl
+    kind
     kitty
     kubectl
     kubeswitch
@@ -29,13 +29,13 @@
     postgresql
     ripgrep
     rnix-lsp
+    sqlite
     sumneko-lua-language-server
     terraform-ls
     tflint
     trash-cli
     tree-sitter
     vault
-    wezterm
     (python3.withPackages (ps: with ps; [
       pynvim
       debugpy
@@ -71,26 +71,27 @@
     ./zsh/zsh.nix
   ];
 
-  home.sessionVariables = rec {
-    LANG = "en_US.UTF-8";
-    LC_CTYPE = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
+  home.sessionVariables = with pkgs; rec {
     EDITOR = "nvim";
-    PAGER = "less -FirSwX";
-    MANPAGER = "sh -c 'col -bx | bat -l man -p'";
-    MOZ_ENABLE_WAYLAND = "1";
-    TERMINFO_DIRS = "${pkgs.kitty.terminfo}/share/terminfo";
-    RG_IGNORE = "--glob '!.git/*' --glob '!node_modules/*' --glob '!*.lock' --glob '!*-lock.json' --glob '!*.min.{js,css}' --glob '!*.lock.hcl' --glob '!__snapshots__/*'";
-    RG_LINE = "rg --column --line-number --no-heading --smart-case --hidden --follow --color always";
-    RG_GREP = "${RG_LINE} ${RG_IGNORE} ";
-    RG_FILE = "rg --files --hidden --follow";
     FZF_BIND_OPTS = "--bind page-up:preview-up,page-down:preview-down,?:toggle-preview";
-    FZF_PREVIEW_COMMAND = "bat {}";
-    FZF_PREVIEW_OPTS = "--preview '${FZF_PREVIEW_COMMAND}'";
-    FZF_DEFAULT_OPTS = "--ansi --border $FZF_BIND_OPTS";
-    FZF_DEFAULT_COMMAND = "${RG_FILE} ${RG_IGNORE}";
     FZF_CTRL_T_COMMAND = "${RG_FILE} ${RG_IGNORE}";
     FZF_CTRL_T_OPTS = "${FZF_PREVIEW_OPTS} ${FZF_BIND_OPTS}";
+    FZF_DEFAULT_COMMAND = "${RG_FILE} ${RG_IGNORE}";
+    FZF_DEFAULT_OPTS = "--ansi --border $FZF_BIND_OPTS";
+    FZF_PREVIEW_COMMAND = "bat {}";
+    FZF_PREVIEW_OPTS = "--preview '${FZF_PREVIEW_COMMAND}'";
+    LANG = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    LC_CTYPE = "en_US.UTF-8";
+    LD_LIBRARY_PATH = "${sqlite.out}/lib:${libdrm}/lib:${libxkbcommon}/lib:${mesa}/lib:${stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH";
+    MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+    MOZ_ENABLE_WAYLAND = "1";
+    PAGER = "less -FirSwX";
+    RG_FILE = "rg --files --hidden --follow";
+    RG_GREP = "${RG_LINE} ${RG_IGNORE} ";
+    RG_IGNORE = "--glob '!.git/*' --glob '!node_modules/*' --glob '!*.lock' --glob '!*-lock.json' --glob '!*.min.{js,css}' --glob '!*.lock.hcl' --glob '!__snapshots__/*'";
+    RG_LINE = "rg --column --line-number --no-heading --smart-case --hidden --follow --color always";
+    TERMINFO_DIRS = "${kitty.terminfo}/share/terminfo";
   };
 
   fonts.fontconfig.enable = true;

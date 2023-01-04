@@ -1,6 +1,4 @@
-local M = {}
-
-M.colorizer = function()
+return { 'norcalli/nvim-colorizer.lua', event = 'BufRead', config = function()
   local present, colorizer = pcall(require, 'colorizer')
   if present then
     colorizer.setup({ '*' }, {
@@ -18,6 +16,4 @@ M.colorizer = function()
     })
     vim.cmd 'ColorizerReloadAllBuffers'
   end
-end
-
-return M
+end }
