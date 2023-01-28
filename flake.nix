@@ -8,9 +8,11 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     neovim.url = "github:neovim/neovim?dir=contrib";
-    neovim.inputs.nixpkgs.follows = "nixpkgs";
+
+    devenv.url = "github:cachix/devenv";
+    devenv.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, neovim, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, neovim, home-manager, devenv, ... }@inputs:
     let
       system = "aarch64-linux";
       username = "sand";
@@ -20,16 +22,17 @@
         config.allowUnsupportedSystem = true;
         overlays = [
           (final: prev: {
+            devenv = devenv.packages.${system}.devenv;
             neovim-nightly = neovim.packages.${system}.neovim;
             pinniped = prev.buildGoModule rec {
               pname = "pinniped";
-              version = "0.20.0";
+              version = "0.22.0";
               src = builtins.fetchGit {
                 url = "https://github.com/vmware-tanzu/pinniped";
                 ref = "refs/tags/v${version}";
               };
               subPackages = [ "cmd/pinniped" ];
-              vendorSha256 = "sha256-szv/B7LG/In0j6MT6KCnuUfaCnK7RsJOLeuOtJ/ig9w=";
+              vendorSha256 = "sha256-4N8HtBeGeu22Go63dV0WBdbheXylButu+M9vZL7qOcU=";
             };
             kubeswitch = prev.buildGoModule rec {
               pname = "kubeswitch";
@@ -65,7 +68,7 @@
       mkMachine = machine: nixpkgs.lib.nixosSystem rec {
         inherit system pkgs;
         modules = [
-          { _module.args = { inherit machine; }; }
+          { _module.args = { inherit machine username; }; }
           (./. + "/hardware/${machine}.nix")
           (./. + "/machines/${machine}.nix")
           {

@@ -43,6 +43,7 @@ return {
     })
     vim.keymap.set({ 'n', 'x' }, 'gy', '<cmd>lua require("neoclip.fzf")()<cr>')
   end },
+  'whiteinge/diffconflicts',
   'matze/vim-move',
   'machakann/vim-textobj-delimited',
   'tpope/vim-rsi',

@@ -57,8 +57,8 @@ vm/bootstrap0:
 			nix.package = pkgs.nixUnstable;\n \
 			nix.extraOptions = \"experimental-features = nix-command flakes\";\n \
 			services.openssh.enable = true;\n \
-			services.openssh.passwordAuthentication = true;\n \
-			services.openssh.permitRootLogin = \"yes\";\n \
+			services.openssh.settings.PasswordAuthentication = true;\n \
+			services.openssh.settings.PermitRootLogin = \"yes\";\n \
 			users.users.root.initialPassword = \"root\";\n \
 			environment.systemPackages = with pkgs; [ gnumake git home-manager ];\n \
 		' /mnt/etc/nixos/configuration.nix; \

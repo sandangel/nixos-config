@@ -1,6 +1,6 @@
 return { 'glepnir/lspsaga.nvim', branch = 'main', config = function()
   local lspsaga = require 'lspsaga'
-  lspsaga.init_lsp_saga {
+  lspsaga.setup {
     debug_print = false,
     border_style = 'single',
     saga_winblend = 0,

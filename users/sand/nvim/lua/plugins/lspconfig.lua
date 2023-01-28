@@ -38,9 +38,6 @@ return { 'neovim/nvim-lspconfig', dependencies = {
 
   local opts = { silent = true }
 
-  vim.keymap.set('n', 'gL', '<cmd>FzfLua loclist<cr>', opts)
-  vim.keymap.set('n', 'gq', '<cmd>FzfLua quickfix<cr>', opts)
-
   vim.api.nvim_create_augroup('LSPConfigUser', { clear = true })
 
   local on_attach = function(client, bufnr)
@@ -75,7 +72,6 @@ return { 'neovim/nvim-lspconfig', dependencies = {
 
   local servers = {
     'rust_analyzer',
-    'tsserver',
     'gopls',
     'dockerls',
     'yamlls',
@@ -90,6 +86,20 @@ return { 'neovim/nvim-lspconfig', dependencies = {
     }
   end
 
+  lspconfig.tsserver.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    init_options = {
+      hostInfo = 'neovim',
+      tsserver = {
+        path = vim.env.HOME .. '/.nix-profile/bin/tsserver'
+      },
+      preferences = {
+        quotePreference = 'single',
+      },
+    }
+  }
+
   lspconfig.terraformls.setup {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -102,35 +112,11 @@ return { 'neovim/nvim-lspconfig', dependencies = {
     root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
   }
 
-  -- local runtime_path = vim.split(package.path, ';')
-  -- table.insert(runtime_path, 'lua/?.lua')
-  -- table.insert(runtime_path, 'lua/?/init.lua')
-
   lspconfig.sumneko_lua.setup {
     on_attach = on_attach,
     capabilities = capabilities,
     settings = {
       Lua = {
-        -- runtime = {
-        --   version = 'LuaJIT',
-        --   path = runtime_path,
-        -- },
-        diagnostics = {
-          enable = true,
-          globals = { 'vim', 'require', 'string' },
-          neededFileStatus = {
-            ['codestyle-check'] = 'Any',
-          },
-        },
-        -- workspace = {
-        --   library = {
-        --     [vim.fn.expand '$VIMRUNTIME/lua'] = true,
-        --     [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
-        --   },
-        --   maxPreload = 100000,
-        --   preloadFileSize = 10000,
-        -- },
-        -- completion = { callSnippet = 'Replace' },
         telemetry = {
           enable = false,
         },

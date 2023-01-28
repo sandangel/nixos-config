@@ -6,23 +6,35 @@ return { 'ibhagwan/fzf-lua', dependencies = 'kyazdani42/nvim-web-devicons', even
     end
     local fzf_lua = require 'fzf-lua'
 
-    local function fzf_quickfix(selected, opts)
+    local sel_to_qf = function(selected, opts)
+      local qf_list = {}
+      for i = 1, #selected do
+        local file = fzf_lua.path.entry_to_file(selected[i], opts)
+        local text = selected[i]:match ':%d+:%d?%d?%d?%d?:?(.*)$'
+        table.insert(qf_list, {
+          filename = file.bufname or file.path,
+          lnum = file.line,
+          col = file.col,
+          text = text,
+        })
+      end
+      vim.fn.setqflist(qf_list)
+      vim.cmd 'FzfLua quickfix'
+    end
+
+    local function file_edit_or_qf(selected, opts)
       if #selected > 1 then
-        local qf_list = {}
-        for i = 1, #selected do
-          local file = require 'fzf-lua'.path.entry_to_file(selected[i], opts)
-          local text = selected[i]:match ':%d+:%d?%d?%d?%d?:?(.*)$'
-          table.insert(qf_list, {
-            filename = file.path,
-            lnum = file.line,
-            col = file.col,
-            text = text,
-          })
-        end
-        vim.fn.setqflist(qf_list)
-        vim.cmd 'FzfLua quickfix'
+        return sel_to_qf(selected, opts)
       else
         fzf_lua.actions.file_edit(selected, opts)
+      end
+    end
+
+    local function buf_edit_or_qf(selected, opts)
+      if #selected > 1 then
+        return sel_to_qf(selected, opts)
+      else
+        return fzf_lua.actions.buf_edit(selected, opts)
       end
     end
 
@@ -39,7 +51,6 @@ return { 'ibhagwan/fzf-lua', dependencies = 'kyazdani42/nvim-web-devicons', even
         fzf = {
           ['tab'] = 'toggle',
           ['ctrl-a'] = 'toggle-all',
-          ['ctrl-x'] = 'toggle-all+accept',
           ['ctrl-f'] = 'half-page-down',
           ['ctrl-b'] = 'half-page-up',
         },
@@ -51,12 +62,12 @@ return { 'ibhagwan/fzf-lua', dependencies = 'kyazdani42/nvim-web-devicons', even
       },
       actions = {
         files = {
-          ['default'] = fzf_quickfix,
-          ['ctrl-s']  = fzf_lua.actions.file_vsplit,
+          ['enter']  = file_edit_or_qf,
+          ['ctrl-s'] = fzf_lua.actions.file_vsplit,
         },
         buffers = {
-          ['default'] = fzf_quickfix,
-          ['ctrl-s']  = fzf_lua.actions.buf_vsplit,
+          ['enter']  = buf_edit_or_qf,
+          ['ctrl-s'] = fzf_lua.actions.buf_vsplit,
         }
       },
       grep = {
@@ -73,7 +84,7 @@ return { 'ibhagwan/fzf-lua', dependencies = 'kyazdani42/nvim-web-devicons', even
     local opts = { silent = true }
     local get_visual_selection = require('fzf-lua.utils').get_visual_selection
 
-    vim.keymap.set('n', 'gl', '<cmd>FzfLua loclist<cr>', opts)
+    vim.keymap.set('n', 'gL', '<cmd>FzfLua loclist<cr>', opts)
     vim.keymap.set('n', 'gq', '<cmd>FzfLua quickfix<cr>', opts)
 
     vim.keymap.set('n', '<leader>cc', function()

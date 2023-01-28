@@ -1,4 +1,4 @@
-{ config, pkgs, lib, machine, ... }:
+{ config, pkgs, lib, machine, username, ... }:
 
 {
   # Be careful updating this.
@@ -13,9 +13,12 @@
       substituters = [
         "https://nix-community.cachix.org"
         "https://cache.nixos.org"
+        "https://devenv.cachix.org"
       ];
+      trusted-users = [ "root" username ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       ];
     };
     extraOptions = ''
@@ -287,6 +290,7 @@
     bind
     binutils
     cachix
+    devenv
     gcc
     git
     glxinfo
@@ -317,8 +321,8 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.passwordAuthentication = true;
-  services.openssh.permitRootLogin = "no";
+  services.openssh.settings.PasswordAuthentication = true;
+  services.openssh.settings.PermitRootLogin = "no";
 
   # NTP service for automatic time sync
   services.chrony.enable = true;

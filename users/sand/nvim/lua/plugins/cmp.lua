@@ -2,7 +2,6 @@ return { 'hrsh7th/nvim-cmp',
   event = 'VimEnter',
   dependencies = {
     'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-nvim-lsp-signature-help',
     'hrsh7th/cmp-nvim-lua',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
@@ -10,6 +9,7 @@ return { 'hrsh7th/nvim-cmp',
     'rafamadriz/friendly-snippets',
     'run-at-scale/vscode-terraform-doc-snippets',
     'L3MON4D3/LuaSnip',
+    'lukas-reineke/cmp-rg',
   },
   config = function()
     local cmp = require 'cmp'
@@ -35,10 +35,10 @@ return { 'hrsh7th/nvim-cmp',
           vim_item.menu = ({
             buffer = '[Buffer]',
             nvim_lsp = '[LSP]',
-            nvim_lsp_signature_help = '[LSP]',
             nvim_lua = '[Lua]',
             path = '[Path]',
             luasnip = '[LuaSnip]',
+            rg = '[Rg]'
           })[entry.source.name]
           return vim_item
         end,
@@ -69,20 +69,23 @@ return { 'hrsh7th/nvim-cmp',
       sources = cmp.config.sources({
         { name = 'nvim_lua' },
         { name = 'nvim_lsp' },
-        { name = 'nvim_lsp_signature_help' },
       }, {
         { name = 'path' },
         {
           name = 'buffer',
-          max_item_count = 10,
+          max_item_count = 7,
           option = {
             get_bufnrs = function()
               return vim.api.nvim_list_bufs()
             end,
           },
         },
-      }, {
-        { name = 'luasnip', max_item_count = 10 },
+        {
+          name = 'rg',
+          keyword_length = 3,
+          max_item_count = 7,
+        },
+        { name = 'luasnip', max_item_count = 7 },
       }),
       completion = {
         completeopt = 'menu,menuone,noinsert',

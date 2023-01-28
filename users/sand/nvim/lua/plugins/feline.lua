@@ -109,11 +109,16 @@ return { 'feline-nvim/feline.nvim', event = 'VimEnter', dependencies = { 'kyazda
         local filename = vim.fn.expand '%:t'
         local extension = vim.fn.expand '%:e'
         local icon = require('nvim-web-devicons').get_icon(filename, extension)
+        local status = ''
         if icon == nil then
           icon = ' '
           return icon
         end
-        return icon .. ' ' .. filename .. ' '
+        local buf = vim.api.nvim_get_current_buf()
+        if vim.bo[buf].modified then
+          status = '[+]'
+        end
+        return status .. ' ' .. icon .. ' ' .. filename .. ' '
       end,
       enabled = shortline or function(winid)
         return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 70

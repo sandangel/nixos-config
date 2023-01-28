@@ -20,6 +20,14 @@ return {
       end,
     })
 
+    vim.api.nvim_create_autocmd({ 'FocusGained' }, {
+      group = 'NeoTreeUser',
+      pattern = '*',
+      callback = function()
+        require('neo-tree.sources.manager').refresh 'filesystem'
+      end,
+    })
+
     local config = {
       -- If a user has a sources list it will replace this one.
       -- Only sources listed here will be loaded.
@@ -123,9 +131,6 @@ return {
           { 'current_filter' },
           {
             'container',
-            width = '100%',
-            right_padding = 1,
-            --max_width = 60,
             content = {
               { 'name', zindex = 10 },
               -- {
@@ -144,14 +149,10 @@ return {
           { 'icon' },
           {
             'container',
-            width = '100%',
-            right_padding = 1,
-            --max_width = 60,
             content = {
               {
                 'name',
-                use_git_status_colors = true,
-                zindex = 10,
+                zindex = 10
               },
               -- {
               --   "symlink_target",
@@ -180,7 +181,7 @@ return {
       nesting_rules = {},
       window = { -- see https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup for
         -- possible options. These can also be functions that return these options.
-        position = 'right', -- left, right, top, bottom, float, current
+        position = 'left', -- left, right, top, bottom, float, current
         width = 40, -- applies to left and right positions
         height = 15, -- applies to top and bottom positions
         auto_expand_width = false, -- expand the window when file exceeds the window width. does not work with position = "float"
@@ -193,6 +194,10 @@ return {
           -- you can also specify border here, if you want a different setting from
           -- the global popup_border_style.
         },
+        same_level = true, -- Create and paste/move files/directories on the same level as the directory under cursor (as opposed to within the directory under cursor).
+        insert_as = 'child', -- Affects how nodes get inserted into the tree during creation/pasting/moving of files if the node under the cursor is a directory:
+        -- "child":   Insert nodes as children of the directory under cursor.
+        -- "sibling": Insert nodes  as siblings of the directory under cursor.
         -- Mappings for tree window. See `:h neo-tree-mappings` for a list of built-in commands.
         -- You can also create your own commands by providing a function instead of a string.
         mapping_options = {
@@ -217,7 +222,7 @@ return {
               show_path = 'relative' -- "none", "relative", "absolute"
             }
           },
-          ['A'] = 'add_directory', -- also accepts the config.show_path option.
+          ['A'] = 'add_directory', -- also accepts the config.show_path and config.insert_as options.
           ['d'] = 'delete',
           ['r'] = 'rename',
           ['y'] = function(state)
@@ -253,6 +258,8 @@ return {
         async_directory_scan = 'auto', -- "auto"   means refreshes are async, but it's synchronous when called from the Neotree commands.
         -- "always" means directory scans are always async.
         -- "never"  means directory scans are never async.
+        scan_mode = 'shallow', -- "shallow": Don't scan into directories to detect possible empty directory a priori
+        -- "deep": Scan into directories to detect empty or grouped empty directories a priori.
         bind_to_cwd = true, -- true creates a 2-way binding between vim's cwd and neo-tree's root
         cwd_target = {
           sidebar = 'tab', -- sidebar is when position = left or right
@@ -328,7 +335,7 @@ return {
         --end,
         group_empty_dirs = false, -- when true, empty folders will be grouped together
         search_limit = 50, -- max number of search results when using filters
-        follow_current_file = false, -- This will find and focus the file in the active buffer every time
+        follow_current_file = true, -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
         hijack_netrw_behavior = 'open_default', -- netrw disabled, opening a directory opens neo-tree
         -- in whatever position is specified in window.position
