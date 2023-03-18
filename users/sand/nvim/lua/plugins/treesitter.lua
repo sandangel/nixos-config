@@ -1,5 +1,8 @@
 return {
-  { 'nvim-treesitter/nvim-treesitter', event = 'BufRead', build = ':TSUpdate',
+  {
+    'nvim-treesitter/nvim-treesitter',
+    event = 'BufRead',
+    build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = {
@@ -45,9 +48,12 @@ return {
         },
         indent = { enable = true },
       }
-    end },
+    end
+  },
   { 'nvim-treesitter/nvim-treesitter-context', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
-  { 'nvim-treesitter/nvim-treesitter-textobjects', dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
       dofile(vim.g.base46_cache .. 'treesitter')
       dofile(vim.g.base46_cache .. 'syntax')
@@ -66,5 +72,6 @@ return {
           },
         },
       }
-    end }
+    end
+  }
 }

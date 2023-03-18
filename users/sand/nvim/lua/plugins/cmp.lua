@@ -84,7 +84,7 @@ return {
       },
       formatting = formatting_style,
       mapping = cmp.mapping.preset.insert({
-        ['<c-b>'] = cmp.mapping.scroll_docs( -4),
+        ['<c-b>'] = cmp.mapping.scroll_docs(-4),
         ['<c-f>'] = cmp.mapping.scroll_docs(4),
         ['<c-c>'] = cmp.mapping.complete({ reason = 'triggerOnly' }),
         ['<tab>'] = function(fallback)
@@ -99,8 +99,8 @@ return {
           end
         end,
         ['<s-tab>'] = function(fallback)
-          if luasnip.jumpable( -1) then
-            luasnip.jump( -1)
+          if luasnip.jumpable(-1) then
+            luasnip.jump(-1)
           else
             fallback()
           end

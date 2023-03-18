@@ -70,7 +70,8 @@ end
 vim.api.nvim_create_autocmd('VimLeave', {
   group = 'NeoVimUser',
   pattern = '*',
-  command = "exec 'mks! " .. vim.env.HOME .. "/.vim/sessions/'.substitute(substitute(getcwd(), $HOME.'/', '', ''), '/', '.', 'g').'.vim'",
+  command = "exec 'mks! " ..
+  vim.env.HOME .. "/.vim/sessions/'.substitute(substitute(getcwd(), $HOME.'/', '', ''), '/', '.', 'g').'.vim'",
 })
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = 'NeoVimUser',

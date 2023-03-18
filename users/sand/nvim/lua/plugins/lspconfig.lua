@@ -5,9 +5,12 @@ return {
     'ibhagwan/fzf-lua',
     'nvim-lua/plenary.nvim',
     { 'NvChad/ui', branch = 'v2.0' },
-    { 'folke/neodev.nvim', config = function()
-      require('neodev').setup()
-    end }
+    {
+      'folke/neodev.nvim',
+      config = function()
+        require('neodev').setup()
+      end
+    }
   },
   config = function()
     local root_pattern = require('lspconfig.util').root_pattern
