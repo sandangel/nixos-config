@@ -1,8 +1,8 @@
 # Connectivity info for Linux VM
 # Paralells
-NIXADDR ?= 10.211.55.3
+# NIXADDR ?= 10.211.55.3
 # VMware
-# NIXADDR ?= 172.16.129.128
+NIXADDR ?= 172.16.129.128
 NIXPORT ?= 22
 NIXUSER ?= sand
 
@@ -10,18 +10,18 @@ NIXUSER ?= sand
 #   - sda for SATA/IDE
 #   - vda for virtio
 # Parallels
-NIXBLOCKDEVICE ?= sda
+# NIXBLOCKDEVICE ?= sda
 # VMware
-# NIXBLOCKDEVICE ?= nvme0n1
+NIXBLOCKDEVICE ?= nvme0n1
 
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # The name of the nixosConfiguration in the flake
 # Parallels
-NIXNAME ?= vm-aarch64-prl
+# NIXNAME ?= vm-aarch64-prl
 # VMware
-# NIXNAME ?= vm-aarch64
+NIXNAME ?= vm-aarch64
 
 # SSH options that are used. These aren't meant to be overridden but are
 # reused a lot so we just store them up here.

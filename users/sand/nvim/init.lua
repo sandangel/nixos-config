@@ -20,22 +20,47 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
   spec = {
-    { dir = '/nix-config/users/' .. vim.env.USER .. '/nvim', lazy = false, priority = 10000, config = function()
-      require 'core'
-    end },
+    {
+      dir = '/nix-config/users/' .. vim.env.USER .. '/nvim',
+      lazy = false,
+      priority = 10000,
+      config = function()
+        require 'core'
+      end
+    },
     { import = 'plugins' },
   },
   performance = {
     rtp = {
       disabled_plugins = {
-        'gzip',
-        'matchit',
         'matchparen',
-        'netrwPlugin',
-        'tarPlugin',
+        '2html_plugin',
         'tohtml',
-        'tutor',
+        'getscript',
+        'getscriptPlugin',
+        'gzip',
+        'logipat',
+        'netrw',
+        'netrwPlugin',
+        'netrwSettings',
+        'netrwFileHandlers',
+        'matchit',
+        'tar',
+        'tarPlugin',
+        'rrhelper',
+        'spellfile_plugin',
+        'vimball',
+        'vimballPlugin',
+        'zip',
         'zipPlugin',
+        'tutor',
+        'rplugin',
+        'syntax',
+        'synmenu',
+        'optwin',
+        'compiler',
+        'bugreport',
+        'ftplugin',
       },
     },
   },

@@ -33,6 +33,7 @@ M.load_config = function()
           silent = true, -- silences 'no signature help available' message from appearing
         },
       },
+      extended_integrations = { 'notify' }
     }
   }
 end

@@ -5,7 +5,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
   # Setup qemu so we can run x86_64 binaries
-  boot.binfmt.emulatedSystems = ["x86_64-linux"];
+  boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
 
   # use unstable nix so we can access flakes
   nix = {
@@ -106,9 +106,9 @@
       application-id='org.gnome.baobab.desktop'
 
       [org.gnome.desktop.peripherals.keyboard]
-      delay=210
+      delay=150
       numlock-state=false
-      repeat-interval=10
+      repeat-interval=3
 
       [org.gnome.desktop.privacy]
       old-files-age=uint32 30

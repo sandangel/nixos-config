@@ -24,6 +24,11 @@
           (final: prev: with prev; {
             devenv = devenv.packages.${system}.devenv;
             neovim-nightly = neovim.packages.${system}.neovim;
+            kitty = kitty.overrideAttrs (o: {
+              patches = (o.patches or [ ]) ++ [
+                ./users/${username}/kitty/vmware-3d-accel-compat.patch
+              ];
+            });
             vcluster = stdenvNoCC.mkDerivation rec {
               pname = "vcluster";
               version = "0.14.2";
