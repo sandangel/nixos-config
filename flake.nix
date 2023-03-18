@@ -28,9 +28,8 @@
               pname = "vcluster";
               version = "0.14.2";
               src = fetchurl {
-                url = "https://github.com/loft-sh/vcluster/releases/download/v${version}/vcluster-${if system == "aarch64-linux" then "linux-arm64" else "linux-amd64"}";
-                # sha256 = lib.fakeSha256;
-                sha256 = if system == "aarch64-linux" then "sha256-LrMAfIrsN8kxQxNRc558a8oUK8+k1/v1PpisArRXbL8=" else lib.fakeSha256;
+                url = "https://github.com/loft-sh/vcluster/releases/download/v${version}/vcluster-${if stdenv.isAarch64 then "linux-arm64" else "linux-amd64"}";
+                sha256 = if system == "aarch64-linux" then "sha256-dpIqzKGvsh9/60Rcg4weEZkVWGfa8ipUh+P4qrIaAhQ=" else lib.fakeSha256;
               };
               nativeBuildInputs = [ installShellFiles ];
               phases = [ "installPhase" "postInstall" ];
