@@ -1,5 +1,10 @@
 vim.g.mapleader = ' '
 
+vim.g.base46_cache = vim.fn.stdpath 'cache' .. '/nvchad/base46/'
+if not vim.loop.fs_stat(vim.g.base46_cache) then
+  vim.fn.mkdir(vim.g.base46_cache, 'p')
+end
+
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({

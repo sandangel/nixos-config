@@ -4,10 +4,11 @@
   # Be careful updating this.
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
+  # Setup qemu so we can run x86_64 binaries
+  boot.binfmt.emulatedSystems = ["x86_64-linux"];
 
   # use unstable nix so we can access flakes
   nix = {
-    package = pkgs.nixUnstable;
     settings = {
       auto-optimise-store = true;
       substituters = [
@@ -329,6 +330,7 @@
 
   # Intall apps using flatpak to avoid recompile
   services.flatpak.enable = true;
+  xdg.portal.enable = true;
 
   # Disable the firewall since we're in a VM and we want to make it
   # easy to visit stuff in here. We only use NAT networking anyways.

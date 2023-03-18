@@ -1,4 +1,7 @@
-return { 'ibhagwan/fzf-lua', dependencies = 'kyazdani42/nvim-web-devicons', event = 'VimEnter',
+return {
+  'ibhagwan/fzf-lua',
+  dependencies = 'nvim-tree/nvim-web-devicons',
+  event = 'VimEnter',
   config = function()
     local fzf_history_dir = vim.fn.expand '~/.local/share/nvim/fzf-history'
     if vim.fn.isdirectory(fzf_history_dir) == 0 then

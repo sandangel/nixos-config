@@ -4,10 +4,13 @@ vim.g.python3_host_prog = vim.env.HOME .. '/.nix-profile/bin/python'
 vim.o.breakindent = true
 vim.o.expandtab = true
 vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.o.ignorecase = true
 vim.o.laststatus = 3
 vim.o.linebreak = true
 vim.o.list = true
+vim.o.mouse = 'a'
 vim.o.number = true
+vim.o.ruler = false
 vim.o.scrolloff = 5
 vim.o.sessionoptions = 'buffers,curdir,folds,skiprtp'
 vim.o.shiftround = true
@@ -18,11 +21,15 @@ vim.o.showmatch = true
 vim.o.showmode = false
 vim.o.showtabline = false
 vim.o.signcolumn = 'yes:2'
+vim.o.smartcase = true
+vim.o.smartindent = true
+vim.o.softtabstop = 2
 vim.o.splitbelow = true
 vim.o.splitright = true
 vim.o.swapfile = false
 vim.o.tabstop = 2
 vim.o.termguicolors = true
+vim.o.timeoutlen = 400
 vim.o.undofile = true
 vim.o.updatetime = 250
 vim.o.virtualedit = 'all'
@@ -32,9 +39,10 @@ vim.wo.foldmethod = 'expr'
 
 vim.opt.dictionary:append '/usr/share/dict/words'
 vim.opt.diffopt:append 'vertical,algorithm:patience'
+vim.opt.fillchars = { eob = ' ' }
 vim.opt.listchars = { tab = '» ', trail = '∙', eol = '¬', nbsp = '▪', precedes = '⟨', extends = '⟩' }
-vim.opt.shortmess:append 'm'
-vim.opt.whichwrap:append '<,>,[,]'
+vim.opt.shortmess:append 'sI'
+vim.opt.whichwrap:append '<>[]hl'
 vim.opt.wildignore:append '.DS_Store,Icon?,*.dmg,*.git,*.pyc,*.o,*.obj,*.so,*.swp,*.zip'
 
 vim.api.nvim_create_augroup('NeoVimUser', { clear = true })
@@ -62,23 +70,13 @@ end
 vim.api.nvim_create_autocmd('VimLeave', {
   group = 'NeoVimUser',
   pattern = '*',
-  command = "exec 'mks! " .. vim.env.HOME
-      .. "/.vim/sessions/'.substitute(substitute(getcwd(), $HOME.'/', '', ''), '/', '.', 'g').'.vim'",
+  command = "exec 'mks! " .. vim.env.HOME .. "/.vim/sessions/'.substitute(substitute(getcwd(), $HOME.'/', '', ''), '/', '.', 'g').'.vim'",
 })
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = 'NeoVimUser',
   pattern = '*',
   command = 'silent! lua vim.highlight.on_yank({ higroup="IncSearch", timeout=700 })',
 })
--- vim.api.nvim_create_autocmd('BufWritePre', {
---   group = 'NeoVimUser',
---   pattern = { '*.js', '*.jsx', '*.md', '*.yaml', '*.yml', '*.ts', '*.tsx', '*.mjs', '*.css', '*.html' },
---   callback = function()
---     local save_pos = vim.fn.getpos '.'
---     vim.cmd 'silent %!prettier --single-quote --stdin-filepath %'
---     vim.fn.setpos('.', save_pos)
---   end
--- })
 
 local function keymap()
   local opts = { silent = true }
@@ -138,3 +136,8 @@ end
 
 keymap()
 expr_keymap()
+
+-- disable some default providers
+for _, provider in ipairs { 'node', 'perl', 'python3', 'ruby' } do
+  vim.g['loaded_' .. provider .. '_provider'] = 0
+end

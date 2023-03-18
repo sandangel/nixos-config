@@ -15,6 +15,7 @@
     kind
     kitty
     kubectl
+    kubectx
     kubeswitch
     neovim-nightly
     nodePackages.dockerfile-language-server-nodejs
@@ -29,13 +30,16 @@
     postgresql
     ripgrep
     rnix-lsp
+    skaffold
     sqlite
-    sumneko-lua-language-server
+    lua-language-server
     terraform-ls
     tflint
     trash-cli
     tree-sitter
     vault
+    vcluster
+    yamlfmt
     (python3.withPackages (ps: with ps; [
       pynvim
       debugpy
@@ -44,6 +48,7 @@
       python-lsp-black
       pylsp-mypy
     ]))
+    ssm-session-manager-plugin
   ];
 
   xdg.enable = true;
@@ -83,7 +88,7 @@
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     LC_CTYPE = "en_US.UTF-8";
-    LD_LIBRARY_PATH = "${sqlite.out}/lib:${libdrm}/lib:${libxkbcommon}/lib:${mesa}/lib:${stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH";
+    LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${lib.makeLibraryPath [ sqlite libxkbcommon mesa stdenv.cc.cc.lib ]}";
     MANPAGER = "sh -c 'col -bx | bat -l man -p'";
     MOZ_ENABLE_WAYLAND = "1";
     PAGER = "less -FirSwX";
@@ -96,7 +101,6 @@
 
   fonts.fontconfig.enable = true;
 
-  xdg.configFile."git/woven".source = ./woven/gitconfig;
   programs.git = {
     enable = true;
     extraConfig = {
@@ -104,7 +108,7 @@
       push.default = "tracking";
       pull.ff = "only";
       init.defaultBranch = "main";
-      "includeIf \"gitdir/i:~/Work/Woven/\"".path = "${config.xdg.configHome}/git/woven";
+      "url \"ssh://git@github.com/\"".insteadOf = "https://github.com/";
       diff.colorMoved = "default";
       merge.conflictstyle = "diff3";
       commit.verbose = true;
@@ -117,6 +121,13 @@
     };
     userName = "San Nguyen";
     userEmail = "vinhsannguyen91@gmail.com";
+    includes = [{
+      condition = "gitdir:~/Work/Woven/**";
+      contents = {
+        user.email = "san.nguyen@woven-planet.global";
+        "url \"ssh://git@github.tri-ad.tech/\"".insteadOf = "https://github.tri-ad.tech/";
+      };
+    }];
     lfs.enable = true;
     delta = {
       enable = true;
@@ -189,6 +200,13 @@
       PATH_add "$VIRTUAL_ENV/bin"
     }
   '';
+
+  # Make cursor not tiny on HiDPI screens
+  home.pointerCursor = {
+    name = "Vanilla-DMZ";
+    package = pkgs.vanilla-dmz;
+    size = 128;
+  };
 
   programs.home-manager.enable = true;
 }

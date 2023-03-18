@@ -21,22 +21,39 @@
         config.allowUnfree = true;
         config.allowUnsupportedSystem = true;
         overlays = [
-          (final: prev: {
+          (final: prev: with prev; {
             devenv = devenv.packages.${system}.devenv;
             neovim-nightly = neovim.packages.${system}.neovim;
-            pinniped = prev.buildGoModule rec {
-              pname = "pinniped";
-              version = "0.22.0";
-              src = builtins.fetchGit {
-                url = "https://github.com/vmware-tanzu/pinniped";
-                ref = "refs/tags/v${version}";
+            vcluster = stdenvNoCC.mkDerivation rec {
+              pname = "vcluster";
+              version = "0.14.2";
+              src = fetchurl {
+                url = "https://github.com/loft-sh/vcluster/releases/download/v${version}/vcluster-${if system == "aarch64-linux" then "linux-arm64" else "linux-amd64"}";
+                # sha256 = lib.fakeSha256;
+                sha256 = if system == "aarch64-linux" then "sha256-LrMAfIrsN8kxQxNRc558a8oUK8+k1/v1PpisArRXbL8=" else lib.fakeSha256;
               };
-              subPackages = [ "cmd/pinniped" ];
-              vendorSha256 = "sha256-4N8HtBeGeu22Go63dV0WBdbheXylButu+M9vZL7qOcU=";
+              nativeBuildInputs = [ installShellFiles ];
+              phases = [ "installPhase" "postInstall" ];
+              installPhase = ''
+                mkdir -p $out/bin
+                install -Dm755 $src -T $out/bin/vcluster
+                runHook postInstall
+              '';
+              postInstall = ''
+                installShellCompletion --cmd vcluster \
+                  --bash <($out/bin/vcluster completion bash) \
+                  --zsh <($out/bin/vcluster completion zsh)
+              '';
+              meta = with lib; {
+                description = "Create fully functional virtual Kubernetes clusters";
+                downloadPage = "https://github.com/loft-sh/vcluster";
+                homepage = "https://www.vcluster.com/";
+                license = licenses.asl20;
+              };
             };
-            kubeswitch = prev.buildGoModule rec {
+            kubeswitch = buildGoModule rec {
               pname = "kubeswitch";
-              version = "0.7.1";
+              version = "0.7.2";
               src = builtins.fetchGit {
                 url = "https://github.com/danielfoehrKn/kubeswitch";
                 ref = "refs/tags/${version}";
@@ -49,7 +66,22 @@
                 cp -r $src/scripts $out/
               '';
             };
-            comic-code = prev.stdenvNoCC.mkDerivation {
+            yamlfmt = stdenvNoCC.mkDerivation rec {
+              pname = "yamlfmt";
+              version = "0.7.1";
+              src = fetchzip {
+                url = "https://github.com/google/yamlfmt/releases/download/v${version}/yamlfmt_${version}_Linux_arm64.tar.gz";
+                # sha256 = lib.fakeSha256;
+                sha256 = "sha256-GHsG4xv/pqRgc9NwNWBvLv8larjk8BigDn6MGlNwC48=";
+                stripRoot = false;
+              };
+              phases = [ "installPhase" ];
+              installPhase = ''
+                mkdir -p $out/bin
+                install -Dm755 $src/yamlfmt -T $out/bin/yamlfmt
+              '';
+            };
+            comic-code = stdenvNoCC.mkDerivation {
               name = "comic-code";
               version = "0.1.0";
               src = /nix-config/pkgs/comic-code/comic-code.tar.gz;

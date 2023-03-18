@@ -4,7 +4,7 @@ return {
   event = 'VimEnter',
   dependencies = {
     'nvim-lua/plenary.nvim',
-    'kyazdani42/nvim-web-devicons',
+    'nvim-tree/nvim-web-devicons',
     'MunifTanjim/nui.nvim',
   },
   config = function()
@@ -132,15 +132,15 @@ return {
           {
             'container',
             content = {
-              { 'name', zindex = 10 },
+              { 'name',        zindex = 10 },
               -- {
               --   "symlink_target",
               --   zindex = 10,
               --   highlight = "NeoTreeSymbolicLinkTarget",
               -- },
-              { 'clipboard', zindex = 10 },
-              { 'diagnostics', errors_only = true, zindex = 20, align = 'right', hide_when_expanded = true },
-              { 'git_status', zindex = 20, align = 'right', hide_when_expanded = true },
+              { 'clipboard',   zindex = 10 },
+              { 'diagnostics', errors_only = true, zindex = 20,     align = 'right',          hide_when_expanded = true },
+              { 'git_status',  zindex = 20,        align = 'right', hide_when_expanded = true },
             },
           },
         },
@@ -159,17 +159,17 @@ return {
               --   zindex = 10,
               --   highlight = "NeoTreeSymbolicLinkTarget",
               -- },
-              { 'clipboard', zindex = 10 },
-              { 'bufnr', zindex = 10 },
-              { 'modified', zindex = 20, align = 'right' },
+              { 'clipboard',   zindex = 10 },
+              { 'bufnr',       zindex = 10 },
+              { 'modified',    zindex = 20, align = 'right' },
               { 'diagnostics', zindex = 20, align = 'right' },
-              { 'git_status', zindex = 20, align = 'right' },
+              { 'git_status',  zindex = 20, align = 'right' },
             },
           },
         },
         message = {
           { 'indent', with_markers = false },
-          { 'name', highlight = 'NeoTreeMessage' },
+          { 'name',   highlight = 'NeoTreeMessage' },
         },
         terminal = {
           { 'indent' },
@@ -195,7 +195,7 @@ return {
           -- the global popup_border_style.
         },
         same_level = true, -- Create and paste/move files/directories on the same level as the directory under cursor (as opposed to within the directory under cursor).
-        insert_as = 'child', -- Affects how nodes get inserted into the tree during creation/pasting/moving of files if the node under the cursor is a directory:
+        insert_as = 'sibling', -- Affects how nodes get inserted into the tree during creation/pasting/moving of files if the node under the cursor is a directory:
         -- "child":   Insert nodes as children of the directory under cursor.
         -- "sibling": Insert nodes  as siblings of the directory under cursor.
         -- Mappings for tree window. See `:h neo-tree-mappings` for a list of built-in commands.
@@ -244,6 +244,18 @@ return {
         },
       },
       filesystem = {
+        commands = {
+          delete = function(state)
+            local inputs = require 'neo-tree.ui.inputs'
+            local path = state.tree:get_node().path
+            local msg = 'Are you sure you want to delete ' .. path
+            inputs.confirm(msg, function(confirmed)
+              if not confirmed then return end
+              vim.fn.system { 'trash', vim.fn.fnameescape(path) }
+              require('neo-tree.sources.manager').refresh(state.name)
+            end)
+          end,
+        },
         window = {
           mappings = {
             ['H'] = 'toggle_hidden',

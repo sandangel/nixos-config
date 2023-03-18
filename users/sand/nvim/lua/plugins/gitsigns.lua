@@ -1,5 +1,9 @@
-return { 'lewis6991/gitsigns.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' },
+return {
+  'lewis6991/gitsigns.nvim',
+  event = 'VimEnter',
+  dependencies = { 'nvim-lua/plenary.nvim' },
   config = function()
+    dofile(vim.g.base46_cache .. 'git')
     vim.api.nvim_create_augroup('GitSignsUser', { clear = true })
     vim.api.nvim_create_autocmd({ 'BufWritePost', 'FocusGained', 'FocusLost' }, {
       pattern = '*',
@@ -7,6 +11,14 @@ return { 'lewis6991/gitsigns.nvim', event = 'VimEnter', dependencies = { 'nvim-l
     })
 
     require('gitsigns').setup {
+      signs = {
+        add = { hl = 'DiffAdd', text = '│', numhl = 'GitSignsAddNr' },
+        change = { hl = 'DiffChange', text = '│', numhl = 'GitSignsChangeNr' },
+        delete = { hl = 'DiffDelete', text = '', numhl = 'GitSignsDeleteNr' },
+        topdelete = { hl = 'DiffDelete', text = '‾', numhl = 'GitSignsDeleteNr' },
+        changedelete = { hl = 'DiffChangeDelete', text = '~', numhl = 'GitSignsChangeNr' },
+        untracked = { hl = 'GitSignsAdd', text = '│', numhl = 'GitSignsAddNr', linehl = 'GitSignsAddLn' },
+      },
       on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
 

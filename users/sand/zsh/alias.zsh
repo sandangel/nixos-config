@@ -5,7 +5,7 @@ alias l="${aliases[ll]} -a"
 alias ssh='TERM=xterm-256color ssh'
 alias tf="terraform"
 alias k="kubectl";
-alias kb="kubie";
+alias kn="kubens";
 alias kg="kubectl get";
 alias kd="kubectl describe";
 alias kgp="kubectl get po";
@@ -15,7 +15,7 @@ alias lg="lazygit";
 alias g="git";
 alias ga="git add";
 alias gb="git branch";
-alias gc="git commit";
+alias gc="git commit --signoff";
 alias gco="git checkout";
 alias gd="git diff";
 alias gl="git pull";

@@ -1,4 +1,4 @@
-return { 'feline-nvim/feline.nvim', event = 'VimEnter', dependencies = { 'kyazdani42/nvim-web-devicons' },
+return { 'feline-nvim/feline.nvim', event = 'VimEnter', dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
     local colors = require('configs.colors').get()
     local lsp = require 'feline.providers.lsp'

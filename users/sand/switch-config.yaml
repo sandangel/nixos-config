@@ -2,8 +2,13 @@ kind: SwitchConfig
 version: v1alpha1
 showPreview: false
 kubeconfigStores:
-- kind: filesystem
-  kubeconfigName: "kubeconfig*"
-  showPrefix: false
-  paths:
-  - ~/.kube/mtfuji/
+  - kind: filesystem
+    kubeconfigName: "kubeconfig*"
+    showPrefix: false
+    paths:
+      - ~/.kube/mtfuji/
+  - kind: filesystem
+    kubeconfigName: "config"
+    showPrefix: false
+    paths:
+      - ~/.kube/

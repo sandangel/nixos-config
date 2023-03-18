@@ -1,3 +1,8 @@
+# This is based on the official vmware-guest module, but modified
+# for aarch64 to disable certain features and add support. I'm unsure
+# how to upstream this because I just don't use certain features... maybe
+# making them toggle-able? I'm not sure.
+
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -5,6 +10,7 @@ with lib;
 let
   cfg = config.virtualisation.vmware.guest;
   open-vm-tools = if cfg.headless then pkgs.open-vm-tools-headless else pkgs.open-vm-tools;
+  xf86inputvmmouse = pkgs.xorg.xf86inputvmmouse;
 in
 {
   imports = [
@@ -21,9 +27,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    assertions = [ ];
+    assertions = [{
+      assertion = pkgs.stdenv.isi686 || pkgs.stdenv.isx86_64 || pkgs.stdenv.isAarch64;
+      message = "VMWare guest is not currently supported on ${pkgs.stdenv.hostPlatform.system}";
+    }];
 
     boot.initrd.availableKernelModules = [ "mptspi" ];
+    # boot.initrd.kernelModules = [ "vmw_pvscsi" ];
 
     environment.systemPackages = [ open-vm-tools ];
 
@@ -37,7 +47,7 @@ in
       };
 
     # Mount the vmblock for drag-and-drop and copy-and-paste.
-    systemd.mounts = mkIf (!cfg.headless) [
+    systemd.mounts = [
       {
         description = "VMware vmblock fuse mount";
         documentation = [ "https://github.com/vmware/open-vm-tools/blob/master/open-vm-tools/vmblock-fuse/design.txt" ];
@@ -50,7 +60,7 @@ in
       }
     ];
 
-    security.wrappers.vmware-user-suid-wrapper = mkIf (!cfg.headless) {
+    security.wrappers.vmware-user-suid-wrapper = {
       setuid = true;
       owner = "root";
       group = "root";
@@ -60,6 +70,8 @@ in
     environment.etc.vmware-tools.source = "${open-vm-tools}/etc/vmware-tools/*";
 
     services.xserver = mkIf (!cfg.headless) {
+      # TODO: does not build on aarch64
+      # modules = [ xf86inputvmmouse ];
 
       config = ''
         Section "InputClass"
@@ -78,3 +90,4 @@ in
     services.udev.packages = [ open-vm-tools ];
   };
 }
+

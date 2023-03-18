@@ -1,81 +1,72 @@
-return { 'kyazdani42/nvim-web-devicons', config = function()
-  local colors = require('configs.colors').get()
-  require('nvim-web-devicons').setup {
-    override = {
-      default_icon = {
-        icon = '',
-        color = colors.orange,
-        name = 'Default',
-      },
-      css = {
-        icon = '',
-        color = colors.blue,
-        name = 'css',
-      },
-      Dockerfile = {
+return {
+  'nvim-tree/nvim-web-devicons',
+  dependencies = { { 'NvChad/ui', branch = 'v2.0' }, { 'NvChad/base46', branch = 'v2.0' } },
+  config = function()
+    dofile(vim.g.base46_cache .. 'devicons')
+    local colors = require('base46').get_theme_tb 'base_30'
+    local override = vim.tbl_deep_extend('force', require('nvchad_ui.icons').devicons, {
+      default_icon = { color = colors.red },
+      c = { color = colors.blue },
+      css = { color = colors.blue },
+      deb = { color = colors.cyan },
+      Dockerfile = { color = colors.cyan, icon = '' },
+      html = { color = colors.baby_pink },
+      jpeg = { color = colors.dark_purple },
+      jpg = { color = colors.dark_purple },
+      js = { color = colors.sun },
+      kt = { color = colors.orange },
+      lock = { color = colors.red },
+      lua = { color = colors.blue },
+      mp3 = { color = colors.white },
+      mp4 = { color = colors.white },
+      out = { color = colors.white },
+      png = { color = colors.dark_purple },
+      py = { color = colors.cyan },
+      toml = { color = colors.blue },
+      ts = { color = colors.teal },
+      ttf = { color = colors.white },
+      rb = { color = colors.pink },
+      rpm = { color = colors.orange },
+      vue = { color = colors.vibrant_green },
+      woff = { color = colors.white },
+      woff2 = { color = colors.white },
+      xz = { color = colors.sun },
+      zip = { color = colors.sun },
+      ['robots.txt'] = { color = colors.blue },
+      ['docker-compose.yaml'] = {
         icon = '',
+        name = 'DockerCompose',
         color = colors.cyan,
-        name = 'Dockerfile',
+      },
+      ['.dockerignore'] = {
+        icon = '',
+        name = 'DockerIgnore',
+        color = colors.cyan,
+      },
+      yaml = {
+        icon = '',
+        name = 'yaml',
+        color = colors.orange,
+      },
+      yml = {
+        icon = '',
+        name = 'yml',
+        color = colors.orange,
       },
       hcl = {
         icon = '',
         color = colors.green,
         name = 'hcl',
       },
-      html = {
-        icon = '',
-        color = colors.baby_pink,
-        name = 'html',
-      },
-      jpeg = {
-        icon = '',
-        color = colors.dark_purple,
-        name = 'jpeg',
-      },
-      jpg = {
-        icon = '',
-        color = colors.nord_blue,
-        name = 'jpg',
-      },
-      js = {
-        icon = '',
-        color = colors.sun,
-        name = 'js',
-      },
       json = {
         icon = '',
         color = colors.green,
         name = 'Json',
       },
-      lock = {
-        icon = '',
-        color = colors.red,
-        name = 'lock',
-      },
-      lua = {
-        icon = '',
-        color = colors.blue,
-        name = 'lua',
-      },
       md = {
         icon = '',
         color = colors.vibrant_green,
         name = 'md',
-      },
-      out = {
-        icon = '',
-        color = colors.red,
-        name = 'out',
-      },
-      png = {
-        icon = '',
-        color = colors.dark_purple,
-        name = 'png',
-      },
-      py = {
-        icon = '',
-        color = colors.cyan,
-        name = 'py',
       },
       sh = {
         icon = '',
@@ -87,106 +78,9 @@ return { 'kyazdani42/nvim-web-devicons', config = function()
         color = colors.red,
         name = 'sql',
       },
-      ['robots.txt'] = {
-        icon = 'ﮧ',
-        color = colors.red,
-        name = 'robots',
-      },
-      ['.gitignore'] = {
-        icon = '',
-        color = colors.orange,
-        name = 'GitIgnore',
-      },
-      toml = {
-        icon = '',
-        color = colors.blue,
-        name = 'toml',
-      },
-      tf = {
-        icon = '',
-        color = colors.pink,
-        name = 'tf',
-      },
-      ts = {
-        icon = 'ﯤ',
-        color = colors.teal,
-        name = 'ts',
-      },
-      ttf = {
-        icon = '',
-        color = colors.white,
-        name = 'TrueTypeFont',
-      },
-      vimrc = {
-        icon = '',
-        color = '#019833',
-        name = 'vimrc',
-      },
-      vue = {
-        icon = '﵂',
-        color = colors.vibrant_green,
-        name = 'vue',
-      },
-      woff = {
-        icon = '',
-        color = colors.white,
-        name = 'WebOpenFontFormat',
-      },
-      woff2 = {
-        icon = '',
-        color = colors.white,
-        name = 'WebOpenFontFormat2',
-      },
-      xz = {
-        icon = '',
-        color = colors.sun,
-        name = 'xz',
-      },
-      zip = {
-        icon = '',
-        color = colors.sun,
-        name = 'zip',
-      },
-      zshrc = {
-        icon = '',
-        color = '#89e051',
-        name = 'zshrc',
-      },
-      c = {
-        icon = '',
-        color = colors.orange,
-        name = 'c',
-      },
-      deb = {
-        icon = '',
-        color = colors.orange,
-        name = 'deb',
-      },
-      kt = {
-        icon = '󱈙',
-        color = colors.orange,
-        name = 'kt',
-      },
-      mp3 = {
-        icon = '',
-        color = colors.orange,
-        name = 'mp3',
-      },
-      mp4 = {
-        icon = '',
-        color = colors.orange,
-        name = 'mp4',
-      },
-      rb = {
-        icon = '',
-        color = colors.orange,
-        name = 'rb',
-      },
-      rpm = {
-        icon = '',
-        color = colors.orange,
-        name = 'rpm',
-      },
-    },
-  }
-end }
+    })
+    require('nvim-web-devicons').setup {
+      override = override
+    }
+  end
+}
