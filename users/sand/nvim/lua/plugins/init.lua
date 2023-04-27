@@ -1,12 +1,21 @@
 return {
   {
     'numToStr/Comment.nvim',
-    event = 'VimEnter',
+    event = 'BufEnter',
+    config = true,
+  },
+  { 'mrjones2014/smart-splits.nvim',
+    keys = { '<c-h>', '<c-j>', '<c-k>', '<c-l>' },
+    build = './kitty/install-kittens.bash',
     config = function()
-      require('Comment').setup()
+      require('smart-splits').setup()
+      -- moving between splits
+      vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
+      vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
+      vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
+      vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
     end
   },
-  { 'knubie/vim-kitty-navigator', keys = { '<c-h>', '<c-j>', '<c-k>', '<c-l>' }, build = 'cp ./*.py ~/.config/kitty/' },
   {
     'iamcco/markdown-preview.nvim',
     build = 'cd app && pnpm install',
@@ -16,13 +25,9 @@ return {
     end
   },
   {
-    'tyru/open-browser.vim',
-    keys = { '<leader>u' },
-    config = function()
-      local opts = { silent = true, remap = true }
-      vim.keymap.set('n', '<leader>u', '<Plug>(openbrowser-smart-search)', opts)
-      vim.keymap.set('x', '<leader>u', '<Plug>(openbrowser-smart-search)', opts)
-    end
+    'chrishrb/gx.nvim',
+    event = { 'BufEnter' },
+    config = true,
   },
   {
     'rust-lang/rust.vim',
@@ -41,24 +46,18 @@ return {
   {
     'kylechui/nvim-surround',
     event = 'VimEnter',
-    config = function()
-      require('nvim-surround').setup()
-    end
+    config = true,
   },
   {
     'ggandor/leap.nvim',
-    event = 'VimEnter',
-    config = function()
-      require('leap').add_default_mappings()
-    end
+    event = 'BufEnter',
+    config = true,
   },
   {
     'ggandor/flit.nvim',
-    event = 'VimEnter',
+    event = 'BufEnter',
     dependencies = { 'ggandor/leap.nvim' },
-    config = function()
-      require('flit').setup()
-    end
+    config = true,
   },
   {
     'hashivim/vim-terraform',
@@ -80,7 +79,7 @@ return {
   },
   {
     'AckslD/nvim-neoclip.lua',
-    dependencies = { 'kkharji/sqlite.lua', 'ibhagwan/fzf-lua' },
+    dependencies = { 'ibhagwan/fzf-lua' },
     config = function()
       require('neoclip').setup {
         enable_persistent_history = true,
@@ -99,7 +98,7 @@ return {
       vim.keymap.set('n', '<F2>', '<cmd>UndotreeToggle<cr>', { silent = true })
     end
   },
-  { 'whiteinge/diffconflicts',    cmd = 'DiffConflicts' },
+  { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
   'matze/vim-move',
   'machakann/vim-textobj-delimited',
   'tpope/vim-rsi',

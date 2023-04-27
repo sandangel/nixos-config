@@ -1,3 +1,4 @@
+-- Init
 vim.g.mapleader = ' '
 
 vim.g.base46_cache = vim.fn.stdpath 'cache' .. '/nvchad/base46/'

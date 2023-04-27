@@ -3,40 +3,45 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons', },
   config = function()
     dofile(vim.g.base46_cache .. 'nvimtree')
+    local function on_attach(bufnr)
+      local api = require 'nvim-tree.api'
+
+      local function opts(desc)
+        return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+      end
+
+      vim.keymap.set('n', 'h', api.tree.change_root_to_parent, opts 'Up')
+      vim.keymap.set('n', 'l', api.tree.change_root_to_node, opts 'CD')
+      vim.keymap.set('n', 'd', api.fs.trash, opts 'Trash')
+      vim.keymap.set('n', 'I', api.tree.toggle_gitignore_filter, opts 'Toggle Git Ignore')
+      vim.keymap.set('n', 'H', api.tree.toggle_hidden_filter, opts 'Toggle Dotfiles')
+      vim.keymap.set('n', 'R', api.tree.reload, opts 'Refresh')
+      vim.keymap.set('n', 'a', api.fs.create, opts 'Create')
+      vim.keymap.set('n', 'r', api.fs.rename, opts 'Rename')
+      vim.keymap.set('n', 'x', api.fs.cut, opts 'Cut')
+      vim.keymap.set('n', 'c', api.fs.copy.node, opts 'Copy')
+      vim.keymap.set('n', 'p', api.fs.paste, opts 'Paste')
+      vim.keymap.set('n', 'p', api.fs.paste, opts 'Paste')
+      vim.keymap.set('n', '<CR>', api.node.open.edit, opts 'Open')
+      vim.keymap.set('n', 'o', api.node.open.edit, opts 'Open')
+      vim.keymap.set('n', 'x', api.fs.cut, opts 'Cut')
+      vim.keymap.set('n', 'c', api.fs.copy.node, opts 'Copy')
+      vim.keymap.set('n', 'p', api.fs.paste, opts 'Paste')
+      vim.keymap.set('n', 'y', api.fs.copy.filename, opts 'Copy Name')
+      vim.keymap.set('n', 'Y', api.fs.copy.relative_path, opts 'Copy Relative Path')
+      vim.keymap.set('n', 'gy', api.fs.copy.absolute_path, opts 'Copy Absolute Path')
+      vim.keymap.set('n', '[c', api.node.navigate.git.prev, opts 'Prev Git')
+      vim.keymap.set('n', ']c', api.node.navigate.git.next, opts 'Next Git')
+      vim.keymap.set('n', '.', api.node.run.system, opts 'Run System')
+      vim.keymap.set('n', 'f', api.live_filter.start, opts 'Filter')
+      vim.keymap.set('n', 'F', api.live_filter.clear, opts 'Clean Filter')
+      vim.keymap.set('n', 'q', api.tree.close, opts 'Close')
+      vim.keymap.set('n', '?', api.tree.toggle_help, opts 'Help')
+    end
+
     require('nvim-tree').setup({
       remove_keymaps = true,
-      view = {
-        mappings = {
-          list = {
-            { key = 'h',             action = 'dir_up' },
-            { key = 'l',             action = 'cd' },
-            { key = 'd',             action = 'trash' },
-            { key = 'I',             action = 'toggle_git_ignored' },
-            { key = 'H',             action = 'toggle_dotfiles' },
-            { key = 'R',             action = 'refresh' },
-            { key = 'a',             action = 'create' },
-            { key = 'r',             action = 'rename' },
-            { key = 'x',             action = 'cut' },
-            { key = 'c',             action = 'copy' },
-            { key = 'p',             action = 'paste' },
-            { key = 'p',             action = 'paste' },
-            { key = { '<CR>', 'o' }, action = 'edit' },
-            { key = 'x',             action = 'cut' },
-            { key = 'c',             action = 'copy' },
-            { key = 'p',             action = 'paste' },
-            { key = 'y',             action = 'copy_name' },
-            { key = 'Y',             action = 'copy_path' },
-            { key = 'gy',            action = 'copy_absolute_path' },
-            { key = '[c',            action = 'prev_git_item' },
-            { key = ']c',            action = 'next_git_item' },
-            { key = '.',             action = 'system_open' },
-            { key = 'f',             action = 'live_filter' },
-            { key = 'F',             action = 'clear_live_filter' },
-            { key = 'q',             action = 'close' },
-            { key = '?',             action = 'toggle_help' },
-          },
-        },
-      },
+      on_attach = on_attach,
       renderer = {
         icons = {
           git_placement = 'after',

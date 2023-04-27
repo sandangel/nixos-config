@@ -21,10 +21,12 @@ def handle_result(args, answer, target_window_id, boss: Boss):
 
     for w in tab.windows:
         for p in w.child.foreground_processes:
-            if "nvim" in p.get("cmdline"):
-                nvim_win = w
-                cwd = p.get("cwd")
-                break
+            cmdline = p.get("cmdline")
+            if len(cmdline) > 0:
+                if "/bin/nvim" in cmdline[0]:
+                    nvim_win = w
+                    cwd = p.get("cwd")
+                    break
 
     if nvim_win is not None:
         if active_win.id == nvim_win.id:

@@ -8,6 +8,7 @@ return {
       vim.fn.system { 'mkdir', '-p', fzf_history_dir }
     end
     local fzf_lua = require 'fzf-lua'
+    local utils = require 'fzf-lua.utils'
 
     local sel_to_qf = function(selected, opts)
       local qf_list = {}
@@ -73,6 +74,17 @@ return {
           ['ctrl-s'] = fzf_lua.actions.buf_vsplit,
         }
       },
+      lsp = {
+        finder = {
+          providers = {
+            { 'definitions',     prefix = utils.ansi_codes.green('def ') },
+            { 'references',      prefix = utils.ansi_codes.blue('ref ') },
+            { 'typedefs',        prefix = utils.ansi_codes.red('tdef') },
+            { 'declarations',    prefix = utils.ansi_codes.magenta('decl') },
+            { 'implementations', prefix = utils.ansi_codes.green('impl') },
+          },
+        },
+      },
       grep = {
         git_icons = false,
         file_icons = false,
@@ -85,7 +97,7 @@ return {
     }
 
     local opts = { silent = true }
-    local get_visual_selection = require('fzf-lua.utils').get_visual_selection
+    local get_visual_selection = utils.get_visual_selection
 
     vim.keymap.set('n', 'gL', '<cmd>FzfLua loclist<cr>', opts)
     vim.keymap.set('n', 'gq', '<cmd>FzfLua quickfix<cr>', opts)
@@ -123,16 +135,16 @@ return {
     end, opts)
 
     vim.keymap.set('x', '<leader>d', function()
-      fzf_lua.grep_project { fzf_opts = { ['--query'] = get_visual_selection() } }
+      fzf_lua.grep_project { fzf_opts = { ['--query'] = vim.fn.shellescape(get_visual_selection()) } }
     end, opts)
     vim.keymap.set('x', '<leader>D', function()
       fzf_lua.grep_project {
         cwd = vim.fn.expand '%:p:h',
-        fzf_opts = { ['--query'] = get_visual_selection() },
+        fzf_opts = { ['--query'] = vim.fn.shellescape(get_visual_selection()) },
       }
     end, opts)
     vim.keymap.set('x', '<leader>k', function()
-      fzf_lua.blines { fzf_opts = { ['--query'] = get_visual_selection() } }
+      fzf_lua.blines { fzf_opts = { ['--query'] = vim.fn.shellescape(get_visual_selection()) } }
     end, opts)
   end
 }

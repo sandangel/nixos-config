@@ -27,6 +27,7 @@ M.load_config = function()
       cheatsheet = {
         theme = 'grid',
       },
+      lsp_semantic_tokens = true,
       lsp = {
         signature = {
           disabled = false,

@@ -1,7 +1,6 @@
 return {
   'neovim/nvim-lspconfig',
   dependencies = {
-    'glepnir/lspsaga.nvim',
     'ibhagwan/fzf-lua',
     'nvim-lua/plenary.nvim',
     { 'NvChad/ui', branch = 'v2.0' },
@@ -61,7 +60,7 @@ return {
       -- See `:help vim.lsp.*` for documentation on any of the below functions
       vim.keymap.set('n', 'gw', '<cmd>FzfLua lsp_document_diagnostics<cr>', opts)
       vim.keymap.set('n', 'gW', '<cmd>FzfLua lsp_workspace_diagnostics<cr>', opts)
-      vim.keymap.set('n', 'gd', '<cmd>Lspsaga lsp_finder<cr>', opts)
+      vim.keymap.set('n', 'gd', '<cmd>FzfLua lsp_finder<cr>', opts)
       -- vim.keymap.set('n', 'gd', function()
       --   local lsp = require('fzf-lua.providers.lsp')
       --   lsp.definitions()
@@ -88,7 +87,6 @@ return {
       'rust_analyzer',
       'gopls',
       'dockerls',
-      'yamlls',
       'jsonls',
       'rnix',
     }
@@ -145,6 +143,21 @@ return {
           },
         },
       },
+    }
+
+    lspconfig.yamlls.setup {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      settings = {
+        yaml = {
+          format = { enable = true, printWidth = 120, singleQuote = true, proseWrap = 'always' },
+          keyOrdering = false,
+          hover = true,
+          completion = true,
+          validate = true,
+        },
+        redhat = { telemetry = { enabled = false } },
+      }
     }
 
     lspconfig.pylsp.setup {

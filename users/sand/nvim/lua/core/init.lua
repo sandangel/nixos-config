@@ -71,7 +71,7 @@ vim.api.nvim_create_autocmd('VimLeave', {
   group = 'NeoVimUser',
   pattern = '*',
   command = "exec 'mks! " ..
-  vim.env.HOME .. "/.vim/sessions/'.substitute(substitute(getcwd(), $HOME.'/', '', ''), '/', '.', 'g').'.vim'",
+      vim.env.HOME .. "/.vim/sessions/'.substitute(substitute(getcwd(), $HOME.'/', '', ''), '/', '.', 'g').'.vim'",
 })
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = 'NeoVimUser',
@@ -91,7 +91,7 @@ local function keymap()
   vim.keymap.set('n', '<leader>w', '<cmd>wa<cr>', opts)
   vim.keymap.set('n', '<leader>-', '<cmd>split<cr>', opts)
   vim.keymap.set('n', '<leader>=', '<cmd>vsplit<cr>', opts)
-  vim.keymap.set('x', '<leader>y', '"+y', opts)
+  vim.keymap.set('x', '<leader>y', '"*ygv"+y', opts)
   vim.keymap.set('x', '<leader>p', '"_d"+P', opts)
   vim.keymap.set('n', '<leader>p', '"+p', opts)
 
@@ -99,7 +99,7 @@ local function keymap()
   vim.keymap.set('n', ']<leader>', 'm`o<esc>``', opts)
 
   vim.keymap.set('x', 'y', 'y`]', opts)
-  vim.keymap.set('x', 'p', '"_dP', opts)
+  vim.keymap.set('x', 'p', '"_d`]P', opts)
   vim.keymap.set('x', '>', '>gv', opts)
   vim.keymap.set('x', '<', '<gv', opts)
   vim.keymap.set('n', 'vv', 'vg_', opts)

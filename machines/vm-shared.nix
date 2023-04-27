@@ -11,21 +11,29 @@
   nix = {
     settings = {
       auto-optimise-store = true;
+      experimental-features = [ "nix-command" "flakes" ];
       substituters = [
         "https://nix-community.cachix.org"
         "https://cache.nixos.org"
         "https://devenv.cachix.org"
+        "https://hyprland.cachix.org"
+        "https://fufexan.cachix.org"
       ];
       trusted-users = [ "root" username ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "fufexan.cachix.org-1:LwCDjCJNJQf5XD2BV+yamQIMZfcKWR9ISIFy5curUsY="
       ];
+
+      builders-use-substitutes = true;
+
+      # for direnv GC roots
+      keep-derivations = true;
+      keep-outputs = true;
     };
     extraOptions = ''
-      experimental-features = nix-command flakes
-      keep-outputs = true
-      keep-derivations = true
       min-free = ${toString (10 * 1024 * 1024 * 1024)}
     '';
     gc = {
@@ -35,13 +43,10 @@
     };
   };
 
-  # We expect to run the VM on hidpi machines.
-  hardware.video.hidpi.enable = true;
-
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "auto";
-  boot.loader.systemd-boot.configurationLimit = 3;
+  boot.loader.systemd-boot.configurationLimit = 20;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Define your hostname.
@@ -57,6 +62,9 @@
 
   # Virtualization settings
   virtualisation.docker.enable = true;
+  virtualisation.docker.daemon.settings = {
+    bip = "192.168.1.0/16";
+  };
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -67,177 +75,31 @@
   services.xserver.desktopManager.wallpaper.mode = "fill";
   services.xserver.desktopManager.gnome = {
     enable = true;
+    # These settings are not working in home-manager dconf yet
     extraGSettingsOverrides = ''
-      [org.gnome.desktop.background]
-      color-shading-type='solid'
-      picture-options='zoom'
-      picture-uri='file:///run/current-system/sw/share/backgrounds/gnome/libadwaita-l.jpg'
-      picture-uri-dark='file:///run/current-system/sw/share/backgrounds/gnome/libadwaita-d.jpg'
-      primary-color='#3465a4'
-      secondary-color='#000000'
-
-      [org.gnome.desktop.datetime]
-      automatic-timezone=true
-
-      [org.gnome.desktop.input-sources]
-      sources=[('xkb', 'us')]
-      xkb-options=['terminate:ctrl_alt_bksp']
-
-      [org.gnome.desktop.interface]
-      color-scheme='prefer-dark'
-      cursor-theme='Yaru'
-      font-antialiasing='grayscale'
-      font-hinting='slight'
-      gtk-theme='Yaru-dark'
-      icon-theme='Yaru-dark'
-      scaling-factor=2
-
-      [org.gnome.desktop.notifications]
-      application-children=['firefox', 'kitty', 'org-gnome-baobab']
-      show-banners=false
-
-      [org.gnome.desktop.notifications.application.firefox]
-      application-id='firefox.desktop'
-
-      [org.gnome.desktop.notifications.application.kitty]
-      application-id='kitty.desktop'
-
-      [org.gnome.desktop.notifications.application.org-gnome-baobab]
-      application-id='org.gnome.baobab.desktop'
-
       [org.gnome.desktop.peripherals.keyboard]
       delay=150
       numlock-state=false
       repeat-interval=3
 
-      [org.gnome.desktop.privacy]
-      old-files-age=uint32 30
-      recent-files-max-age=-1
-
-      [org.gnome.desktop.screensaver]
-      color-shading-type='solid'
-      picture-options='zoom'
-      picture-uri='file:///run/current-system/sw/share/backgrounds/gnome/libadwaita-l.jpg'
-      primary-color='#3465a4'
-      secondary-color='#000000'
+      [org.gnome.desktop.interface]
+      clock-show-weekday=true
+      color-scheme='prefer-dark'
+      cursor-theme='Yaru'
+      document-font-name='Noto Sans 11'
+      enable-hot-corners=false
+      font-antialiasing='grayscale'
+      font-hinting='slight'
+      font-name='Noto Sans 11'
+      gtk-theme='Yaru-dark'
+      icon-theme='Yaru-dark'
+      monospace-font-name='Comic Code Ligatures 10'
+      scaling-factor=2
+      text-scaling-factor=1.0
 
       [org.gnome.desktop.session]
-      idle-delay=uint32 0
-
-      [org.gnome.desktop.sound]
-      theme-name='Yaru'
-
-      [org.gnome.desktop.wm.keybindings]
-      activate-window-menu=@as []
-      begin-move=@as []
-      begin-resize=@as []
-      close=@as []
-      cycle-group=@as []
-      cycle-group-backward=@as []
-      cycle-panels=@as []
-      cycle-panels-backward=@as []
-      cycle-windows=@as []
-      cycle-windows-backward=@as []
-      maximize=@as []
-      minimize=@as []
-      move-to-monitor-down=@as []
-      move-to-monitor-left=@as []
-      move-to-monitor-right=@as []
-      move-to-monitor-up=@as []
-      move-to-workspace-down=@as []
-      move-to-workspace-last=@as []
-      move-to-workspace-left=@as []
-      move-to-workspace-right=@as []
-      move-to-workspace-up=@as []
-      panel-run-dialog=@as []
-      switch-applications=@as []
-      switch-applications-backward=@as []
-      switch-group=@as []
-      switch-group-backward=@as []
-      switch-input-source=@as []
-      switch-input-source-backward=@as []
-      switch-panels=@as []
-      switch-panels-backward=@as []
-      switch-to-workspace-1=@as []
-      switch-to-workspace-down=@as []
-      switch-to-workspace-last=@as []
-      switch-to-workspace-left=@as []
-      switch-to-workspace-right=@as []
-      switch-to-workspace-up=@as []
-      toggle-maximized=@as []
-      unmaximize=@as []
-
-      [org.gnome.mutter]
-      overlay-key='Super_R'
-
-      [org.gnome.mutter.keybindings]
-      toggle-tiled-left=@as []
-      toggle-tiled-right=@as []
-
-      [org.gnome.mutter.wayland.keybindings]
-      restore-shortcuts=@as []
-
-      [org.gnome.nautilus.window-state]
-      maximized=true
-
-      [org.gnome.settings-daemon.plugins.media-keys]
-      help=@as []
-      logout=@as []
-      magnifier=@as []
-      magnifier-zoom-in=@as []
-      magnifier-zoom-out=@as []
-      screenreader=@as []
-      screensaver=@as []
-
-      [org.gnome.settings-daemon.plugins.power]
-      ambient-enabled=false
-      idle-dim=false
-      power-button-action='nothing'
-      power-saver-profile-on-low-battery=false
-      sleep-inactive-ac-timeout=3600
-      sleep-inactive-ac-type='nothing'
-      sleep-inactive-battery-timeout=1800
-      sleep-inactive-battery-type='nothing'
-
-      [org.gnome.settings-daemon.plugins.xsettings]
-      overrides="{'Gdk/WindowScalingFactor': <2>}"
-
-      [org.gnome.shell]
-      enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com']
-      favorite-apps=['org.gnome.Calendar.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.gnome.Extensions.desktop', 'org.gnome.Settings.desktop', 'kitty.desktop', 'gnome-system-monitor.desktop', 'org.gnome.tweaks.desktop', 'org.gnome.baobab.desktop']
-
-      [org.gnome.shell.extensions.user-theme]
-      name='Yaru-dark'
-
-      [org.gnome.shell.keybindings]
-      focus-active-notification=@as []
-      open-application-menu=@as []
-      screenshot=@as []
-      screenshot-window=@as []
-      show-screen-recording-ui=@as []
-      show-screenshot-ui=@as []
-      toggle-application-view=@as []
-      toggle-message-tray=@as []
-      toggle-overview=@as []
-
-      [org.gnome.shell.world-clocks]
-      locations=@av []
-
-      [org.gnome.system.location]
-      enabled=true
-
-      [org.gnome.tweaks]
-      show-extensions-notice=false
-
-      [system.proxy]
-      mode='none'
+      idle-delay=0
     '';
-
-    extraGSettingsOverridePackages = with pkgs; [
-      gsettings-desktop-schemas
-      gnome.gnome-shell
-      gnome.mutter
-    ];
   };
 
   environment.gnome.excludePackages = with pkgs.gnome; [
@@ -291,23 +153,30 @@
     bind
     binutils
     cachix
-    devenv
+    chromium
+    firefox
     gcc
     git
+    glib
     glxinfo
-    gnome.dconf-editor
-    gnome.gnome-tweaks
     gnumake
     home-manager
     killall
+    polkit_gnome
     vim
     wl-clipboard
-    xclip
+    xdg-utils
     yaru-theme
   ] ++ lib.optionals (machine == "vm-aarch64") [
     gtkmm3
     gtkmm4
   ];
+
+  programs.dconf.enable = true;
+
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+
+  services.gnome.gnome-browser-connector.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = true;
@@ -316,9 +185,20 @@
   # fonts require a purchase.
   fonts.fontDir.enable = true;
   fonts.fonts = with pkgs; [
-    fira-code
     comic-code
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    roboto
+    roboto-mono
+    font-awesome
   ];
+  fonts.fontconfig.defaultFonts = {
+    serif = [ "Noto Serif" "Noto Color Emoji" ];
+    sansSerif = [ "Noto Sans" "Noto Color Emoji" ];
+    monospace = [ "Comic Code Ligatures" "Noto Color Emoji" ];
+    emoji = [ "Noto Color Emoji" ];
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -330,13 +210,15 @@
 
   # Intall apps using flatpak to avoid recompile
   services.flatpak.enable = true;
-  xdg.portal.enable = true;
 
   # Disable the firewall since we're in a VM and we want to make it
   # easy to visit stuff in here. We only use NAT networking anyways.
   networking.firewall.enable = false;
 
   documentation.nixos.enable = false;
+
+  security.polkit.enable = true;
+  security.rtkit.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
