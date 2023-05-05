@@ -174,7 +174,7 @@
 
   programs.dconf.enable = true;
 
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.udev.packages = with pkgs.gnome; [ gnome-settings-daemon ];
 
   services.gnome.gnome-browser-connector.enable = true;
 
@@ -219,6 +219,19 @@
 
   security.polkit.enable = true;
   security.rtkit.enable = true;
+
+  system.autoUpgrade = {
+    enable = true;
+    allowReboot = true;
+    flake = "/nix-config#vm-aarch64";
+    flags = [
+      "--impure"
+      "--use-remote-sudo"
+      "--recreate-lock-file"
+      "-L" # print build logs
+    ];
+    dates = "daily";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

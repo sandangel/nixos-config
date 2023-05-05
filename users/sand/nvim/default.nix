@@ -9,7 +9,6 @@
     withPython3 = true;
     extraPython3Packages = ps: with ps; [
       pynvim
-      debugpy
       python-lsp-server
       pyls-isort
       python-lsp-black
@@ -31,8 +30,6 @@
       dockerfile-language-server-nodejs
       pnpm
       pyright
-      typescript
-      typescript-language-server
       vscode-langservers-extracted
       yaml-language-server
     ]);

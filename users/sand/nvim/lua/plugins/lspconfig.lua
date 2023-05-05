@@ -61,15 +61,6 @@ return {
       vim.keymap.set('n', 'gw', '<cmd>FzfLua lsp_document_diagnostics<cr>', opts)
       vim.keymap.set('n', 'gW', '<cmd>FzfLua lsp_workspace_diagnostics<cr>', opts)
       vim.keymap.set('n', 'gd', '<cmd>FzfLua lsp_finder<cr>', opts)
-      -- vim.keymap.set('n', 'gd', function()
-      --   local lsp = require('fzf-lua.providers.lsp')
-      --   lsp.definitions()
-      -- lsp_typedefs = { "fzf-lua.providers.lsp", "typedefs" },
-      -- lsp_references = { "fzf-lua.providers.lsp", "references" },
-      -- lsp_definitions = { "fzf-lua.providers.lsp", "definitions" },
-      -- lsp_declarations = { "fzf-lua.providers.lsp", "declarations" },
-      -- lsp_implementations = { "fzf-lua.providers.lsp", "implementations" },
-      -- end, opts)
       vim.keymap.set('n', 'gl', function() vim.diagnostic.open_float() end, opts)
       vim.keymap.set('n', 'gh', function() vim.lsp.buf.hover() end, opts)
       vim.keymap.set('n', 'gr', function() require('nvchad_ui.renamer').open() end, opts)
@@ -79,8 +70,6 @@ return {
       vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev() end, opts)
       vim.keymap.set('n', 'gf', function() vim.lsp.buf.format { async = true } end, opts)
       vim.keymap.set('x', 'gf', function() vim.lsp.buf.range_formatting() end, opts)
-      -- vim.keymap.set('n', '<c-f>', "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-f>')<cr>", opts)
-      -- vim.keymap.set('n', '<c-b>', "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-b>')<cr>", opts)
     end
 
     local servers = {
@@ -103,9 +92,6 @@ return {
       capabilities = capabilities,
       init_options = {
         hostInfo = 'neovim',
-        tsserver = {
-          path = vim.env.HOME .. '/.nix-profile/bin/tsserver'
-        },
         preferences = {
           quotePreference = 'single',
         },
