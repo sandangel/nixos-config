@@ -1,0 +1,12 @@
+diff --git a/meson_options.txt b/meson_options.txt
+index ee67148..67e773e 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -33,6 +33,7 @@ option(
+ option(
+   'android-libbacktrace',
+   type : 'feature',
++  value : 'disabled',
+   description : 'Use Android\'s libbacktrace',
+ )
+

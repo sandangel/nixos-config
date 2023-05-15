@@ -41,9 +41,25 @@
           kubeswitch = callPackage ./pkgs/kubeswitch { };
           comic-code = callPackage ./pkgs/comic-code { };
           flypie = callPackage ./pkgs/flypie { };
+          mesa = (callPackage
+            (import ./pkgs/mesa/generic.nix {
+              version = "23.1.0";
+              hash = "sha256-qd3jx2VxxIBiRaBb2hzO7jR8MmcSfp5Unk9OIl2S6ZI=";
+            })
+            {
+              inherit (darwin.apple_sdk_11_0.frameworks) OpenGL;
+              inherit (darwin.apple_sdk_11_0.libs) Xplugin;
+            }).override {
+            galliumDrivers = [
+              "swrast" # software renderer (aka LLVMPipe)
+              "svga" # VMWare virtualized GPU
+            ];
+            vulkanDrivers = [ ];
+            vulkanLayers = [ ];
+          };
         };
         overlayAttrs = {
-          inherit (config.packages) neovim-nightly vcluster kubeswitch comic-code flypie;
+          inherit (config.packages) neovim-nightly vcluster kubeswitch comic-code flypie mesa;
         };
       };
 

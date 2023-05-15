@@ -1,11 +1,12 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    (kitty.overrideAttrs (o: {
-      patches = (o.patches or [ ]) ++ [
-        ./vmware-3d-accel-compat.patch
-      ];
-    }))
+    kitty
+    # (kitty.overrideAttrs (o: {
+    #   patches = (o.patches or [ ]) ++ [
+    #     ./vmware-3d-accel-compat.patch
+    #   ];
+    # }))
   ];
   xdg.configFile."kitty".source = ./.;
   xdg.configFile."kitty".recursive = true;

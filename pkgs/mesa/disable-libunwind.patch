@@ -1,0 +1,12 @@
+diff --git a/meson_options.txt b/meson_options.txt
+index ee67148..7a2b52d 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -402,6 +402,7 @@ option(
+ option(
+   'libunwind',
+   type : 'feature',
++  value : 'disabled',
+   deprecated: {'true': 'enabled', 'false': 'disabled'},
+   description : 'Use libunwind for stack-traces'
+ )

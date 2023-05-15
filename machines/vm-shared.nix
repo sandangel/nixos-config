@@ -46,7 +46,7 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "auto";
-  boot.loader.systemd-boot.configurationLimit = 20;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Define your hostname.
@@ -153,7 +153,6 @@
     bind
     binutils
     cachix
-    chromium
     firefox
     gcc
     git
@@ -192,6 +191,7 @@
     roboto
     roboto-mono
     font-awesome
+    nerdfonts
   ];
   fonts.fontconfig.defaultFonts = {
     serif = [ "Noto Serif" "Noto Color Emoji" ];
@@ -226,9 +226,7 @@
     flake = "/nix-config#vm-aarch64";
     flags = [
       "--impure"
-      "--use-remote-sudo"
       "--recreate-lock-file"
-      "-L" # print build logs
     ];
     dates = "daily";
   };
