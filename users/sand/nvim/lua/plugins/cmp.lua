@@ -113,7 +113,6 @@ return {
         { name = 'path' },
         {
           name = 'buffer',
-          max_item_count = 7,
           option = {
             get_bufnrs = function()
               return vim.api.nvim_list_bufs()
@@ -123,9 +122,8 @@ return {
         {
           name = 'rg',
           keyword_length = 3,
-          max_item_count = 7,
         },
-        { name = 'luasnip', max_item_count = 7 },
+        { name = 'luasnip' },
       }),
       completion = {
         completeopt = 'menu,menuone,noinsert',

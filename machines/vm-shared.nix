@@ -147,13 +147,10 @@
     ''}"
   ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     bind
     binutils
     cachix
-    firefox
     gcc
     git
     glib
@@ -164,6 +161,7 @@
     polkit_gnome
     vim
     wl-clipboard
+    xclip
     xdg-utils
     yaru-theme
   ] ++ lib.optionals (machine == "vm-aarch64") [
@@ -214,6 +212,9 @@
   # Disable the firewall since we're in a VM and we want to make it
   # easy to visit stuff in here. We only use NAT networking anyways.
   networking.firewall.enable = false;
+  # DNS not working properly
+  networking.enableIPv6 = false;
+  networking.resolvconf.dnsExtensionMechanism = false;
 
   documentation.nixos.enable = false;
 
@@ -228,7 +229,7 @@
       "--impure"
       "--recreate-lock-file"
     ];
-    dates = "daily";
+    dates = "monthly";
   };
 
   # This value determines the NixOS release from which the default

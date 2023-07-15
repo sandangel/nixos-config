@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/release-23.05";
 
     devenv.url = "github:cachix/devenv";
 
@@ -43,8 +43,8 @@
           flypie = callPackage ./pkgs/flypie { };
           mesa = (callPackage
             (import ./pkgs/mesa/generic.nix {
-              version = "23.1.0";
-              hash = "sha256-qd3jx2VxxIBiRaBb2hzO7jR8MmcSfp5Unk9OIl2S6ZI=";
+              version = "23.1.3";
+              hash = "sha256-L21zgbwQ+9LWJjrRAieFuLURBGwakEFi+PfaGO6ortk=";
             })
             {
               inherit (darwin.apple_sdk_11_0.frameworks) OpenGL;
@@ -95,9 +95,17 @@
           vm-aarch64 = mkMachine "vm-aarch64";
         });
 
-      flake.homeConfigurations.${username} = withSystem "aarch64-linux" ({ final, ... }:
+      flake.homeConfigurations.${username} = withSystem "aarch64-linux" ({ final, system, ... }:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = final;
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [
+              (_: prev: with prev; {
+                inherit (final) neovim-nightly vcluster kubeswitch comic-code flypie mesa;
+              })
+            ];
+          };
           extraSpecialArgs =
             let
               inherit (inputs.nixpkgs) lib;

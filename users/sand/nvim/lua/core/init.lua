@@ -19,7 +19,6 @@ vim.o.showbreak = '> '
 vim.o.showcmd = false
 vim.o.showmatch = true
 vim.o.showmode = false
-vim.o.showtabline = false
 vim.o.signcolumn = 'yes:2'
 vim.o.smartcase = true
 vim.o.smartindent = true
