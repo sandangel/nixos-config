@@ -5,7 +5,22 @@
   home.stateVersion = "22.05";
   home.homeDirectory = "/home/${username}";
   home.packages = with pkgs; [
-    alacritty
+    bind
+    binutils
+    cachix
+    gcc
+    git
+    glib
+    glxinfo
+    gnumake
+    killall
+    vim
+    wl-clipboard
+    perl
+    xclip
+    xdg-utils
+    comic-code
+
     exa
     gh
     go
@@ -21,7 +36,33 @@
     vault
     vcluster
     ssm-session-manager-plugin
-  ];
+
+    (python3.withPackages (ps: with ps; [
+      pynvim
+      python-lsp-server
+      pyls-isort
+      python-lsp-black
+      pylsp-mypy
+      pylint
+      virtualenv
+    ]))
+
+    enchant2
+    lua-language-server
+    terraform-ls
+    gopls
+    rnix-lsp
+    tflint
+    tree-sitter
+    trash-cli
+
+  ] ++ (with pkgs.nodePackages; [
+    dockerfile-language-server-nodejs
+    pnpm
+    pyright
+    vscode-langservers-extracted
+    yaml-language-server
+  ]);
 
   xdg.enable = true;
 
@@ -33,15 +74,14 @@
     ./kitty
     ./gnome
     ./nvim
-    ./hypr
   ];
 
   home.sessionVariables = with pkgs; rec {
     FZF_BIND_OPTS = "--bind page-up:preview-up,page-down:preview-down,?:toggle-preview";
-    FZF_CTRL_T_COMMAND = "${RG_FILE} ${RG_IGNORE}";
+    FZF_CTRL_T_COMMAND = "rg --files";
     FZF_CTRL_T_OPTS = "${FZF_PREVIEW_OPTS} ${FZF_BIND_OPTS}";
-    FZF_DEFAULT_COMMAND = "${RG_FILE} ${RG_IGNORE}";
-    FZF_DEFAULT_OPTS = "--ansi --border $FZF_BIND_OPTS";
+    FZF_DEFAULT_COMMAND = "rg --files";
+    FZF_DEFAULT_OPTS = "--ansi --border ${FZF_BIND_OPTS}";
     FZF_PREVIEW_COMMAND = "bat {}";
     FZF_PREVIEW_OPTS = "--preview '${FZF_PREVIEW_COMMAND}'";
     LANG = "en_US.UTF-8";
@@ -49,10 +89,6 @@
     LC_CTYPE = "en_US.UTF-8";
     MANPAGER = "sh -c 'col -bx | bat -l man -p'";
     PAGER = "less -FirSwX";
-    RG_FILE = "rg --files --hidden --follow";
-    RG_GREP = "${RG_LINE} ${RG_IGNORE} ";
-    RG_IGNORE = "--glob '!.git/*' --glob '!node_modules/*' --glob '!*.lock' --glob '!*-lock.json' --glob '!*.min.{js,css}' --glob '!*.lock.hcl' --glob '!__snapshots__/*'";
-    RG_LINE = "rg --column --line-number --no-heading --smart-case --hidden --follow --color always";
 
     NIXOS_OZONE_WL = "1";
     GDK_SCALE = "2";
@@ -63,6 +99,20 @@
   };
 
   fonts.fontconfig.enable = true;
+
+  programs.ripgrep.enable = true;
+  programs.ripgrep.arguments = [
+    "--follow"
+    "--smart-case"
+    "--hidden"
+    "--glob=!.git/*"
+    "--glob=!node_modules/*"
+    "--glob=!*.lock"
+    "--glob=!*-lock.json"
+    "--glob=!*.min.{js,css}"
+    "--glob=!*.lock.hcl"
+    "--glob=!__snapshots__/*"
+  ];
 
   programs.zoxide.enable = true;
   programs.fzf.enable = true;
@@ -82,7 +132,7 @@
   programs.jq.enable = true;
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-  programs.direnv.enableZshIntegration = false;
+  programs.direnv.enableZshIntegration = true;
   programs.direnv.stdlib = ''
     : ''${XDG_CACHE_HOME:=$HOME/.cache}
     declare -A direnv_layout_dirs
@@ -113,15 +163,6 @@
       PATH_add "$VIRTUAL_ENV/bin"
     }
   '';
-
-  # Make cursor not tiny on HiDPI screens
-  home.pointerCursor = {
-    name = "Yaru";
-    package = pkgs.yaru-theme;
-    size = 24;
-    gtk.enable = true;
-    x11.enable = true;
-  };
 
   manual = {
     html.enable = false;

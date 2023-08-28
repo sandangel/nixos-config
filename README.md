@@ -161,3 +161,40 @@ defaults write -g KeyRepeat -float 0.7 && defaults write -g InitialKeyRepeat -in
 Then install Raycast, Shottr, Firefox, Karabiner
 
 ## FAQ
+
+```zsh
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
+
+Install home-manager and switch configs
+
+```zsh
+sudo mkdir -p /nix-config
+sudo chown -R sand:sand /nix-config
+git clone https://github.com/sandangel/nixos-config /nix-config
+cd /nix-config
+nix run home-manager/master -- init --switch --impure --flake ".#sand"
+make switch
+```
+
+Activate ZSH
+
+```zsh
+sudo echo /home/sand/.nix-profile/bin/zsh >> /etc/shells
+chsh -s $(which zsh)
+```
+
+Fix GDM monitor resolution
+
+```zsh
+sudo cp -f ~/.config/monitors.xml ~gdm/.config/monitors.xml
+sudo chown $(id -u gdm):$(id -g gdm) ~gdm/.config/monitors.xml
+sudo restorecon ~gdm/.config/monitors.xml
+```
+
+Mount host shared folders
+
+```zsh
+sudo mkdir -p /host
+sudo echo "vmhgfs-fuse    /host   fuse    defaults,allow_other    0    0" >> /etc/fstab
+```

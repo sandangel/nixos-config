@@ -4,7 +4,7 @@ return {
   config = function()
     dofile(vim.g.base46_cache .. 'devicons')
     local colors = require('base46').get_theme_tb 'base_30'
-    local override = vim.tbl_deep_extend('force', require('nvchad_ui.icons').devicons, {
+    local override = vim.tbl_deep_extend('force', require('nvchad.icons.devicons'), {
       default_icon = { color = colors.red },
       c = { color = colors.blue },
       css = { color = colors.blue },

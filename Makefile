@@ -28,7 +28,7 @@ NIXNAME ?= vm-aarch64
 SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 switch:
-	nixos-rebuild switch --use-remote-sudo --impure --flake ".#$(NIXNAME)"
+	# nixos-rebuild switch --use-remote-sudo --impure --flake ".#$(NIXNAME)"
 	home-manager switch --impure --flake ".#$(NIXUSER)"
 	# rsync -av $(MAKEFILE_DIR)/users/$(NIXUSER)/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
 

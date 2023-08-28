@@ -1,21 +1,40 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, username, ... }:
+let
+  whitesur-icon-theme = pkgs.whitesur-icon-theme;
+  whitesur-gtk-theme = pkgs.whitesur-gtk-theme.overrideAttrs (o: rec {
+    # Latest commit at Aug 28th, 2023
+    version = "95cf2a9e531955c5fbf8da229374184cca82cfd7";
+    src = pkgs.fetchFromGitHub {
+      owner = "vinceliuice";
+      repo = o.pname;
+      rev = version;
+      sha256 = "sha256-Bbt7ID4sE1qIN+w2AQ1VOhlSHTdV5dSzO+eArn6txWY=";
+    };
+  });
+
+  gtk-theme = "WhiteSur-Dark";
+  icon-theme = "WhiteSur";
+  # Remember to install wallpapers before make switch
+  #   gh repo clone vinceliuice/WhiteSur-wallpapers
+  #   cd WhiteSur-wallpapers && ./install-wallpapers.sh
+  picture-uri = "file:///home/${username}/.local/share/backgrounds/Ventura-light.jpg";
+in
 {
+  home.file.".themes".source = "${whitesur-gtk-theme}/share/themes";
+
+  home.file.".icons".source = "${whitesur-icon-theme}/share/icons";
+
   gtk = {
     enable = true;
 
     iconTheme = {
-      name = "Yaru-dark";
-      package = pkgs.yaru-theme;
+      name = icon-theme;
+      package = whitesur-icon-theme;
     };
 
     theme = {
-      name = "Yaru-dark";
-      package = pkgs.yaru-theme;
-    };
-
-    cursorTheme = {
-      name = "Yaru";
-      package = pkgs.yaru-theme;
+      name = gtk-theme;
+      package = whitesur-gtk-theme;
     };
 
     gtk3.extraConfig = {
@@ -27,22 +46,28 @@
     };
   };
 
-  home.sessionVariables.GTK_THEME = "Yaru-dark";
-  home.packages = with pkgs; [
-    yaru-theme
-    gnome.dconf-editor
-    gnome.gnome-tweaks
-    # These extensions are installed by chromium
-    # gnomeExtensions.blur-my-shell
-    # gnomeExtensions.forge
-    # gnomeExtensions.logo-menu
-    # gnomeExtensions.space-bar
-    # gnomeExtensions.top-bar-organizer
-    # gnomeExtensions.transparent-shell
-    # gnomeExtensions.user-themes
-  ];
-
+  # Note that the database is strongly-typed so you need to use the same types as described in the GSettings schema.
   dconf.settings = {
+    "org.gnome.desktop.interface" = {
+      clock-show-weekday = true;
+      color-scheme = "prefer-dark";
+      enable-hot-corners = false;
+    };
+
+    "org/gnome/desktop/peripherals/keyboard" = {
+      delay = lib.hm.gvariant.mkUint32 150;
+      repeat-interval = lib.hm.gvariant.mkUint32 3;
+    };
+
+    "org/gnome/desktop/peripherals/mouse" = {
+      natural-scroll = false;
+      speed = 1.0;
+    };
+
+    "org/gnome/desktop/session" = {
+      idle-delay = lib.hm.gvariant.mkUint32 0;
+    };
+
     "org/gnome/GWeather4" = {
       temperature-unit = "centigrade";
     };
@@ -50,18 +75,14 @@
     "org/gnome/desktop/background" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = "file:///nix-config/images/wall.png";
-      picture-uri-dark = "file:///nix-config/images/wall.png";
-      primary-color = "#528bff";
-      secondary-color = "#98c379";
+      picture-uri = picture-uri;
+      picture-uri-dark = picture-uri;
     };
 
     "org/gnome/desktop/screensaver" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = "file:///nix-config/images/wall.png";
-      primary-color = "#528bff";
-      secondary-color = "#98c379";
+      picture-uri = picture-uri;
     };
 
     "org/gnome/desktop/datetime" = {
@@ -75,10 +96,6 @@
     "org/gnome/desktop/privacy" = {
       old-files-age = 30;
       recent-files-max-age = -1;
-    };
-
-    "org/gnome/desktop/sound" = {
-      theme-name = "Yaru";
     };
 
     "org/gnome/desktop/wm/keybindings" = {
@@ -125,7 +142,6 @@
 
     "org/gnome/desktop/wm/preferences" = {
       mouse-button-modifier = "disabled";
-      titlebar-font = "Noto Sans Bold 11";
     };
 
     "org/gnome/mutter" = {
@@ -165,33 +181,16 @@
 
     "org/gnome/shell" = {
       disable-user-extensions = false;
-      enabled-extensions = [ "user-theme@gnome-shell-extensions.gcampax.github.com" "logomenu@aryan_k" "space-bar@luchrioh" "transparent-shell@siroj42.github.io" "top-bar-organizer@julian.gse.jsts.xyz" "transparent-top-bar@ftpix.com" "forge@jmmaranan.com" "blur-my-shell@aunetx" ];
-      favorite-apps = [ "org.gnome.Calendar.desktop" "org.gnome.Nautilus.desktop" "firefox.desktop" "org.gnome.Extensions.desktop" "org.gnome.Settings.desktop" "kitty.desktop" "gnome-system-monitor.desktop" "org.gnome.tweaks.desktop" "org.gnome.baobab.desktop" "ca.desrt.dconf-editor.desktop" ];
-    };
-
-    "org/gnome/shell/extensions/Logo-menu" = {
-      hide-softwarecentre = true;
-      menu-button-icon-click-type = 3;
-      menu-button-icon-image = 32;
-      menu-button-icon-size = 20;
-      menu-button-terminal = "kitty";
-      show-lockscreen = true;
-      show-power-options = true;
+      enabled-extensions = with pkgs.gnomeExtensions; [
+        blur-my-shell.extensionUuid
+        forge.extensionUuid
+        user-themes.extensionUuid
+      ];
+      favorite-apps = [ "org.gnome.Nautilus.desktop" "firefox.desktop" "org.gnome.Extensions.desktop" "org.gnome.Settings.desktop" "kitty.desktop" "org.gnome.tweaks.desktop" "ca.desrt.dconf-editor.desktop" "org.gnome.Software.desktop" ];
     };
 
     "org/gnome/shell/extensions/user-theme" = {
-      name = "Yaru-dark";
-    };
-
-    "org/gnome/shell/extensions/space-bar/behavior" = {
-      scroll-wheel = "disabled";
-    };
-
-    "org/gnome/shell/extensions/space-bar/shortcuts" = {
-      activate-empty-key = [ ];
-      activate-previous-key = [ ];
-      enable-activate-workspace-shortcuts = false;
-      open-menu = [ ];
+      name = gtk-theme;
     };
 
     "org/gnome/shell/extensions/forge/keybindings" = {
@@ -228,6 +227,14 @@
       window-toggle-always-float = [ ];
       window-toggle-float = [ ];
       workspace-active-tile-toggle = [ ];
+      window-resize-bottom-decrease = [ ];
+      window-resize-bottom-increase = [ ];
+      window-resize-left-decrease = [ ];
+      window-resize-left-increase = [ ];
+      window-resize-right-decrease = [ ];
+      window-resize-right-increase = [ ];
+      window-resize-top-decrease = [ ];
+      window-resize-top-increase = [ ];
     };
 
     "org/gnome/shell/extensions/blur-my-shell" = {
@@ -240,9 +247,9 @@
     };
 
     "org/gnome/shell/extensions/blur-my-shell/applications" = {
-      blur = false;
+      blur = true;
       customize = false;
-      whitelist = [ ];
+      whitelist = [ "kitty" ];
     };
 
     "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
@@ -251,12 +258,10 @@
     };
 
     "org/gnome/shell/extensions/blur-my-shell/lockscreen" = {
-
       blur = false;
     };
 
     "org/gnome/shell/extensions/blur-my-shell/overview" = {
-
       blur = true;
       style-components = 1;
     };

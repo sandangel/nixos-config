@@ -22,6 +22,7 @@
       __fzf_dir=${pkgs.fzf}
       . $XDG_CONFIG_HOME/zsh/config/init.zsh
       unset __fzf_dir
+      . $XDG_CONFIG_HOME/zsh/config/nix.zsh
       . $XDG_CONFIG_HOME/zsh/config/alias.zsh
       . $XDG_CONFIG_HOME/zsh/config/kitty.zsh
       . $XDG_CONFIG_HOME/zsh/config/utils.zsh

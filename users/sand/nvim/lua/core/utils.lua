@@ -34,6 +34,10 @@ M.load_config = function()
           silent = true, -- silences 'no signature help available' message from appearing
         },
       },
+      nvdash = { load_on_startup = false },
+      tabufline = {
+        enabled = false,
+      },
       extended_integrations = { 'notify' }
     }
   }

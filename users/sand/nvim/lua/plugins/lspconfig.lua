@@ -16,7 +16,7 @@ return {
     local lspconfig = require 'lspconfig'
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
     dofile(vim.g.base46_cache .. 'lsp')
-    require 'nvchad_ui.lsp'
+    require 'nvchad.lsp'
 
     capabilities.textDocument.completion.completionItem = {
       documentationFormat = { 'markdown', 'plaintext' },
@@ -52,7 +52,7 @@ return {
       end
 
       if client.server_capabilities.signatureHelpProvider then
-        require('nvchad_ui.signature').setup(client)
+        require('nvchad.signature').setup(client)
       end
 
       -- Mappings.
@@ -63,7 +63,7 @@ return {
       vim.keymap.set('n', 'gd', '<cmd>FzfLua lsp_finder<cr>', opts)
       vim.keymap.set('n', 'gl', function() vim.diagnostic.open_float() end, opts)
       vim.keymap.set('n', 'gh', function() vim.lsp.buf.hover() end, opts)
-      vim.keymap.set('n', 'gr', function() require('nvchad_ui.renamer').open() end, opts)
+      vim.keymap.set('n', 'gr', function() require('nvchad.renamer').open() end, opts)
       vim.keymap.set('n', 'gA', '<cmd>FzfLua lsp_code_actions<cr>', opts)
       vim.keymap.set('x', 'gA', '<cmd>FzfLua lsp_code_actions<cr>', opts)
       vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next() end, opts)
@@ -153,20 +153,21 @@ return {
         pylsp = {
           configurationSources = { 'flake8' },
           plugins = {
-            flake8 = { enabled = true },
-            black = { enabled = true, line_length = 120 },
-            pylsp_mypy = { enabled = true },
-            pyls_isort = { enabled = true },
-            jedi_completion = { enabled = false },
-            jedi_definition = { enabled = false },
-            jedi_hover = { enabled = false },
-            jedi_references = { enabled = false },
-            jedi_rename = { enabled = false },
+            flake8              = { enabled = true },
+            black               = { enabled = true, line_length = 120 },
+            pylsp_mypy          = { enabled = true },
+            pyls_isort          = { enabled = true },
+            pylint              = { enabled = true },
+            jedi_completion     = { enabled = false },
+            jedi_definition     = { enabled = false },
+            jedi_hover          = { enabled = false },
+            jedi_references     = { enabled = false },
+            jedi_rename         = { enabled = false },
             jedi_signature_help = { enabled = false },
-            jedi_symbols = { enabled = false },
-            pycodestyle = { enabled = false },
-            pyflakes = { enabled = false },
-            mccabe = { enabled = false },
+            jedi_symbols        = { enabled = false },
+            pycodestyle         = { enabled = false },
+            pyflakes            = { enabled = false },
+            mccabe              = { enabled = false },
           },
         },
       },

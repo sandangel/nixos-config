@@ -4,7 +4,8 @@ return {
     event = 'BufEnter',
     config = true,
   },
-  { 'mrjones2014/smart-splits.nvim',
+  {
+    'mrjones2014/smart-splits.nvim',
     keys = { '<c-h>', '<c-j>', '<c-k>', '<c-l>' },
     build = './kitty/install-kittens.bash',
     config = function()
