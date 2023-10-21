@@ -1,5 +1,5 @@
 alias cat='bat --style full'
-alias ls='exa --group-directories-first --icons --sort time'
+alias ls='eza --group-directories-first --icons --sort time'
 alias ll="${aliases[ls]} -lg"
 alias l="${aliases[ll]} -a"
 alias ssh='TERM=xterm-256color ssh'

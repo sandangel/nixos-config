@@ -28,8 +28,9 @@
       . $XDG_CONFIG_HOME/zsh/config/utils.zsh
       . $XDG_CONFIG_HOME/zsh/woven.zsh
 
-      source ${pkgs.kubeswitch}/scripts/cleanup_handler_zsh.sh
-      source ${pkgs.kubeswitch}/hack/switch/switch.sh
+      source <(${pkgs.kubeswitch}/bin/switcher init zsh)
+      source <(${pkgs.kubeswitch}/bin/switcher completion zsh)
+      source <(compdef _switcher switch)
     '';
   };
   xdg.configFile."zsh/config".source = ./.;

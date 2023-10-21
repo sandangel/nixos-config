@@ -8,61 +8,29 @@
     bind
     binutils
     cachix
-    gcc
+    comic-code
+    eza
+    gh
     git
     glib
     glxinfo
     gnumake
     killall
-    vim
-    wl-clipboard
-    perl
-    xclip
-    xdg-utils
-    comic-code
-
-    exa
-    gh
-    go
-    grpcurl
-    istioctl
-    kind
     kubectl
     kubectx
     kubeswitch
+    perl
     pinniped
     postgresql
-    skaffold
-    vault
-    vcluster
     ssm-session-manager-plugin
-
-    (python3.withPackages (ps: with ps; [
-      pynvim
-      python-lsp-server
-      pyls-isort
-      python-lsp-black
-      pylsp-mypy
-      pylint
-      virtualenv
-    ]))
-
-    enchant2
-    lua-language-server
-    terraform-ls
-    gopls
-    rnix-lsp
-    tflint
+    terminus-nerdfont
     tree-sitter
-    trash-cli
-
-  ] ++ (with pkgs.nodePackages; [
-    dockerfile-language-server-nodejs
-    pnpm
-    pyright
-    vscode-langservers-extracted
-    yaml-language-server
-  ]);
+    vcluster
+    vim
+    wl-clipboard
+    xclip
+    xdg-utils
+  ];
 
   xdg.enable = true;
 
@@ -90,7 +58,6 @@
     MANPAGER = "sh -c 'col -bx | bat -l man -p'";
     PAGER = "less -FirSwX";
 
-    NIXOS_OZONE_WL = "1";
     GDK_SCALE = "2";
     QT_QPA_PLATFORM = "wayland";
     SDL_VIDEODRIVER = "wayland";
@@ -129,6 +96,7 @@
 
   programs.info.enable = true;
   programs.nix-index.enable = true;
+  programs.nix-index.enableZshIntegration = true;
   programs.jq.enable = true;
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;

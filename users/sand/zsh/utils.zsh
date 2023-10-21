@@ -35,3 +35,7 @@ function gdmb() {
     comm -12 <(git branch | sed "s/ *//g" | sort) <(git remote prune origin | sed "s/^.*origin\///g" | sort) | xargs -r -I % git branch -D %
   fi
 }
+
+function krj() {
+  kubectl get job $@ -o json | jq 'del(.spec.selector)' | jq 'del(.spec.template.metadata.labels)' | kubectl replace --force -f -
+}

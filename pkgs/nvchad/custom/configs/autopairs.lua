@@ -1,0 +1,27 @@
+local npairs = require 'nvim-autopairs'
+local Rule = require 'nvim-autopairs.rule'
+local conds = require 'nvim-autopairs.conds'
+
+-- setup cmp for autopairs
+local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+require('cmp').event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
+npairs.add_rules {
+  Rule(' ', ' '):with_pair(function(opts)
+    local pair = opts.line:sub(opts.col - 1, opts.col)
+    return vim.tbl_contains({ '()', '{}', '[]' }, pair)
+  end):with_move(conds.none()):with_cr(conds.none()):with_del(function(opts)
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    local context = opts.line:sub(col - 1, col + 2)
+    return vim.tbl_contains({ '(  )', '{  }', '[  ]' }, context)
+  end),
+  Rule('', ' )'):with_pair(conds.none()):with_move(function(opts)
+    return opts.char == ')'
+  end):with_cr(conds.none()):with_del(conds.none()):use_key ')',
+  Rule('', ' }'):with_pair(conds.none()):with_move(function(opts)
+    return opts.char == '}'
+  end):with_cr(conds.none()):with_del(conds.none()):use_key '}',
+  Rule('', ' ]'):with_pair(conds.none()):with_move(function(opts)
+    return opts.char == ']'
+  end):with_cr(conds.none()):with_del(conds.none()):use_key ']',
+}

@@ -2,22 +2,22 @@
 let
   whitesur-icon-theme = pkgs.whitesur-icon-theme;
   whitesur-gtk-theme = pkgs.whitesur-gtk-theme.overrideAttrs (o: rec {
-    # Latest commit at Aug 28th, 2023
-    version = "95cf2a9e531955c5fbf8da229374184cca82cfd7";
+    # Latest commit at Sep 25th, 2023
+    version = "56537e75fd405270ecee158767e0a38f8a0cfa8f";
     src = pkgs.fetchFromGitHub {
       owner = "vinceliuice";
       repo = o.pname;
       rev = version;
-      sha256 = "sha256-Bbt7ID4sE1qIN+w2AQ1VOhlSHTdV5dSzO+eArn6txWY=";
+      sha256 = "sha256-CIGV7xj98Zs0bZR5zt+BAuM9nZmDO+GGpqlQdBnrIiA=";
     };
   });
 
   gtk-theme = "WhiteSur-Dark";
-  icon-theme = "WhiteSur";
+  icon-theme = "WhiteSur-dark";
   # Remember to install wallpapers before make switch
   #   gh repo clone vinceliuice/WhiteSur-wallpapers
   #   cd WhiteSur-wallpapers && ./install-wallpapers.sh
-  picture-uri = "file:///home/${username}/.local/share/backgrounds/Ventura-light.jpg";
+  picture-uri = "file:///home/${username}/.local/share/backgrounds/Ventura-dark.jpg";
 in
 {
   home.file.".themes".source = "${whitesur-gtk-theme}/share/themes";
