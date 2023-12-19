@@ -11,6 +11,22 @@ local plugins = {
     end,
   },
   {
+    'stevearc/conform.nvim',
+    event = 'VeryLazy',
+    opts = {
+      formatters_by_ft = {
+        yaml = { 'yamlfmt' },
+        javascript = { 'prettierd' },
+        typescript = { 'prettierd' },
+        terraform = { 'terraform_fmt' },
+        go = { 'goimports' },
+      },
+      format_on_save = {
+        lsp_fallback = true,
+      },
+    },
+  },
+  {
     'mbbill/undotree',
     cmd = 'UndotreeToggle',
     init = function()
@@ -26,13 +42,29 @@ local plugins = {
     end
   },
   {
-    'iamcco/markdown-preview.nvim',
-    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
-    build = 'cd app && npx --yes yarn install',
-    init = function()
-      vim.g.mkdp_filetypes = { 'markdown' }
-    end,
-    ft = { 'markdown' },
+    'wallpants/github-preview.nvim',
+    cmd = { 'GithubPreviewToggle' },
+    config = true,
+  },
+  {
+    'nomnivore/ollama.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    cmd = { 'Ollama' },
+    keys = {
+      {
+        '<leader>a',
+        '<cmd>lua require("ollama").prompt("Raw")<CR>',
+        desc = 'Ollama prompt',
+        mode = { 'n', 'x' },
+      },
+    },
+    ---@type Ollama.Config
+    opts = {
+      url = 'http://172.16.129.1:11434',
+      model = 'solar:latest',
+    }
   },
   {
     'rust-lang/rust.vim',
@@ -40,15 +72,6 @@ local plugins = {
     init = function()
       vim.g.rustfmt_autosave = 1
     end,
-  },
-  {
-    'hashivim/vim-terraform',
-    ft = 'terraform',
-    init = function()
-      vim.g.terraform_align = 1
-      vim.g.terraform_fold_section = 1
-      vim.g.terraform_fmt_on_save = 1
-    end
   },
   {
     'mrjones2014/smart-splits.nvim',
@@ -66,9 +89,17 @@ local plugins = {
     },
   },
   {
+    'brenton-leighton/multiple-cursors.nvim',
+    config = true,
+    keys = {
+      { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i' }, desc = 'Add cursor one line down' },
+      { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i' }, desc = 'Add cursor one line up' },
+      { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i' }, desc = 'Add or delete cursor at mouse position' },
+    },
+  },
+  {
     'rcarriga/nvim-notify',
     opts = {
-      background_colour = '#61afef',
       timeout = 2000,
       max_height = function()
         return math.floor(vim.o.lines * 0.75)
@@ -80,22 +111,17 @@ local plugins = {
   },
   {
     'folke/noice.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', 'NvChad/ui' },
-    event = 'VeryLazy',
+    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify' },
+    lazy = false,
     ---@type NoiceConfig
     opts = {
       lsp = {
         progress = { enabled = false },
-        override = {
-          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-          ['vim.lsp.util.stylize_markdown'] = true,
-          ['cmp.entry.get_documentation'] = true,
-        },
-        signature = { enabled = false },
+        signature = { enabled = false, silent = true, },
+        hover = { enabled = false, silent = true, },
       },
       presets = {
         command_palette = true, -- position the cmdline and popupmenu together
-        lsp_doc_border = true,  -- add a border to hover docs and signature help
       },
     },
     config = function(_, opts)
@@ -130,6 +156,11 @@ local plugins = {
       require('nvim-treesitter.install').compilers = { 'gcc' }
       require('nvim-treesitter.configs').setup(opts)
     end,
+  },
+  {
+    'nvim-pack/nvim-spectre',
+    event = 'VeryLazy',
+    config = true,
   },
   {
     'tpope/vim-abolish',

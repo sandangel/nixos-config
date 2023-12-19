@@ -12,8 +12,3 @@ kubeconfigStores:
     showPrefix: false
     paths:
       - ~/.kube/ziot/
-  - kind: filesystem
-    kubeconfigName: "config"
-    showPrefix: false
-    paths:
-      - ~/.kube/

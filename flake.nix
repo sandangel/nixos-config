@@ -1,6 +1,8 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixGL.url = "github:nix-community/nixGL";
+    nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv";
 
@@ -15,7 +17,7 @@
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = inputs@{ flake-parts, nixpkgs, home-manager, neovim, devenv, ... }:
+  outputs = inputs@{ self, flake-parts, nixpkgs, home-manager, neovim, devenv, nixGL, ... }:
     let
       username = "sand";
     in
@@ -24,46 +26,53 @@
       debug = true;
 
       imports = [
-        inputs.flake-parts.flakeModules.easyOverlay
         inputs.devenv.flakeModule
       ];
 
       perSystem = { config, self', inputs', pkgs, system, lib, devenv, ... }: {
         devenv.shells.default = {
           languages.nix.enable = true;
-          languages.javascript.enable = true;
-          languages.go.enable = true;
-          languages.rust = {
-            enable = true;
-            channel = "nightly";
-            components = [ "rustc" "cargo" "clippy" "rustfmt" ];
-          };
-        };
-        packages = with pkgs; {
-          neovim-nightly = neovim.packages.${system}.neovim;
-          kubeswitch = kubeswitch.overrideAttrs (o: rec {
-            postInstall = ''
-              mv $out/bin/main $out/bin/switcher
-            '';
-          });
-          comic-code = callPackage ./pkgs/comic-code { };
-          nvchad = callPackage ./pkgs/nvchad { };
         };
       };
 
+      flake.overlays.default = final: prev: with prev; {
+        neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
+        kubeswitch = kubeswitch.overrideAttrs (o: rec {
+          postInstall = ''
+            mv $out/bin/main $out/bin/switcher
+          '';
+        });
+        comic-code = callPackage ./pkgs/comic-code { };
+        nvchad = callPackage ./pkgs/nvchad { };
+        nixGL = nixGL.packages.${final.stdenv.system}.default;
+      };
+
       flake.homeConfigurations.${username} = withSystem "aarch64-linux" ({ system, config, ... }:
-        home-manager.lib.homeManagerConfiguration {
+        home-manager.lib.homeManagerConfiguration rec {
           pkgs = import inputs.nixpkgs {
             inherit system;
             config.allowUnfree = true;
             overlays = [
-              (_: prev: with prev; {
-                inherit (config.packages) neovim-nightly kubeswitch comic-code nvchad;
-              })
+              self.overlays.default
             ];
           };
           extraSpecialArgs = { inherit username; };
           modules = [
+            # Pin nixpkgs version in registry to speed up nix search and other functionalities
+            {
+              nix.registry.nixpkgs.flake = nixpkgs;
+              nix.package = pkgs.nix;
+              nix.settings.accept-flake-config = true;
+              nix.settings.auto-optimise-store = true;
+              nix.settings.extra-experimental-features = [ "flakes" ];
+              nix.settings.extra-trusted-users = [ username ];
+              nix.settings.extra-trusted-public-keys = [
+                "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+              ];
+              nix.settings.extra-trusted-substituters = [
+                "https://devenv.cachix.org"
+              ];
+            }
             ./users/${username}/home.nix
           ];
         });

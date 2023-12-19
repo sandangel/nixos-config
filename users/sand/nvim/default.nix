@@ -1,8 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   home.packages = with pkgs; [
     nvchad
+    bun
   ];
   programs.neovim = {
     enable = true;
@@ -14,7 +15,32 @@
       gcc
       helm-ls
       trash-cli
-    ];
+      lua-language-server
+      rnix-lsp
+      pyright
+      vscode-langservers-extracted
+      yaml-language-server
+      actionlint
+      gopls
+      rust-analyzer
+      terraform-ls
+      tflint
+      tfsec
+      yamlfmt
+      yamllint
+      (python3.withPackages (ps: with ps; [
+        python-lsp-server
+        pyls-isort
+        python-lsp-black
+        pylsp-mypy
+        python-lsp-ruff
+        ruff-lsp
+      ]))
+    ] ++ (with pkgs.nodePackages; [
+      typescript-language-server
+      docker-compose-language-service
+      dockerfile-language-server-nodejs
+    ]);
     extraLuaPackages = ps: with ps; [ sqlite ];
   };
 

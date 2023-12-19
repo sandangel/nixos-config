@@ -10,15 +10,17 @@ M.general = {
     ['y'] = { 'y`]', 'Yank' },
     ['p'] = { '"_dP', 'Paste no yank' },
   },
-  v = {
-    ['<'] = { '<gv', 'Indent left' },
-    ['>'] = { '>gv', 'Indent right' },
-  },
   n = {
-    ['j'] = { [[v:count || mode(1)[0:1] == 'no' ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']], 'Move down', opts = {
-      expr = true } },
-    ['k'] = { [[v:count || mode(1)[0:1] == 'no' ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']], 'Move up', opts = {
-      expr = true } },
+    ['j'] = {
+      [[v:count || mode(1)[0:1] == 'no' ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']],
+      'Move down',
+      opts = { expr = true }
+    },
+    ['k'] = {
+      [[v:count || mode(1)[0:1] == 'no' ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
+      'Move up',
+      opts = { expr = true }
+    },
     -- nvim default key map which does not have desc
     ['gO'] = { 'gO', 'Show TOC' },
     ['Q'] = { '@q', 'Replay' },
@@ -40,7 +42,7 @@ M.general = {
   t = {
     ['<A-left>'] = { '<C-left>', 'Move one word left' },
     ['<A-right>'] = { '<C-right>', 'Move one word right' },
-    ['<C-x>'] = { vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true), 'Escape terminal mode' },
+    ['<Esc>'] = { vim.api.nvim_replace_termcodes('<C-\\><C-n>', true, true, true), 'Escape terminal mode' },
   },
 }
 
@@ -77,6 +79,12 @@ M.smart_splits = {
     ['<C-k>'] = { function() require('smart-splits').move_cursor_up() end, 'Window up' },
   },
   n = {
+    ['<C-h>'] = { function() require('smart-splits').move_cursor_left() end, 'Window left' },
+    ['<C-l>'] = { function() require('smart-splits').move_cursor_right() end, 'Window right' },
+    ['<C-j>'] = { function() require('smart-splits').move_cursor_down() end, 'Window down' },
+    ['<C-k>'] = { function() require('smart-splits').move_cursor_up() end, 'Window up' },
+  },
+  t = {
     ['<C-h>'] = { function() require('smart-splits').move_cursor_left() end, 'Window left' },
     ['<C-l>'] = { function() require('smart-splits').move_cursor_right() end, 'Window right' },
     ['<C-j>'] = { function() require('smart-splits').move_cursor_down() end, 'Window down' },
@@ -119,7 +127,6 @@ M.fzf_lua = {
     ['<leader>j'] = { function() require('fzf-lua').files() end, 'Project files' },
     ['<leader>J'] = { function() require('fzf-lua').files({ cwd = vim.fn.expand '%:p:h' }) end, 'CWD files' },
     ['<leader>g'] = { function() require('fzf-lua').git_status() end, 'Git status' },
-    ['<leader>a'] = { function() require('fzf-lua').buffers() end, 'Buffers' },
     ['<leader>f'] = { function() require('fzf-lua').grep_project() end, 'Grep project' },
     ['<leader>F'] = { function() require('fzf-lua').grep_project({ cwd = vim.fn.expand '%:p:h' }) end, 'Grep CWD' },
     ['<leader>l'] = { function() require('fzf-lua').blines() end, 'Grep buffer lines' },
@@ -273,6 +280,12 @@ M.gitsigns = {
       'Reset buffer',
     },
   },
+}
+
+M.spectre = {
+  n = {
+    ['<leader>S'] = { '<cmd>lua require("spectre").toggle()<CR>', 'Toggle Spectre' },
+  }
 }
 
 M.abolish = {

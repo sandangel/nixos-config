@@ -16,6 +16,11 @@ M.ui = {
   theme = 'onedark',
   transparency = true,
   lsp_semantic_tokens = true,
+  lsp = {
+    signature = {
+      disabled = true,
+    },
+  },
 
   statusline = {
     theme = 'minimal',
@@ -58,10 +63,6 @@ M.ui = {
         return branch_name .. added .. changed .. removed
       end)()
     end,
-  },
-
-  tabufline = {
-    enabled = false,
   },
 
   hl_override = highlights.override,

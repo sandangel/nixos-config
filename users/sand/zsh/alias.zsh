@@ -1,7 +1,4 @@
 alias cat='bat --style full'
-alias ls='eza --group-directories-first --icons --sort time'
-alias ll="${aliases[ls]} -lg"
-alias l="${aliases[ll]} -a"
 alias ssh='TERM=xterm-256color ssh'
 alias tf="terraform"
 alias k="kubectl";
@@ -11,7 +8,6 @@ alias kd="kubectl describe";
 alias kgp="kubectl get po";
 alias kaf="kubectl apply -f";
 alias kdf="kubectl delete -f";
-alias lg="lazygit";
 alias g="git";
 alias ga="git add";
 alias gb="git branch";
@@ -20,7 +16,14 @@ alias gco="git checkout";
 alias gd="git diff";
 alias gl="git pull";
 alias gp="git push";
+#
+# Override ghostscript. Adding aliases in programs.git does not work.
+alias gs="git status";
 alias gst="git status";
+
 alias pbcopy="wl-copy";
 alias pbpaste="wl-paste";
 alias sw="switch";
+
+# Woven
+alias tfinfra="ccli run --profile mdp-infra-admin terraform --"

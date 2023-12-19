@@ -64,3 +64,17 @@ for _, plugin in pairs(enable_providers) do
   vim.g['loaded_' .. plugin] = nil
   vim.cmd('runtime ' .. plugin)
 end
+
+vim.api.nvim_create_autocmd({ 'BufAdd', 'BufEnter' }, {
+  callback = function()
+    vim.t.bufs = vim.tbl_filter(function(buf)
+      return vim.api.nvim_get_option_value('modified', { buf = buf })
+    end, vim.t.bufs)
+  end,
+})
+
+if vim.g.neovide then
+  vim.opt.guifont = { 'Comic Code Ligatures', 'Symbols Nerd Font', ':h11' }
+  vim.g.neovide_transparency = 0.8
+  vim.g.neovide_padding_top = 10
+end

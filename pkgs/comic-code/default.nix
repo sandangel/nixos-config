@@ -2,7 +2,7 @@
 stdenvNoCC.mkDerivation {
   name = "comic-code";
   version = "0.1.0";
-  src = /nix-config/pkgs/comic-code/comic-code.tar.gz;
+  src = /home/nix-config/pkgs/comic-code/comic-code.tar.gz;
   phases = [ "unpackPhase" "installPhase" ];
   installPhase = ''
     mkdir -p $out/share/fonts/truetype

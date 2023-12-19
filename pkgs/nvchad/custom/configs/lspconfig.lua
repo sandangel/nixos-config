@@ -3,8 +3,6 @@ local root_pattern = require('lspconfig.util').root_pattern
 
 local lspconfig = require 'lspconfig'
 
-vim.api.nvim_create_augroup('LSPConfigUser', { clear = true })
-
 local on_attach = function(client, bufnr)
   -- To avoid nvchad setting formatting to false, we store the value and reset them later
   local documentFormattingProvider = client.server_capabilities.documentFormattingProvider
@@ -14,21 +12,12 @@ local on_attach = function(client, bufnr)
 
   client.server_capabilities.documentFormattingProvider = documentFormattingProvider
   client.server_capabilities.documentRangeFormattingProvider = documentRangeFormattingProvider
-
-  if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      group = 'LSPConfigUser',
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.format { bufnr = bufnr }
-      end,
-    })
-  end
 end
 
 local servers = {
   'dockerls',
   'gopls',
+  'golangci_lint_ls',
   'helm_ls',
   'rnix',
   'rust_analyzer',
@@ -72,6 +61,7 @@ lspconfig.lua_ls.setup {
           [vim.fn.stdpath 'data' .. '/lazy/ui/nvchad_types'] = true,
           [vim.fn.stdpath 'data' .. '/lazy/lazy.nvim/lua/lazy'] = true,
           [vim.fn.stdpath 'data' .. '/lazy/noice.nvim/lua/noice'] = true,
+          [vim.fn.stdpath 'data' .. '/lazy/ollama.nvim'] = true,
         },
         maxPreload = 100000,
         preloadFileSize = 10000,
@@ -137,7 +127,16 @@ lspconfig.yamlls.setup {
         -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
         url = '',
       },
-      schemas = require('schemastore').yaml.schemas(),
+      schemas = require('schemastore').yaml.schemas {
+        replace = {
+          ['Deployer Recipe'] = {
+            description = 'YAML GitHub Workflow', -- description = "A Deployer yaml recipes",
+            fileMatch = { 'deploy.yml', 'deploy.yaml' },
+            name = 'Deployer Recipe',
+            url = 'https://json.schemastore.org/github-workflow.json' -- url = "https://raw.githubusercontent.com/deployphp/deployer/master/src/schema.json"
+          },
+        },
+      },
     },
     redhat = { telemetry = { enabled = false } },
   }
@@ -150,12 +149,12 @@ lspconfig.pylsp.setup {
     pylsp = {
       configurationSources = { 'flake8' },
       plugins = {
-        flake8              = { enabled = true },
-        black               = { enabled = true, line_length = 120 },
-        ruff                = { enabled = true, extendSelect = { 'I' }, },
         pylsp_mypy          = { enabled = true },
-        pyls_isort          = { enabled = true },
         pylint              = { enabled = true },
+        flake8              = { enabled = true },
+        black               = { enabled = true },
+        pyls_isort          = { enabled = true },
+        ruff                = { enabled = false },
         jedi_completion     = { enabled = false },
         jedi_definition     = { enabled = false },
         jedi_hover          = { enabled = false },

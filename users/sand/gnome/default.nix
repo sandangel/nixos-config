@@ -1,40 +1,37 @@
 { pkgs, lib, username, ... }:
 let
-  whitesur-icon-theme = pkgs.whitesur-icon-theme;
-  whitesur-gtk-theme = pkgs.whitesur-gtk-theme.overrideAttrs (o: rec {
-    # Latest commit at Sep 25th, 2023
-    version = "56537e75fd405270ecee158767e0a38f8a0cfa8f";
-    src = pkgs.fetchFromGitHub {
-      owner = "vinceliuice";
-      repo = o.pname;
-      rev = version;
-      sha256 = "sha256-CIGV7xj98Zs0bZR5zt+BAuM9nZmDO+GGpqlQdBnrIiA=";
+  fluent-icon-theme = pkgs.fluent-icon-theme.overrideAttrs (o: rec {
+    src = builtins.fetchGit {
+      url = "https://github.com/vinceliuice/Fluent-icon-theme";
+      ref = "refs/heads/master";
     };
   });
-
-  gtk-theme = "WhiteSur-Dark";
-  icon-theme = "WhiteSur-dark";
-  # Remember to install wallpapers before make switch
-  #   gh repo clone vinceliuice/WhiteSur-wallpapers
-  #   cd WhiteSur-wallpapers && ./install-wallpapers.sh
-  picture-uri = "file:///home/${username}/.local/share/backgrounds/Ventura-dark.jpg";
+  fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: rec {
+    src = builtins.fetchGit {
+      url = "https://github.com/vinceliuice/Fluent-gtk-theme";
+      ref = "refs/heads/master";
+    };
+  });
+  gtk-theme = "Fluent-Dark";
+  icon-theme = "Fluent-dark";
+  picture-uri = "file:///var/home/nix-config/images/wall.png";
 in
 {
-  home.file.".themes".source = "${whitesur-gtk-theme}/share/themes";
+  home.file.".themes".source = "${fluent-gtk-theme}/share/themes";
 
-  home.file.".icons".source = "${whitesur-icon-theme}/share/icons";
+  home.file.".icons".source = "${fluent-icon-theme}/share/icons";
 
   gtk = {
     enable = true;
 
     iconTheme = {
       name = icon-theme;
-      package = whitesur-icon-theme;
+      package = fluent-icon-theme;
     };
 
     theme = {
       name = gtk-theme;
-      package = whitesur-gtk-theme;
+      package = fluent-gtk-theme;
     };
 
     gtk3.extraConfig = {
@@ -185,6 +182,7 @@ in
         blur-my-shell.extensionUuid
         forge.extensionUuid
         user-themes.extensionUuid
+        transparent-top-bar-adjustable-transparency.extensionUuid
       ];
       favorite-apps = [ "org.gnome.Nautilus.desktop" "firefox.desktop" "org.gnome.Extensions.desktop" "org.gnome.Settings.desktop" "kitty.desktop" "org.gnome.tweaks.desktop" "ca.desrt.dconf-editor.desktop" "org.gnome.Software.desktop" ];
     };
@@ -249,7 +247,7 @@ in
     "org/gnome/shell/extensions/blur-my-shell/applications" = {
       blur = true;
       customize = false;
-      whitelist = [ "kitty" ];
+      whitelist = [ "kitty" "neovide" ];
     };
 
     "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {

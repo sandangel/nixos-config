@@ -7,11 +7,9 @@ stdenv.mkDerivation rec {
   pname = "nvchad";
   version = "2.0";
 
-  src = pkgs.fetchFromGitHub {
-    owner = "NvChad";
-    repo = "NvChad";
-    rev = "refs/heads/v2.0";
-    sha256 = "sha256-fliUVs7vNozCyMwA40iTCHYt5PXYPF8A0dUUxMkNYho=";
+  src = builtins.fetchGit {
+    url = "https://github.com/NvChad/NvChad";
+    ref = "refs/heads/v${version}";
   };
 
   init = pkgs.writeText "init.lua" (''

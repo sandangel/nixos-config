@@ -8,23 +8,15 @@ M.mason = {
   ensure_installed = {
     'lua-language-server',
     'rnix-lsp',
-    'ruff-lsp',
-    'ruff',
     'pyright',
     'typescript-language-server',
     'json-lsp',
     'dockerfile-language-server',
     'docker-compose-language-service',
     'yaml-language-server',
-    'flake8',
-    'isort',
     'actionlint',
-    'black',
     'gopls',
     'lua-language-server',
-    'mypy',
-    'pylint',
-    'python-lsp-server',
     'rust-analyzer',
     'terraform-ls',
     'tflint',
@@ -107,6 +99,9 @@ M.nvimtree = {
   end,
   git = {
     enable = true,
+  },
+  view = {
+    width = {} -- Adaptive size
   },
   renderer = {
     highlight_git = true,
