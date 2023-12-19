@@ -45,7 +45,12 @@ in
 
   # Note that the database is strongly-typed so you need to use the same types as described in the GSettings schema.
   dconf.settings = {
-    "org.gnome.desktop.interface" = {
+    "com/ftpix/transparentbar" = {
+      dark-full-screen = false;
+      transparency = 0;
+    };
+
+    "org/gnome/desktop/interface" = {
       clock-show-weekday = true;
       color-scheme = "prefer-dark";
       enable-hot-corners = false;
