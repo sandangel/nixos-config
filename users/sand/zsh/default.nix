@@ -16,6 +16,8 @@
       unset __fzf_dir
       . $XDG_CONFIG_HOME/zsh/config/nix.zsh
       . $XDG_CONFIG_HOME/zsh/config/alias.zsh
+      # There is a bug in home-manager zsh-abbr module that not sourcing the file
+      . $XDG_CONFIG_HOME/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/abbr.plugin.zsh
       . $XDG_CONFIG_HOME/zsh/config/kitty.zsh
       . $XDG_CONFIG_HOME/zsh/config/utils.zsh
 
@@ -23,6 +25,36 @@
       source <(${pkgs.kubeswitch}/bin/switcher completion zsh)
       source <(compdef _switcher switch)
     '';
+    zsh-abbr.enable = true;
+    zsh-abbr.abbreviations = {
+      cat = "bat --style full";
+      ssh = "TERM=xterm-256color ssh";
+      tf = "terraform";
+      k = "kubectl";
+      kn = "kubens";
+      kg = "kubectl get";
+      kd = "kubectl describe";
+      kgp = "kubectl get po";
+      kaf = "kubectl apply -f";
+      kdf = "kubectl delete -f";
+      g = "git";
+      ga = "git add";
+      gb = "git branch";
+      gc = "git commit --signoff";
+      gco = "git checkout";
+      gd = "git diff";
+      gl = "git pull";
+      gp = "git push";
+
+      gs = "git status";
+
+      pbcopy = "wl-copy";
+      pbpaste = "wl-paste";
+      sw = "switch";
+
+      # Woven
+      tfinfra = "ccli run --profile mdp-infra-admin terraform --";
+    };
   };
   xdg.configFile."zsh/config".source = ./.;
   xdg.configFile."zsh/config".recursive = true;
