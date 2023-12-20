@@ -11,12 +11,14 @@
     initExtra = ''
       export DIRENV_LOG_FORMAT=
 
+      # Set fzf folder for z4h so it won't install another fzf
       __fzf_dir=${pkgs.fzf}
       . $XDG_CONFIG_HOME/zsh/config/init.zsh
       unset __fzf_dir
-      . $XDG_CONFIG_HOME/zsh/config/nix.zsh
+
       # There is a bug in home-manager zsh-abbr module that not sourcing the file
       . $XDG_CONFIG_HOME/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/abbr.plugin.zsh
+
       . $XDG_CONFIG_HOME/zsh/config/kitty.zsh
       . $XDG_CONFIG_HOME/zsh/config/utils.zsh
 
