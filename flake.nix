@@ -62,7 +62,6 @@
             {
               nix.registry.nixpkgs.flake = nixpkgs;
               nix.package = pkgs.nix;
-              nix.settings.accept-flake-config = true;
               nix.settings.extra-trusted-users = [ username ];
               nix.settings.extra-trusted-public-keys = [
                 "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
