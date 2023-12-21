@@ -1,19 +1,19 @@
-# NixOS System Configurations
+# Nix on Fedora SilverBlue Configurations
 
-This repository contains my NixOS system configurations. This repository
+This repository contains my Fedora SilverBlue configurations. This repository
 isn't meant to be a turnkey solution to copying my setup or learning Nix,
 so I want to apologize to anyone trying to look for something "easy". I've
 tried to use very simple Nix practices wherever possible, but if you wish
-to copy from this, you'll have to learn the basics of Nix, NixOS, etc.
+to copy from this, you'll have to learn the basics of Nix, etc.
 
-I don't claim to be an expert at Nix or NixOS, so there are certainly
+I don't claim to be an expert at Nix, so there are certainly
 improvements that could be made! Feel free to suggest them, but please don't
 be offended if I don't integrate them, I value having my config work over
 having it be optimal.
 
 ## How I Work
 
-I like to use macOS as the host OS and NixOS within a VM as my primary
+I like to use macOS as the host OS and Fedora SilverBlue within a VM as my primary
 development environment. I use the graphical applications on the host
 (browser, calendars, mail app, iMessage, etc.) but I do almost everything
 dev-related in the VM (editor, compilation, databases, etc.).
@@ -57,99 +57,76 @@ this in the VM and only do terminal UIs. Terminal workflows have no performance
 issues ever.
 
 **This can't actually work! This only works on a powerful workstation!**
-I've been doing this for almost  2 years now, and I've developed
-[a lot of very real software](https://www.hashicorp.com/). It works for me.
-I also use this VM on a MacBook Pro (to be fair, it is maxed out on specs),
+I've been doing this for almost  2 years now. It works for me.
+I also use this VM on a M1 MacBook Pro with 64GiB RAM (to be fair, it is maxed out on specs),
 and I have no issues whatsoever.
 
-**Does this work with Apple Silicon Macs?** Yes, using the VMware Fusion
-Public Preview (at the time of writing) or [UTM](https://getutm.app).
-There are some issues, but its entirely workable. I've been using an
-Apple Silicon Mac full time since Nov 2021 with this setup.
+**Does this work with Apple Silicon Macs?** Yes, I'm running this on Apple M1
 
 ## Setup
-
-Video: https://www.youtube.com/watch?v=ubDMLoWz76U
-
-**Note:** This setup guide will cover VMware Fusion because that is the
-hypervisor I use day to day. The configurations in this repository also
-work with UTM (see `vm-aarch64-utm`) but I'm not using that full time so they
-may break from time to time.
-
-If you need an ISO for NixOS, you can build your own in the `iso` folder.
-For x86-64, I usually just download the official ISO, but I build the
-ISO from scratch for aarch64. There is a make target `iso/nixos.iso` you can use for
-building an ISO. You'll also need a `docker` running on your machine for building an ISO.
-
-```
-$ make iso/nixos.iso
-```
-
-You can also download ISOs from [Hydra](https://hydra.nixos.org/project/nixos),
-including aarch64 ISOs. I've found that in qemu for example, these ISOs work
-while my Docker-built one doesn't, and I'm not sure why!
 
 Create a VMware Fusion VM with the following settings. My configurations
 are made for VMware Fusion exclusively currently and you will have issues
 on other virtualization solutions without minor changes.
 
-  * ISO: NixOS 21.11 or later.
-  * Disk: SATA 150 GB+
+  * ISO: Fedora SilverBlue 39 or later.
+  * Disk: 300 GB+
   * CPU/Memory: I give at least half my cores and half my RAM, as much as you can.
   * Graphics: Full acceleration, full resolution, maximum graphics RAM.
   * Network: Shared with my Mac.
-  * Remove sound card, remove video camera.
-  * Profile: Disable almost all keybindings
+  * Remove sound card, remove video camera if you like
+  * Profile: Disable almost all keybindings, except mapping CMD+C and CMD+V to Ctrl+C and Ctrl+V
 
-Boot the VM, and using the graphical console, change the root password to "root":
+Boot the VM, follow Fedora SilverBlue GUI installation guide.
 
-```
-$ sudo su
-$ passwd
-# change to root
-```
+After the VM reboots, install Nix for ostree distro:
 
-Run `ifconfig` and get the IP address of the first device. It is probably
-`192.168.58.XXX`, but it can be anything. In a terminal with this repository
-set this to the `NIXADDR` env var:
-
-```
-$ export NIXADDR=<VM ip address>
+```zsh
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install ostree
 ```
 
-The Makefile assumes an Intel processor by default. If you are using an
-ARM-based processor (M1, etc.), you must change `NIXNAME` so that the ARM-based
-configuration is used:
+Then clone the repo and run home-manager to apply all configurations:
 
-```
-$ export NIXNAME=vm-aarch64
-```
-
-**Other Hypervisors:** If you are using Parallels, use `vm-aarch64-prl`.
-If you are using UTM, use `vm-aarch64-utm`. Note that the environments aren't
-_exactly_ equivalent between hypervisors but they're very close and they
-all work.
-
-Perform the initial bootstrap. This will install NixOS on the VM disk image
-but will not setup any other configurations yet. This prepares the VM for
-any NixOS customization:
-
-```
-$ make vm/bootstrap0
+```zsh
+sudo mkdir -p /home/nix-config
+sudo chown -R $USER:$USER /nix-config
+git clone https://github.com/sandangel/nixos-config /home/nix-config
+cd /home/nix-config
+nix run home-manager/master -- init --switch --impure --flake ".#$USER"
+make switch
 ```
 
-After the VM reboots, run the full bootstrap, this will finalize the
-NixOS customization using this configuration:
+Activate ZSH
 
+```zsh
+sudo echo /home/$USER/.nix-profile/bin/zsh >> /etc/shells
+chsh -s $(which zsh)
 ```
-$ make vm/bootstrap
+
+Mount host shared folders
+
+```zsh
+sudo mkdir -p /home/host
+sudo echo "vmhgfs-fuse    /home/host   fuse    defaults,allow_other    0    0" >> /etc/fstab
+```
+
+Mount host shared folders temporarily for copying data:
+
+```zsh
+/usr/bin/vmhgfs-fuse .host:/ /home/host -o subtype=vmhgfs-fuse,allow_other
+```
+
+Optional: Fix GDM monitor resolution
+
+```zsh
+sudo cp -f ~/.config/monitors.xml ~gdm/.config/monitors.xml
+sudo chown $(id -u gdm):$(id -g gdm) ~gdm/.config/monitors.xml
+sudo restorecon ~gdm/.config/monitors.xml
 ```
 
 You should have a graphical functioning dev VM.
 
-At this point, I never use Mac terminals ever again. I clone this repository
-in my VM and I use the other Make tasks such as `make test`, `make switch`, etc.
-to make changes my VM.
+At this point, I never use Mac terminals ever again. I run `make switch` to make changes my VM.
 
 **Config for macOS host:**
 
@@ -158,43 +135,4 @@ xcode-select --install
 defaults write -g KeyRepeat -float 0.7 && defaults write -g InitialKeyRepeat -int 10
 ```
 
-Then install Raycast, Shottr, Firefox, Karabiner
-
-## FAQ
-
-```zsh
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-```
-
-Install home-manager and switch configs
-
-```zsh
-sudo mkdir -p /nix-config
-sudo chown -R sand:sand /nix-config
-git clone https://github.com/sandangel/nixos-config /nix-config
-cd /nix-config
-nix run home-manager/master -- init --switch --impure --flake ".#sand"
-make switch
-```
-
-Activate ZSH
-
-```zsh
-sudo echo /home/sand/.nix-profile/bin/zsh >> /etc/shells
-chsh -s $(which zsh)
-```
-
-Fix GDM monitor resolution
-
-```zsh
-sudo cp -f ~/.config/monitors.xml ~gdm/.config/monitors.xml
-sudo chown $(id -u gdm):$(id -g gdm) ~gdm/.config/monitors.xml
-sudo restorecon ~gdm/.config/monitors.xml
-```
-
-Mount host shared folders
-
-```zsh
-sudo mkdir -p /host
-sudo echo "vmhgfs-fuse    /host   fuse    defaults,allow_other    0    0" >> /etc/fstab
-```
+Then install Raycast, Shottr, Firefox, Karabiner. Will need to restart after finished.
