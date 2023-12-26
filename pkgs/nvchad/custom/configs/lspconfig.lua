@@ -21,6 +21,7 @@ local servers = {
   'helm_ls',
   'rnix',
   'rust_analyzer',
+  'ruff_lsp',
 }
 
 for _, lsp in ipairs(servers) do
@@ -150,11 +151,11 @@ lspconfig.pylsp.setup {
       configurationSources = { 'flake8' },
       plugins = {
         pylsp_mypy          = { enabled = true },
-        pylint              = { enabled = true },
-        flake8              = { enabled = true },
-        black               = { enabled = true },
-        pyls_isort          = { enabled = true },
-        ruff                = { enabled = false },
+        pylint              = { enabled = false },
+        flake8              = { enabled = false },
+        black               = { enabled = false },
+        pyls_isort          = { enabled = false },
+        ruff                = { enabled = true, lineLength = 120 },
         jedi_completion     = { enabled = false },
         jedi_definition     = { enabled = false },
         jedi_hover          = { enabled = false },
