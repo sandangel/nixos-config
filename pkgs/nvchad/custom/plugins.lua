@@ -179,6 +179,7 @@ local plugins = {
   { 'williamboman/mason.nvim',             opts = overrides.mason, },
   { 'nvim-tree/nvim-tree.lua',             opts = overrides.nvimtree, },
   { 'NvChad/nvterm',                       enabled = false, },
+  { 'williamboman/mason.nvim',             enabled = false, },
   { 'lukas-reineke/indent-blankline.nvim', enabled = false, },
   { 'whiteinge/diffconflicts',             cmd = 'DiffConflicts', },
   { 'machakann/vim-textobj-delimited',     event = 'VeryLazy', },

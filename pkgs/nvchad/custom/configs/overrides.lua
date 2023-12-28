@@ -4,28 +4,6 @@ M.treesitter = {
   ensure_installed = 'all',
 }
 
-M.mason = {
-  ensure_installed = {
-    'lua-language-server',
-    'rnix-lsp',
-    'pyright',
-    'typescript-language-server',
-    'json-lsp',
-    'dockerfile-language-server',
-    'docker-compose-language-service',
-    'yaml-language-server',
-    'actionlint',
-    'gopls',
-    'lua-language-server',
-    'rust-analyzer',
-    'terraform-ls',
-    'tflint',
-    'tfsec',
-    'yamlfmt',
-    'yamllint',
-  },
-}
-
 -- git support in nvimtree
 M.nvimtree = {
   on_attach = function(bufnr)
