@@ -5,7 +5,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "nvchad";
-  version = "2.0";
+  version = "3.0";
 
   src = builtins.fetchGit {
     url = "https://github.com/NvChad/NvChad";

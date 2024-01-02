@@ -16,11 +16,6 @@ M.ui = {
   theme = 'onedark',
   transparency = true,
   lsp_semantic_tokens = true,
-  lsp = {
-    signature = {
-      disabled = true,
-    },
-  },
 
   statusline = {
     theme = 'minimal',
