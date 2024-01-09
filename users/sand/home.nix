@@ -37,17 +37,6 @@
     ../../modules/zsh
   ];
 
-  xdg.desktopEntries.kitty = {
-    name = "kitty";
-    genericName = "Terminal emulator";
-    exec = "${pkgs.nixGL}/bin/nixGL ${pkgs.kitty}/bin/kitty --start-as=maximized";
-    icon = "kitty";
-    comment = "Fast, feature-rich, GPU based terminal";
-    categories = [ "System" "TerminalEmulator" ];
-  };
-
-  xdg.configFile."autostart/kitty.desktop".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.nix-profile/share/applications/kitty.desktop";
-
   home.sessionVariables = with pkgs; rec {
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
