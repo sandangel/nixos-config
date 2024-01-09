@@ -89,7 +89,7 @@ Then clone the repo and run home-manager to apply all configurations:
 
 ```zsh
 sudo mkdir -p /home/nix-config
-sudo chown -R $USER:$USER /nix-config
+sudo chown -R $USER:$USER //nix-config
 git clone https://github.com/sandangel/nixos-config /home/nix-config
 cd /home/nix-config
 nix run home-manager/master -- init --switch --impure --flake ".#$USER"

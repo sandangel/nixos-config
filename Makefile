@@ -4,7 +4,7 @@
 # VMware
 NIXADDR ?= 172.16.129.128
 NIXPORT ?= 22
-NIXUSER ?= sand
+NIXUSER ?= $(USER)
 
 # The block device prefix to use.
 #   - sda for SATA/IDE

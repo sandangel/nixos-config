@@ -28,6 +28,7 @@
       tfsec
       yamlfmt
       yamllint
+      tree-sitter
       (python3.withPackages (ps: with ps; [
         python-lsp-server
         pyls-isort

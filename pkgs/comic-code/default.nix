@@ -1,8 +1,8 @@
-{ stdenvNoCC }:
+{ stdenvNoCC, stdenv }:
 stdenvNoCC.mkDerivation {
   name = "comic-code";
   version = "0.1.0";
-  src = /home/nix-config/pkgs/comic-code/comic-code.tar.gz;
+  src = if stdenv.isLinux then /home/nix-config/pkgs/comic-code/comic-code.tar.gz else /Users/nix-config/pkgs/comic-code/comic-code.tar.gz;
   phases = [ "unpackPhase" "installPhase" ];
   installPhase = ''
     mkdir -p $out/share/fonts/truetype
