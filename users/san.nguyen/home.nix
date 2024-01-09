@@ -3,6 +3,9 @@
 {
   home.username = username;
   home.homeDirectory = "/Users/${username}";
+  home.packages = with pkgs; [
+    gnused
+  ];
   imports = [
     ../../modules/direnv
     ../../modules/git

@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
   };
 
   init = pkgs.writeText "init.lua" (''
-    vim.g.sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.so'
+    vim.g.sqlite_clib_path = '${pkgs.sqlite.out}/lib/${if stdenv.isLinux then "libsqlite3.so" else "libsqlite3.dylib"}'
   '' + builtins.readFile ./custom/init.lua);
 
   installPhase = ''

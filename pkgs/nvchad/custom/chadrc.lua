@@ -61,7 +61,25 @@ M.ui = {
   },
 
   hl_override = highlights.override,
-  extended_integrations = { 'notify' }
+}
+
+M.base46 = {
+  integrations = {
+    'cmp',
+    'defaults',
+    'devicons',
+    'git',
+    'lsp',
+    'notify',
+    'nvcheatsheet',
+    'nvimtree',
+    'statusline',
+    'syntax',
+    'tbline',
+    'telescope',
+    'treesitter',
+    'whichkey',
+  },
 }
 
 M.plugins = 'custom.plugins'
