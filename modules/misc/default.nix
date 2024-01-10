@@ -3,13 +3,19 @@
 {
   home.stateVersion = "22.05";
   home.packages = with pkgs; [
+    bind
+    binutils
+    cachix
     comic-code
     gh
     git
+    glib
     gnumake
-    ssm-session-manager-plugin
+    killall
     nerdfonts
+    ssm-session-manager-plugin
     vim
+    xdg-utils
   ];
 
   home.sessionVariables = with pkgs; rec {

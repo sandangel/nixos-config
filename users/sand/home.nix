@@ -4,17 +4,9 @@
   home.username = username;
   home.homeDirectory = "/home/${username}";
   home.packages = with pkgs; [
-    bind
-    binutils
-    cachix
-    glib
     glxinfo
-    killall
-    perl
-    postgresql
     wl-clipboard
     xclip
-    xdg-utils
 
     # To run GUI apps
     nixGL
