@@ -1,1 +1,1 @@
---start-as=maximized --listen-on=unix:/tmp/mykitty
+--start-as=maximized --listen-on=unix:/tmp/mykitty -o font_size=14
