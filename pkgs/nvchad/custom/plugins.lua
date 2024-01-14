@@ -142,6 +142,13 @@ local plugins = {
     opts = require 'custom.configs.cmp',
   },
   {
+    'garyhurtz/cmp_kitty',
+    dependencies = { 'hrsh7th/nvim-cmp' },
+    init = function()
+      require('cmp_kitty'):setup()
+    end
+  },
+  {
     'ibhagwan/fzf-lua',
     config = function()
       require 'custom.configs.fzf'

@@ -42,21 +42,29 @@ return {
     end,
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
     {
-      name = 'buffer',
-      option = {
-        get_bufnrs = function()
-          return vim.api.nvim_list_bufs()
-        end,
-      },
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+      { name = 'nvim_lua' },
+      { name = 'path' },
     },
-    { name = 'nvim_lua' },
-    { name = 'path' },
     {
-      name = 'rg',
-      keyword_length = 3,
+      {
+        name = 'kitty',
+        keyword_length = 3,
+      },
+      {
+        name = 'buffer',
+        option = {
+          get_bufnrs = function()
+            return vim.api.nvim_list_bufs()
+          end,
+        },
+      },
+      {
+        name = 'rg',
+        keyword_length = 3,
+      },
     },
   }),
   experimental = {

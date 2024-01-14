@@ -6,6 +6,7 @@
   home.packages = with pkgs; [
     gnused
     coreutils
+    asitop
   ];
   imports = [
     ../../modules/direnv
