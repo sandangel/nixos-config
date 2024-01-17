@@ -7,6 +7,7 @@
     binutils
     cachix
     comic-code
+    devbox
     gh
     git
     glib
