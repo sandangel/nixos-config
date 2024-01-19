@@ -4,8 +4,11 @@
   home.username = username;
   home.homeDirectory = "/Users/${username}";
   home.packages = with pkgs; [
+    # System utilities
     gnused
     coreutils
+
+    # Apple Silicon monitoring tool
     asitop
   ];
   imports = [
