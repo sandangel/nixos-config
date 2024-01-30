@@ -10,6 +10,8 @@
 
     # Apple Silicon monitoring tool
     asitop
+
+    devbox
   ];
   imports = [
     ../../modules/direnv

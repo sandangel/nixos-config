@@ -63,7 +63,7 @@ local plugins = {
     ---@type Ollama.Config
     opts = {
       url = 'http://172.16.129.1:11434',
-      model = 'wizardcoder:33b',
+      model = 'codellama:70b-instruct',
     }
   },
   {
