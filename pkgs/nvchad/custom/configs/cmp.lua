@@ -49,8 +49,8 @@ return {
     { name = 'path' },
   }, {
     { name = 'buffer', },
-    { name = 'kitty',  keyword_length = 3 },
-    { name = 'rg',     keyword_length = 3 },
+    { name = 'kitty', },
+    { name = 'rg', },
   }),
   experimental = {
     ghost_text = true,
