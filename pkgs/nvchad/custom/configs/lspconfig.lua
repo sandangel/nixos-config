@@ -31,6 +31,10 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+require('sg').setup {
+  on_attach = on_attach,
+}
+
 lspconfig.lua_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -62,7 +66,7 @@ lspconfig.lua_ls.setup {
           [vim.fn.stdpath 'data' .. '/lazy/ui/nvchad_types'] = true,
           [vim.fn.stdpath 'data' .. '/lazy/lazy.nvim/lua/lazy'] = true,
           [vim.fn.stdpath 'data' .. '/lazy/noice.nvim/lua/noice'] = true,
-          [vim.fn.stdpath 'data' .. '/lazy/ollama.nvim'] = true,
+          [vim.fn.stdpath 'data' .. '/lazy/sg.nvim/lua/sg'] = true,
         },
         maxPreload = 100000,
         preloadFileSize = 10000,

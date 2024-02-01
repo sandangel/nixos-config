@@ -47,24 +47,17 @@ local plugins = {
     config = true,
   },
   {
-    'nomnivore/ollama.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    cmd = { 'Ollama' },
+    'sourcegraph/sg.nvim',
     keys = {
       {
         '<leader>a',
-        '<cmd>lua require("ollama").prompt("Raw")<CR>',
-        desc = 'Ollama prompt',
+        '<cmd>CodyToggle<CR>',
+        desc = 'Cody chat',
         mode = { 'n', 'x' },
       },
     },
-    ---@type Ollama.Config
-    opts = {
-      url = 'http://172.16.129.1:11434',
-      model = 'codellama:70b-instruct',
-    }
+    event = 'VeryLazy',
+    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
   },
   {
     'rust-lang/rust.vim',
@@ -100,6 +93,7 @@ local plugins = {
   {
     'rcarriga/nvim-notify',
     opts = {
+      background_colour = '#1e222a',
       timeout = 2000,
       max_height = function()
         return math.floor(vim.o.lines * 0.75)

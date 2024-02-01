@@ -4,6 +4,7 @@
   home.packages = with pkgs; [
     nvchad
     bun
+    nodejs
   ];
   programs.neovim = {
     enable = true;
