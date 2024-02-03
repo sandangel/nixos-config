@@ -5,6 +5,7 @@ local plugins = {
   {
     'neovim/nvim-lspconfig',
     dependencies = { 'folke/neodev.nvim', 'b0o/schemastore.nvim', },
+    event = 'VeryLazy',
     config = function()
       require 'plugins.configs.lspconfig'
       require 'custom.configs.lspconfig'

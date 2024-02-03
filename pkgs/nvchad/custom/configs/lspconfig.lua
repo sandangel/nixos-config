@@ -33,6 +33,8 @@ end
 
 require('sg').setup {
   on_attach = on_attach,
+  node_executable = 'bun',
+  skip_node_check = true,
 }
 
 lspconfig.lua_ls.setup {
