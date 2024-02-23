@@ -14,6 +14,7 @@
     gnumake
     killall
     nerdfonts
+    nurl
     ssm-session-manager-plugin
     vim
     xdg-utils
