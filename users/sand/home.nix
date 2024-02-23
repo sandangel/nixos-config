@@ -5,9 +5,6 @@
   home.homeDirectory = "/home/${username}";
   home.packages = with pkgs; [
     glxinfo
-    wl-clipboard
-    xclip
-
     # To run GUI apps
     nixGL
   ];

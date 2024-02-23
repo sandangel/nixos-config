@@ -116,6 +116,13 @@ Mount host shared folders temporarily for copying data:
 /usr/bin/vmhgfs-fuse .host:/ /home/host -o subtype=vmhgfs-fuse,allow_other
 ```
 
+Install wl-clipboard using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status
+
+```zsh
+rpm-ostree install wl-clipboard
+rpm-ostree override remove ghostscript
+```
+
 Optional: Fix GDM monitor resolution
 
 ```zsh
