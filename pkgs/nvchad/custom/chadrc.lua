@@ -15,7 +15,10 @@ end
 M.ui = {
   theme = 'onedark',
   transparency = true,
-  lsp_semantic_tokens = true,
+  lsp_semantic_tokens = false,
+  extended_integrations = {
+    'notify',
+  },
 
   statusline = {
     theme = 'minimal',
@@ -63,24 +66,25 @@ M.ui = {
   hl_override = highlights.override,
 }
 
-M.base46 = {
-  integrations = {
-    'cmp',
-    'defaults',
-    'devicons',
-    'git',
-    'lsp',
-    'notify',
-    'nvcheatsheet',
-    'nvimtree',
-    'statusline',
-    'syntax',
-    'tbline',
-    'telescope',
-    'treesitter',
-    'whichkey',
-  },
-}
+-- Settings in v3
+-- M.base46 = {
+--   integrations = {
+--     'cmp',
+--     'defaults',
+--     'devicons',
+--     'git',
+--     'lsp',
+--     'notify',
+--     'nvcheatsheet',
+--     'nvimtree',
+--     'statusline',
+--     'syntax',
+--     'tbline',
+--     'telescope',
+--     'treesitter',
+--     'whichkey',
+--   },
+-- }
 
 M.plugins = 'custom.plugins'
 
