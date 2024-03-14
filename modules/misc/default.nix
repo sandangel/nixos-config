@@ -7,7 +7,6 @@
     binutils
     cachix
     comic-code
-    devbox
     gh
     git
     glib
@@ -18,6 +17,38 @@
     ssm-session-manager-plugin
     vim
     xdg-utils
+
+    fenix.stable.toolchain
+
+    (rye.overrideAttrs (o: rec {
+      version = "0.29.0";
+      src = fetchFromGitHub {
+        owner = "astral-sh";
+        repo = "rye";
+        rev = "refs/tags/${version}";
+        hash = "sha256-rNXzhJazOi815dhqviqtfSTM60Y/5ncKBVn2YhqcKJM=";
+      };
+      # https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/rust.section.md#vendoring-of-dependencies-vendoring-of-dependencies
+      cargoDeps = rustPlatform.importCargoLock {
+        lockFile = "${src}/Cargo.lock";
+        outputHashes = {
+          "dialoguer-0.10.4" = "sha256-WDqUKOu7Y0HElpPxf2T8EpzAY3mY8sSn9lf0V0jyAFc=";
+          "monotrail-utils-0.0.1" = "sha256-ydNdg6VI+Z5wXe2bEzRtavw0rsrcJkdsJ5DvXhbaDE4=";
+        };
+      };
+      doCheck = false;
+    }))
+
+    (hatch.overrideAttrs (_: rec {
+      version = "1.9.3";
+      src = fetchPypi {
+        pname = "hatch";
+        inherit version;
+        hash = "sha256-ZyAX40nFSPipV6X+6aovjPwsiplDBzeORahCeXK9+Nk=";
+      };
+      # pytest is failing because of sandbox environment
+      pytestCheckPhase = "echo true";
+    }))
   ];
 
   home.sessionVariables = with pkgs; rec {

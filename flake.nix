@@ -17,7 +17,7 @@
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = inputs@{ self, flake-parts, nixpkgs, home-manager, neovim, devenv, nixGL, ... }:
+  outputs = inputs@{ self, flake-parts, nixpkgs, home-manager, neovim, devenv, nixGL, fenix, ... }:
     let
       linux-user = "sand";
       mac-user = "san.nguyen";
@@ -70,6 +70,7 @@
             overlays = [
               self.overlays.default
               self.overlays.linux
+              fenix.overlays.default
             ];
           };
           extraSpecialArgs = { username = linux-user; };
@@ -87,6 +88,7 @@
             config.allowUnfree = true;
             overlays = [
               self.overlays.default
+              fenix.overlays.default
             ];
           };
           extraSpecialArgs = { username = mac-user; };

@@ -119,7 +119,7 @@ Mount host shared folders temporarily for copying data:
 Install wl-clipboard using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status
 
 ```zsh
-rpm-ostree install wl-clipboard
+rpm-ostree install wl-clipboard podman-docker podman-compose podman-plugins
 rpm-ostree override remove ghostscript
 ```
 
