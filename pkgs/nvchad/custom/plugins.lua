@@ -21,6 +21,7 @@ local plugins = {
         typescript = { 'prettierd' },
         terraform = { 'terraform_fmt' },
         go = { 'goimports' },
+        python = { 'ruff_format', 'ruff_fix' },
       },
       format_on_save = {
         lsp_fallback = true,

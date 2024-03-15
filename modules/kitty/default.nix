@@ -1,14 +1,14 @@
 { pkgs, config, stdenv, lib, ... }:
 lib.mkMerge [
   {
-    home.packages = with pkgs; [
-      kitty
-    ];
     xdg.configFile."kitty".source = ./.;
     xdg.configFile."kitty".recursive = true;
   }
 
   (lib.mkIf pkgs.stdenv.isLinux {
+    home.packages = with pkgs; [
+      kitty
+    ];
     xdg.desktopEntries.kitty = {
       name = "kitty";
       genericName = "Terminal emulator";
