@@ -17,7 +17,7 @@
       helm-ls
       trash-cli
       lua-language-server
-      rnix-lsp
+      nixd
       pyright
       vscode-langservers-extracted
       yaml-language-server
@@ -43,7 +43,6 @@
       docker-compose-language-service
       dockerfile-language-server-nodejs
     ]);
-    extraLuaPackages = ps: with ps; [ sqlite ];
   };
 
   xdg.configFile."nvim" = {

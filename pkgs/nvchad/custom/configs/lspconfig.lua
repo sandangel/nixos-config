@@ -19,7 +19,7 @@ local servers = {
   'gopls',
   'golangci_lint_ls',
   'helm_ls',
-  'rnix',
+  'nixd',
   'rust_analyzer',
   'ruff_lsp',
 }

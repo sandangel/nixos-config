@@ -84,7 +84,6 @@
   programs.eza.enable = true;
   programs.eza.icons = true;
   programs.eza.git = true;
-  programs.eza.enableAliases = true;
   programs.eza.extraOptions = [
     "--group-directories-first"
     "--header"
