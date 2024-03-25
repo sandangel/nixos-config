@@ -22,12 +22,12 @@
     fenix.stable.toolchain
 
     (rye.overrideAttrs (o: rec {
-      version = "0.30.0";
+      version = "0.31.0";
       src = fetchFromGitHub {
         owner = "astral-sh";
         repo = "rye";
         rev = "refs/tags/${version}";
-        hash = "sha256-a4u8dBqp9zs4RW7tXN8HjGzvjYFyDUJzEFMxMoGhu4E=";
+        hash = "sha256-hPfMKp5FUbIKKKFfoS/pxseWmhqW8UOts7DOcRzgHWU=";
       };
       # https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/rust.section.md#vendoring-of-dependencies-vendoring-of-dependencies
       cargoDeps = rustPlatform.importCargoLock {
