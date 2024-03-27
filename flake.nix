@@ -2,6 +2,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
+    nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
+
     nixGL.url = "github:nix-community/nixGL";
     nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -24,8 +26,6 @@
       linux-user = "sand";
       mac-user = "san.nguyen";
       nix-conf = { user, pkgs }: {
-        nix.registry.nixpkgs.flake = nixpkgs;
-        nix.package = pkgs.nix;
         nix.settings.extra-trusted-users = [ user ];
         nix.settings.extra-trusted-public-keys = [
           "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
@@ -81,6 +81,7 @@
             # Pin nixpkgs version in registry to speed up nix search and other functionalities
             (nix-conf { inherit pkgs; user = linux-user; })
             ./users/${linux-user}/home.nix
+            inputs.nix.homeManagerModules.default
           ];
         });
 
@@ -99,6 +100,7 @@
             # Pin nixpkgs version in registry to speed up nix search and other functionalities
             (nix-conf { inherit pkgs; user = mac-user; })
             ./users/${mac-user}/home.nix
+            inputs.nix.homeManagerModules.default
           ];
         });
     });
