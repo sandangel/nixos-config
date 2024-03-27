@@ -18,6 +18,7 @@
       trash-cli
       lua-language-server
       nixd
+      nixfmt-rfc-style
       pyright
       vscode-langservers-extracted
       yaml-language-server

@@ -22,6 +22,7 @@ local plugins = {
         terraform = { 'terraform_fmt' },
         go = { 'goimports' },
         python = { 'ruff_format', 'ruff_fix' },
+        nix = { 'nixfmt' },
       },
       format_on_save = {
         lsp_fallback = true,
