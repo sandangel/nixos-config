@@ -18,6 +18,6 @@ lib.mkMerge [
       categories = [ "System" "TerminalEmulator" ];
     };
 
-    xdg.configFile."autostart/kitty.desktop".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.nix-profile/share/applications/kitty.desktop";
+    xdg.configFile."autostart/kitty.desktop".source = "${config.home.homeDirectory}/.nix-profile/share/applications/kitty.desktop";
   })
 ]

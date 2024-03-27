@@ -89,18 +89,25 @@ Then clone the repo and run home-manager to apply all configurations:
 
 ```zsh
 sudo mkdir -p /home/nix-config
-sudo chown -R $USER:$USER //nix-config
+sudo chown -R $USER:$USER /home/nix-config
 git clone https://github.com/sandangel/nixos-config /home/nix-config
 cd /home/nix-config
 nix run home-manager/master -- init --switch --impure --flake ".#$USER"
 make switch
 ```
 
+Install wl-clipboard, xclip, podman using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status
+
+```zsh
+rpm-ostree install wl-clipboard xclip podman-docker podman-compose podman-plugins
+rpm-ostree override remove ghostscript
+```
+
 Activate ZSH
 
 ```zsh
 sudo echo /home/$USER/.nix-profile/bin/zsh >> /etc/shells
-chsh -s $(which zsh)
+chsh -s /home/$USER/.nix-profile/bin/zsh
 ```
 
 Mount host shared folders
@@ -114,13 +121,6 @@ Mount host shared folders temporarily for copying data:
 
 ```zsh
 /usr/bin/vmhgfs-fuse .host:/ /home/host -o subtype=vmhgfs-fuse,allow_other
-```
-
-Install wl-clipboard, xclip using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status
-
-```zsh
-rpm-ostree install wl-clipboard xclip podman-docker podman-compose podman-plugins
-rpm-ostree override remove ghostscript
 ```
 
 Optional: Fix GDM monitor resolution
