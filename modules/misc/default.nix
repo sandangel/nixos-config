@@ -34,6 +34,7 @@
         owner = "astral-sh";
         repo = "rye";
         rev = "refs/tags/${version}";
+        # nurl https://github.com/astral-sh/rye version
         hash = "sha256-hPfMKp5FUbIKKKFfoS/pxseWmhqW8UOts7DOcRzgHWU=";
       };
       # https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/rust.section.md#vendoring-of-dependencies-vendoring-of-dependencies
@@ -48,11 +49,12 @@
     }))
 
     (hatch.overrideAttrs (_: rec {
-      version = "1.9.3";
+      version = "1.9.4";
       src = fetchPypi {
         pname = "hatch";
         inherit version;
-        hash = "sha256-ZyAX40nFSPipV6X+6aovjPwsiplDBzeORahCeXK9+Nk=";
+        # nurl https://pypi.org/project/hatch version
+        hash = "sha256-m7fRxKelHMH54WOUh1yUC0X6hLaY8CkVKTFrJ9dOfzI=";
       };
       # pytest is failing because of sandbox environment
       pytestCheckPhase = "echo true";
