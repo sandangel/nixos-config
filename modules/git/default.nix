@@ -1,6 +1,5 @@
 { pkgs, ... }:
 {
-
   programs.git = {
     enable = true;
     extraConfig = {
@@ -21,13 +20,15 @@
     };
     userName = "San Nguyen";
     userEmail = "vinhsannguyen91@gmail.com";
-    includes = [{
-      condition = "gitdir:~/Work/Woven/**";
-      contents = {
-        user.email = "san.nguyen@woven-planet.global";
-        "url \"ssh://git@github.tri-ad.tech/\"".insteadOf = "https://github.tri-ad.tech/";
-      };
-    }];
+    includes = [
+      {
+        condition = "gitdir:~/Work/Woven/**";
+        contents = {
+          user.email = "san.nguyen@woven-planet.global";
+          "url \"ssh://git@github.tri-ad.tech/\"".insteadOf = "https://github.tri-ad.tech/";
+        };
+      }
+    ];
     lfs.enable = true;
     delta = {
       enable = true;

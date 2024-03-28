@@ -1,6 +1,13 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [ fd broot procs hexyl chafa nodejs ];
+  home.packages = with pkgs; [
+    fd
+    broot
+    procs
+    hexyl
+    chafa
+    nodejs
+  ];
   programs.fish = {
     enable = true;
     interactiveShellInit = ''

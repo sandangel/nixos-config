@@ -5,6 +5,15 @@
     nvchad
     bun
     nodejs
+    fd
+    nixfmt-rfc-style
+    actionlint
+    tflint
+    tfsec
+    yamlfmt
+    yamllint
+    trash-cli
+    gcc
   ];
   programs.neovim = {
     enable = true;
@@ -12,38 +21,33 @@
     defaultEditor = true;
     withNodeJs = true;
     withPython3 = true;
-    extraPackages = with pkgs; [
-      gcc
-      helm-ls
-      trash-cli
-      lua-language-server
-      nixd
-      nixfmt-rfc-style
-      pyright
-      vscode-langservers-extracted
-      yaml-language-server
-      actionlint
-      gopls
-      rust-analyzer
-      terraform-ls
-      tflint
-      tfsec
-      yamlfmt
-      yamllint
-      tree-sitter
-      (python3.withPackages (ps: with ps; [
-        python-lsp-server
-        pyls-isort
-        python-lsp-black
-        pylsp-mypy
-        python-lsp-ruff
-        ruff-lsp
-      ]))
-    ] ++ (with pkgs.nodePackages; [
-      typescript-language-server
-      docker-compose-language-service
-      dockerfile-language-server-nodejs
-    ]);
+    extraPackages =
+      with pkgs;
+      [
+        helm-ls
+        lua-language-server
+        nixd
+        pyright
+        vscode-langservers-extracted
+        yaml-language-server
+        gopls
+        rust-analyzer
+        terraform-ls
+        tree-sitter
+        (python3.withPackages (
+          ps: with ps; [
+            python-lsp-server
+            pylsp-mypy
+            python-lsp-ruff
+            ruff-lsp
+          ]
+        ))
+      ]
+      ++ (with pkgs.nodePackages; [
+        typescript-language-server
+        docker-compose-language-service
+        dockerfile-language-server-nodejs
+      ]);
   };
 
   xdg.configFile."nvim" = {

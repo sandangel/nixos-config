@@ -1,4 +1,9 @@
-{ pkgs, lib, username, ... }:
+{
+  pkgs,
+  lib,
+  username,
+  ...
+}:
 let
   fluent-icon-theme = pkgs.fluent-icon-theme.overrideAttrs (o: rec {
     src = builtins.fetchGit {
@@ -189,7 +194,16 @@ in
         user-themes.extensionUuid
         transparent-top-bar-adjustable-transparency.extensionUuid
       ];
-      favorite-apps = [ "org.gnome.Nautilus.desktop" "firefox.desktop" "org.gnome.Extensions.desktop" "org.gnome.Settings.desktop" "kitty.desktop" "org.gnome.tweaks.desktop" "ca.desrt.dconf-editor.desktop" "org.gnome.Software.desktop" ];
+      favorite-apps = [
+        "org.gnome.Nautilus.desktop"
+        "firefox.desktop"
+        "org.gnome.Extensions.desktop"
+        "org.gnome.Settings.desktop"
+        "kitty.desktop"
+        "org.gnome.tweaks.desktop"
+        "ca.desrt.dconf-editor.desktop"
+        "org.gnome.Software.desktop"
+      ];
     };
 
     "org/gnome/shell/extensions/user-theme" = {
@@ -252,7 +266,10 @@ in
     "org/gnome/shell/extensions/blur-my-shell/applications" = {
       blur = true;
       customize = false;
-      whitelist = [ "kitty" "neovide" ];
+      whitelist = [
+        "kitty"
+        "neovide"
+      ];
     };
 
     "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {

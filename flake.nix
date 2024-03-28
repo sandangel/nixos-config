@@ -21,87 +21,127 @@
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = inputs@{ self, flake-parts, nixpkgs, home-manager, neovim, devenv, nixGL, fenix, ... }:
+  outputs =
+    inputs@{
+      self,
+      flake-parts,
+      nixpkgs,
+      home-manager,
+      neovim,
+      devenv,
+      nixGL,
+      fenix,
+      ...
+    }:
     let
+
       linux-user = "sand";
       mac-user = "san.nguyen";
-      nix-conf = { user, pkgs }: {
-        nix.settings.extra-trusted-users = [ user ];
-        nix.settings.extra-trusted-public-keys = [
-          "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-        ];
-        nix.settings.extra-trusted-substituters = [
-          "https://devenv.cachix.org"
-        ];
-      };
-    in
-    flake-parts.lib.mkFlake { inherit inputs; } ({ withSystem, ... }: {
-      systems = [ "aarch64-linux" ];
-      debug = true;
-
-      imports = [
-        inputs.devenv.flakeModule
-      ];
-
-      perSystem = { config, self', inputs', pkgs, system, lib, devenv, ... }: {
-        devenv.shells.default = {
-          languages.nix.enable = true;
+      nix-conf =
+        { user, pkgs }:
+        {
+          nix.settings.extra-trusted-users = [ user ];
+          nix.settings.extra-trusted-public-keys = [
+            "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+          ];
+          nix.settings.extra-trusted-substituters = [ "https://devenv.cachix.org" ];
         };
-      };
+    in
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      { withSystem, ... }:
+      {
+        systems = [ "aarch64-linux" ];
+        debug = true;
 
-      flake.overlays.default = final: prev: with prev; {
-        neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
-        kubeswitch = kubeswitch.overrideAttrs (o: rec {
-          postInstall = ''
-            mv $out/bin/main $out/bin/switcher
-          '';
-        });
-        comic-code = callPackage ./pkgs/comic-code { };
-        nvchad = callPackage ./pkgs/nvchad { };
-        devenv = devenv.packages.${final.stdenv.system}.default;
-      };
+        imports = [ inputs.devenv.flakeModule ];
 
-      flake.overlays.linux = final: prev: with prev; {
-        nixGL = nixGL.packages.${final.stdenv.system}.default;
-      };
-
-      flake.homeConfigurations.${linux-user} = withSystem "aarch64-linux" ({ system, config, ... }:
-        home-manager.lib.homeManagerConfiguration rec {
-          pkgs = import inputs.nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              self.overlays.default
-              self.overlays.linux
-              fenix.overlays.default
-            ];
+        perSystem =
+          {
+            config,
+            self',
+            inputs',
+            pkgs,
+            system,
+            lib,
+            devenv,
+            ...
+          }:
+          {
+            devenv.shells.default = {
+              languages.nix.enable = true;
+            };
           };
-          extraSpecialArgs = { username = linux-user; };
-          modules = [
-            # Pin nixpkgs version in registry to speed up nix search and other functionalities
-            (nix-conf { inherit pkgs; user = linux-user; })
-            ./users/${linux-user}/home.nix
-            inputs.nix.homeManagerModules.default
-          ];
-        });
 
-      flake.homeConfigurations.${mac-user} = withSystem "aarch64-darwin" ({ system, config, ... }:
-        home-manager.lib.homeManagerConfiguration rec {
-          pkgs = import inputs.nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              self.overlays.default
-              fenix.overlays.default
-            ];
+        flake.overlays.default =
+          final: prev: with prev; {
+            neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
+            kubeswitch = kubeswitch.overrideAttrs (o: rec {
+              postInstall = ''
+                mv $out/bin/main $out/bin/switcher
+              '';
+            });
+            comic-code = callPackage ./pkgs/comic-code { };
+            nvchad = callPackage ./pkgs/nvchad { };
+            devenv = devenv.packages.${final.stdenv.system}.default;
           };
-          extraSpecialArgs = { username = mac-user; };
-          modules = [
-            # Pin nixpkgs version in registry to speed up nix search and other functionalities
-            (nix-conf { inherit pkgs; user = mac-user; })
-            ./users/${mac-user}/home.nix
-            inputs.nix.homeManagerModules.default
-          ];
-        });
-    });
+
+        flake.overlays.linux =
+          final: prev: with prev; {
+            nixGL = nixGL.packages.${final.stdenv.system}.default;
+          };
+
+        flake.homeConfigurations.${linux-user} = withSystem "aarch64-linux" (
+          { system, config, ... }:
+          home-manager.lib.homeManagerConfiguration rec {
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = [
+                self.overlays.default
+                self.overlays.linux
+                fenix.overlays.default
+              ];
+            };
+            extraSpecialArgs = {
+              username = linux-user;
+            };
+            modules = [
+              # Pin nixpkgs version in registry to speed up nix search and other functionalities
+              (nix-conf {
+                inherit pkgs;
+                user = linux-user;
+              })
+              ./users/${linux-user}/home.nix
+              inputs.nix.homeManagerModules.default
+            ];
+          }
+        );
+
+        flake.homeConfigurations.${mac-user} = withSystem "aarch64-darwin" (
+          { system, config, ... }:
+          home-manager.lib.homeManagerConfiguration rec {
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = [
+                self.overlays.default
+                fenix.overlays.default
+              ];
+            };
+            extraSpecialArgs = {
+              username = mac-user;
+            };
+            modules = [
+              # Pin nixpkgs version in registry to speed up nix search and other functionalities
+              (nix-conf {
+                inherit pkgs;
+                user = mac-user;
+              })
+              ./users/${mac-user}/home.nix
+              inputs.nix.homeManagerModules.default
+            ];
+          }
+        );
+      }
+    );
 }
