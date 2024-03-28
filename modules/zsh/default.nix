@@ -47,6 +47,7 @@
       gp = "git push";
 
       gs = "git status";
+      rm = "trash";
 
       pbcopy = "wl-copy";
       pbpaste = "wl-paste";

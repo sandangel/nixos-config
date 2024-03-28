@@ -13,7 +13,6 @@
     yamlfmt
     yamllint
     trash-cli
-    gcc
   ];
   programs.neovim = {
     enable = true;
