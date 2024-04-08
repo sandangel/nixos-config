@@ -186,14 +186,14 @@ M.lspconfig = {
     ['K'] = { '' },
     ['[d'] = {
       function()
-        vim.diagnostic.goto_prev { float = { border = 'rounded' } }
+        vim.diagnostic.goto_prev { float = { border = 'rounded' }, severity = vim.diagnostic.severity.ERROR }
       end,
       'Goto prev diagnostic',
     },
 
     [']d'] = {
       function()
-        vim.diagnostic.goto_next { float = { border = 'rounded' } }
+        vim.diagnostic.goto_next { float = { border = 'rounded' }, severity = vim.diagnostic.severity.ERROR }
       end,
       'Goto next diagnostic',
     },
@@ -218,7 +218,7 @@ M.nvimtree = {
 
 M.neoclip = {
   n = {
-    ['gy'] = { '<cmd>lua require("neoclip.fzf")()<CR>', 'Yank history' },
+    ['gy'] = { '<cmd>Telescope neoclip<CR>', 'Yank history' },
   },
 }
 
