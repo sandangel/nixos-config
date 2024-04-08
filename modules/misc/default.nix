@@ -11,7 +11,6 @@
   home.packages = with pkgs; [
     azure-cli
     bind
-    binutils
     cachix
     comic-code
     devenv

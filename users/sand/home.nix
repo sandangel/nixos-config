@@ -10,6 +10,7 @@
   home.username = username;
   home.homeDirectory = "/home/${username}";
   home.packages = with pkgs; [
+    binutils
     glxinfo
     # To run GUI apps
     nixGL
