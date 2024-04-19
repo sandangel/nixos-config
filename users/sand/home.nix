@@ -45,5 +45,7 @@
     SDL_VIDEODRIVER = "wayland";
     XDG_SESSION_TYPE = "wayland";
     MOZ_ENABLE_WAYLAND = "1";
+    MOZ_USE_XINPUT2 = 1;
+    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=2";
   };
 }

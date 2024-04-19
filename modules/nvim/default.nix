@@ -5,6 +5,7 @@
     nvchad
     bun
     nodejs
+    corepack
     fd
     nixfmt-rfc-style
     actionlint
