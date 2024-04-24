@@ -40,6 +40,8 @@
       };
       # pytest is failing because of sandbox environment
       pytestCheckPhase = "echo true";
+      # Failing because hatch 1.9.4 is requiring hatching <1.22, but current version in nixpkgs is 1.22.4
+      dontCheckRuntimeDeps = true;
     }))
   ];
 

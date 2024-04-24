@@ -99,7 +99,7 @@ make switch
 Install wl-clipboard, xclip, podman, chromium using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status
 
 ```zsh
-rpm-ostree install wl-clipboard xclip podman-docker podman-compose podman-plugins chromium
+rpm-ostree install wl-clipboard xclip podman-docker podman-compose chromium
 rpm-ostree override remove ghostscript
 ```
 
