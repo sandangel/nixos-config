@@ -1,10 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  username,
-  ...
-}:
+{ pkgs, username, ... }:
 
 {
   home.username = username;

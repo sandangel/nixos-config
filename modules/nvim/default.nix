@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -22,8 +22,7 @@
     withNodeJs = true;
     withPython3 = true;
     extraPackages =
-      with pkgs;
-      [
+      (with pkgs; [
         helm-ls
         lua-language-server
         nixd
@@ -42,7 +41,7 @@
             ruff-lsp
           ]
         ))
-      ]
+      ])
       ++ (with pkgs.nodePackages; [
         typescript-language-server
         docker-compose-language-service

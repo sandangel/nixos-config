@@ -24,7 +24,6 @@
     inputs@{
       self,
       flake-parts,
-      nixpkgs,
       home-manager,
       neovim,
       devenv,
@@ -37,7 +36,7 @@
       linux-user = "sand";
       mac-user = "san.nguyen";
       nix-conf =
-        { user, pkgs }:
+        { user }:
         {
           nix.settings.extra-trusted-users = [ user ];
           nix.settings.extra-trusted-public-keys = [
@@ -55,42 +54,29 @@
         imports = [ inputs.devenv.flakeModule ];
 
         perSystem =
-          {
-            config,
-            self',
-            inputs',
-            pkgs,
-            system,
-            lib,
-            devenv,
-            ...
-          }:
+          { ... }:
           {
             devenv.shells.default = {
               languages.nix.enable = true;
             };
           };
 
-        flake.overlays.default =
-          final: prev: with prev; {
-            neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
-            kubeswitch = kubeswitch.overrideAttrs (o: rec {
-              postInstall = ''
-                mv $out/bin/main $out/bin/switcher
-              '';
-            });
-            comic-code = callPackage ./pkgs/comic-code { };
-            nvchad = callPackage ./pkgs/nvchad { };
-            devenv = devenv.packages.${final.stdenv.system}.default;
-          };
+        flake.overlays.default = final: prev: {
+          neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
+          kubeswitch = prev.kubeswitch.overrideAttrs (o: {
+            postInstall = ''
+              mv $out/bin/main $out/bin/switcher
+            '';
+          });
+          comic-code = prev.callPackage ./pkgs/comic-code { };
+          nvchad = prev.callPackage ./pkgs/nvchad { };
+          devenv = devenv.packages.${final.stdenv.system}.default;
+        };
 
-        flake.overlays.linux =
-          final: prev: with prev; {
-            nixGL = nixGL.packages.${final.stdenv.system}.default;
-          };
+        flake.overlays.linux = final: prev: { nixGL = nixGL.packages.${final.stdenv.system}.default; };
 
         flake.homeConfigurations.${linux-user} = withSystem "aarch64-linux" (
-          { system, config, ... }:
+          { system, ... }:
           home-manager.lib.homeManagerConfiguration rec {
             pkgs = import inputs.nixpkgs {
               inherit system;
@@ -117,7 +103,7 @@
         );
 
         flake.homeConfigurations.${mac-user} = withSystem "aarch64-darwin" (
-          { system, config, ... }:
+          { system, ... }:
           home-manager.lib.homeManagerConfiguration rec {
             pkgs = import inputs.nixpkgs {
               inherit system;

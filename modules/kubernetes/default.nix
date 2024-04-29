@@ -1,10 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  username,
-  ...
-}:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -14,6 +8,8 @@
     kubeswitch
     pinniped
     vcluster
+    kind
+    kubernetes-helm
   ];
 
   home.file.".kube/switch-config.yaml".source = ./switch-config.yaml;

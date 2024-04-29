@@ -1,10 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  username,
-  ...
-}:
+{ ... }:
 {
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;

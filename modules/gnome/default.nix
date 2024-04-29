@@ -1,17 +1,12 @@
-{
-  pkgs,
-  lib,
-  username,
-  ...
-}:
+{ pkgs, lib, ... }:
 let
-  fluent-icon-theme = pkgs.fluent-icon-theme.overrideAttrs (o: rec {
+  fluent-icon-theme = pkgs.fluent-icon-theme.overrideAttrs (o: {
     src = builtins.fetchGit {
       url = "https://github.com/vinceliuice/Fluent-icon-theme";
       ref = "refs/heads/master";
     };
   });
-  fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: rec {
+  fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: {
     src = builtins.fetchGit {
       url = "https://github.com/vinceliuice/Fluent-gtk-theme";
       ref = "refs/heads/master";

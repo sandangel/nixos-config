@@ -1,10 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  username,
-  ...
-}:
+{ pkgs, username, ... }:
 
 {
   home.username = username;
@@ -12,6 +6,8 @@
   home.packages = with pkgs; [
     binutils
     glxinfo
+    xdg-utils
+
     # To run GUI apps
     nixGL
   ];
@@ -33,7 +29,7 @@
     ../../modules/zsh
   ];
 
-  home.sessionVariables = with pkgs; rec {
+  home.sessionVariables = {
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     LC_CTYPE = "en_US.UTF-8";
