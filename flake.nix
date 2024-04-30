@@ -35,15 +35,19 @@
 
       linux-user = "sand";
       mac-user = "san.nguyen";
-      nix-conf =
+      modules =
         { user }:
-        {
-          nix.settings.extra-trusted-users = [ user ];
-          nix.settings.extra-trusted-public-keys = [
-            "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-          ];
-          nix.settings.extra-trusted-substituters = [ "https://devenv.cachix.org" ];
-        };
+        [
+          {
+            nix.settings.extra-trusted-users = [ user ];
+            nix.settings.extra-trusted-public-keys = [
+              "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+            ];
+            nix.settings.extra-trusted-substituters = [ "https://devenv.cachix.org" ];
+          }
+          ./users/${user}/home.nix
+          inputs.nix.homeManagerModules.default
+        ];
     in
     flake-parts.lib.mkFlake { inherit inputs; } (
       { withSystem, ... }:
@@ -77,7 +81,7 @@
 
         flake.homeConfigurations.${linux-user} = withSystem "aarch64-linux" (
           { system, ... }:
-          home-manager.lib.homeManagerConfiguration rec {
+          home-manager.lib.homeManagerConfiguration {
             pkgs = import inputs.nixpkgs {
               inherit system;
               config.allowUnfree = true;
@@ -90,21 +94,13 @@
             extraSpecialArgs = {
               username = linux-user;
             };
-            modules = [
-              # Pin nixpkgs version in registry to speed up nix search and other functionalities
-              (nix-conf {
-                inherit pkgs;
-                user = linux-user;
-              })
-              ./users/${linux-user}/home.nix
-              inputs.nix.homeManagerModules.default
-            ];
+            modules = modules { user = linux-user; };
           }
         );
 
         flake.homeConfigurations.${mac-user} = withSystem "aarch64-darwin" (
           { system, ... }:
-          home-manager.lib.homeManagerConfiguration rec {
+          home-manager.lib.homeManagerConfiguration {
             pkgs = import inputs.nixpkgs {
               inherit system;
               config.allowUnfree = true;
@@ -116,15 +112,7 @@
             extraSpecialArgs = {
               username = mac-user;
             };
-            modules = [
-              # Pin nixpkgs version in registry to speed up nix search and other functionalities
-              (nix-conf {
-                inherit pkgs;
-                user = mac-user;
-              })
-              ./users/${mac-user}/home.nix
-              inputs.nix.homeManagerModules.default
-            ];
+            modules = modules { user = mac-user; };
           }
         );
       }

@@ -33,6 +33,7 @@
         rust-analyzer
         terraform-ls
         tree-sitter
+        docker-compose-language-service
         (python3.withPackages (
           ps: with ps; [
             python-lsp-server
@@ -44,7 +45,6 @@
       ])
       ++ (with pkgs.nodePackages; [
         typescript-language-server
-        docker-compose-language-service
         dockerfile-language-server-nodejs
       ]);
   };
