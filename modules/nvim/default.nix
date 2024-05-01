@@ -25,6 +25,7 @@
       (with pkgs; [
         helm-ls
         lua-language-server
+        prettierd
         nixd
         pyright
         vscode-langservers-extracted
@@ -38,7 +39,6 @@
           ps: with ps; [
             python-lsp-server
             pylsp-mypy
-            python-lsp-ruff
             ruff-lsp
           ]
         ))

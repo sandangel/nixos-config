@@ -31,10 +31,6 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-require('sg').setup {
-  on_attach = on_attach,
-}
-
 lspconfig.lua_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -154,12 +150,12 @@ lspconfig.pylsp.setup {
     pylsp = {
       configurationSources = { 'flake8' },
       plugins = {
-        pylsp_mypy          = { enabled = true },
+        pylsp_mypy          = { enabled = true, live_mode = false, dmypy = true },
         pylint              = { enabled = false },
         flake8              = { enabled = false },
         black               = { enabled = false },
         pyls_isort          = { enabled = false },
-        ruff                = { enabled = true, lineLength = 120 },
+        ruff                = { enabled = false },
         jedi_completion     = { enabled = false },
         jedi_definition     = { enabled = false },
         jedi_hover          = { enabled = false },

@@ -1,15 +1,19 @@
 { pkgs, lib, ... }:
 let
   fluent-icon-theme = pkgs.fluent-icon-theme.overrideAttrs (o: {
-    src = builtins.fetchGit {
-      url = "https://github.com/vinceliuice/Fluent-icon-theme";
-      ref = "refs/heads/master";
+    src = pkgs.fetchFromGitHub {
+      owner = "vinceliuice";
+      repo = "Fluent-icon-theme";
+      rev = "2024-02-25";
+      hash = "sha256-Cadp2+4kBZ74kdD5x0O85FszxvN6/sg6yccxughyX1Q=";
     };
   });
   fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: {
-    src = builtins.fetchGit {
-      url = "https://github.com/vinceliuice/Fluent-gtk-theme";
-      ref = "refs/heads/master";
+    src = pkgs.fetchFromGitHub {
+      owner = "vinceliuice";
+      repo = "Fluent-gtk-theme";
+      rev = "2024-04-28";
+      hash = "sha256-0zf3fHtWcrbT26jgwgsPEDDhBWErOkgXyvGwSWV8rGs=";
     };
   });
   gtk-theme = "Fluent-Dark";

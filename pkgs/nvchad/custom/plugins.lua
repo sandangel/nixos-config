@@ -15,6 +15,34 @@ local plugins = {
     'stevearc/conform.nvim',
     event = 'VeryLazy',
     opts = {
+      formatters = {
+        ruff_format = {
+          command = 'rye',
+          args = {
+            'fmt',
+            '--',
+            '--force-exclude',
+            '--stdin-filename',
+            '$FILENAME',
+            '-',
+
+          },
+        },
+        ruff_fix = {
+          command = 'rye',
+          args = {
+            'lint',
+            '--fix',
+            '--',
+            '--force-exclude',
+            '--exit-zero',
+            '--no-cache',
+            '--stdin-filename',
+            '$FILENAME',
+            '-',
+          },
+        },
+      },
       formatters_by_ft = {
         yaml = { 'prettierd' },
         markdown = { 'prettierd' },
@@ -56,18 +84,27 @@ local plugins = {
     config = true,
   },
   {
-    'sourcegraph/sg.nvim',
-    keys = {
-      {
-        '<leader>a',
-        '<cmd>CodyToggle<CR>',
-        desc = 'Cody chat',
-        mode = { 'n', 'x' },
-      },
+    'Exafunction/codeium.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'hrsh7th/nvim-cmp',
     },
     event = 'VeryLazy',
-    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
+    config = true,
   },
+  -- {
+  --   'sourcegraph/sg.nvim',
+  --   keys = {
+  --     {
+  --       '<leader>a',
+  --       '<cmd>CodyToggle<CR>',
+  --       desc = 'Cody chat',
+  --       mode = { 'n', 'x' },
+  --     },
+  --   },
+  --   event = 'VeryLazy',
+  --   dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
+  -- },
   {
     'rust-lang/rust.vim',
     ft = 'rust',

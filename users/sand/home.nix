@@ -43,5 +43,8 @@
     MOZ_ENABLE_WAYLAND = "1";
     MOZ_USE_XINPUT2 = 1;
     CHROMIUM_USER_FLAGS = "--force-device-scale-factor=2";
+
+    # Fix static links in nixpkgs
+    LD_AUDIT = "${pkgs.ld-floxlib}/lib/ld-floxlib.so";
   };
 }
