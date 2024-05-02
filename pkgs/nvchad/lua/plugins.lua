@@ -105,6 +105,7 @@ local plugins = {
           markdown = true,
           gitcommit = true,
         },
+        copilot_node_command = 'bun',
       })
     end
   },

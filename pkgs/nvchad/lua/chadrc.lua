@@ -17,6 +17,10 @@ M.ui = {
   theme = 'onedark',
   transparency = true,
 
+  lsp = {
+    semantic_tokens = true,
+  },
+
   statusline = {
     theme = 'minimal',
     separator_style = 'default',
@@ -82,6 +86,7 @@ M.base46 = {
     'telescope',
     'treesitter',
     'whichkey',
+    'dap',
   },
 }
 
