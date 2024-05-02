@@ -1,4 +1,5 @@
----@type MappingsTable
+local map = vim.keymap.set
+
 local M = {}
 
 M.general = {
@@ -21,8 +22,6 @@ M.general = {
       'Move up',
       opts = { expr = true }
     },
-    -- nvim default key map which does not have desc
-    ['gO'] = { 'gO', 'Show TOC' },
     ['Q'] = { '@q', 'Replay' },
     ['gV'] = { 'ggVG', 'Select all' },
     ['gj'] = { '<c-w>W', 'Move to next window' },
@@ -58,7 +57,6 @@ M.notify = {
 }
 
 M.telescope = {
-  plugin = true,
   n = {
     -- theme switcher
     ['<leader>th'] = { '<cmd>Telescope themes<CR>', 'Nvchad themes' },
@@ -115,7 +113,7 @@ M.noice = {
   },
 }
 
-M.fzf_lua = {
+M.fzflua = {
   n = {
     ['gL'] = { '<cmd>FzfLua loclist<CR>', 'Location list' },
     ['gq'] = { '<cmd>FzfLua quickfix<CR>', 'Quick fix' },
@@ -158,7 +156,6 @@ M.fzf_lua = {
 }
 
 M.lspconfig = {
-  plugin = true,
   n = {
     ['gw'] = { '<cmd>FzfLua lsp_document_diagnostics<CR>', 'LSP document diagnostics' },
     ['gW'] = { '<cmd>FzfLua lsp_workspace_diagnostics<cr>', 'LSP workspace diagnostics' },
@@ -173,7 +170,7 @@ M.lspconfig = {
     },
     ['gr'] = {
       function()
-        require('nvchad.renamer').open()
+        require('nvchad.lsp.renamer')()
       end,
       'LSP rename',
     },
@@ -210,7 +207,6 @@ M.lspconfig = {
 }
 
 M.nvimtree = {
-  plugin = true,
   n = {
     ['<C-p>'] = { '<cmd>NvimTreeToggle<CR>', 'Toggle nvimtree' },
   },
@@ -223,7 +219,6 @@ M.neoclip = {
 }
 
 M.gitsigns = {
-  plugin = true,
   n = {
     ['<leader>cp'] = {
       function()
@@ -299,20 +294,15 @@ M.abolish = {
   }
 }
 
--- Disable all default key maps
-M.disabled = {}
-
-for _, section in pairs(require('core.mappings')) do
-  for mode, keys in pairs(section) do
-    if mode == 'n' or mode == 't' or mode == 'v' or mode == 'x' or mode == 'i' then
-      for key, _ in pairs(keys) do
-        if M.disabled[mode] == nil then
-          M.disabled[mode] = {}
-        end
-        M.disabled[mode][key] = ''
+for group, configs in pairs(M) do
+  for mode, mappings in pairs(configs) do
+    for key, val in pairs(mappings) do
+      if val[2] == nil then
+        -- There is an empty val in M table
+        goto continue
       end
+      map(mode, key, val[1], vim.tbl_deep_extend('force', val['opts'] or {}, { desc = group .. ' ' .. val[2] }))
+      ::continue::
     end
   end
 end
-
-return M

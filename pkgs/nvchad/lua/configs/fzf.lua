@@ -57,7 +57,7 @@ fzf_lua.setup {
   fzf_opts = {
     ['--layout'] = false,
     ['--history'] = fzf_history_dir .. '/fzf-lua',
-    ['--history-size'] = '2000',
+    ['--history-size'] = '10000',
   },
   actions = {
     files = {

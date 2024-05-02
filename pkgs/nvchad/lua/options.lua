@@ -73,6 +73,22 @@ vim.api.nvim_create_autocmd({ 'BufAdd', 'BufEnter' }, {
   end,
 })
 
+-- Restore current cursor position
+vim.api.nvim_create_autocmd('BufReadPost', {
+  pattern = '*',
+  callback = function()
+    local line = vim.fn.line "'\""
+    if
+        line > 1
+        and line <= vim.fn.line '$'
+        and vim.bo.filetype ~= 'commit'
+        and vim.fn.index({ 'xxd', 'gitrebase' }, vim.bo.filetype) == -1
+    then
+      vim.cmd 'normal! g`"'
+    end
+  end,
+})
+
 if vim.g.neovide then
   vim.opt.guifont = { 'Comic Code Ligatures', 'Symbols Nerd Font', ':h11' }
   vim.g.neovide_transparency = 0.8

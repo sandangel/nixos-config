@@ -6,16 +6,11 @@
 }:
 
 let
-  custom = ./custom;
+  lua = ./lua;
 in
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "nvchad";
-  version = "2.0";
-
-  src = builtins.fetchGit {
-    url = "https://github.com/NvChad/NvChad";
-    ref = "refs/heads/v${version}";
-  };
+  version = "2.5";
 
   init = pkgs.writeText "init.lua" (
     ''
@@ -23,16 +18,16 @@ stdenv.mkDerivation rec {
         if stdenv.isLinux then "libsqlite3.so" else "libsqlite3.dylib"
       }'
     ''
-    + builtins.readFile ./custom/init.lua
+    + builtins.readFile ./init.lua
   );
+
+  phases = [ "installPhase" ];
 
   installPhase = ''
     mkdir $out
-    cp -r * "$out/"
-    mkdir -p "$out/lua/custom"
-    cp -r ${custom}/* "$out/lua/custom/"
     # Override init.lua with init file that has sqlite_clib_path
-    cp -f $init "$out/lua/custom/init.lua"
+    cp $init "$out/init.lua"
+    cp -r ${lua} "$out/lua"
   '';
 
   meta = with lib; {

@@ -1,5 +1,3 @@
-local overrides = require('custom.configs.overrides')
-
 ---@type NvPluginSpec[]
 local plugins = {
   {
@@ -7,8 +5,7 @@ local plugins = {
     dependencies = { 'folke/neodev.nvim', 'b0o/schemastore.nvim', },
     event = 'VeryLazy',
     config = function()
-      require 'plugins.configs.lspconfig'
-      require 'custom.configs.lspconfig'
+      require('configs.lspconfig')
     end,
   },
   {
@@ -54,7 +51,6 @@ local plugins = {
         typescript = { 'prettierd' },
         typescriptreact = { 'prettierd' },
         terraform = { 'terraform_fmt' },
-        go = { 'goimports' },
         python = { 'ruff_format', 'ruff_fix' },
         nix = { 'nixfmt' },
       },
@@ -75,7 +71,7 @@ local plugins = {
     'echasnovski/mini.nvim',
     event = 'VeryLazy',
     config = function()
-      require 'custom.configs.mini'
+      require 'configs.mini'
     end
   },
   {
@@ -92,19 +88,26 @@ local plugins = {
     event = 'VeryLazy',
     config = true,
   },
-  -- {
-  --   'sourcegraph/sg.nvim',
-  --   keys = {
-  --     {
-  --       '<leader>a',
-  --       '<cmd>CodyToggle<CR>',
-  --       desc = 'Cody chat',
-  --       mode = { 'n', 'x' },
-  --     },
-  --   },
-  --   event = 'VeryLazy',
-  --   dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
-  -- },
+  {
+    'zbirenbaum/copilot.lua',
+    event = 'VeryLazy',
+    dependencies = { { 'zbirenbaum/copilot-cmp', config = true }, 'hrsh7th/nvim-cmp' },
+    config = function()
+      require('copilot').setup({
+        panel = {
+          enabled = false,
+        },
+        suggestion = {
+          enabled = false,
+        },
+        filetypes = {
+          yaml = true,
+          markdown = true,
+          gitcommit = true,
+        },
+      })
+    end
+  },
   {
     'rust-lang/rust.vim',
     ft = 'rust',
@@ -131,9 +134,9 @@ local plugins = {
     'brenton-leighton/multiple-cursors.nvim',
     config = true,
     keys = {
-      { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i' }, desc = 'Add cursor one line down' },
-      { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i' }, desc = 'Add cursor one line up' },
-      { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i' }, desc = 'Add or delete cursor at mouse position' },
+      { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i' }, desc = 'cursors add cursor one line down' },
+      { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i' }, desc = 'cursors add cursor one line up' },
+      { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i' }, desc = 'cursors add or delete cursor at mouse position' },
     },
   },
   {
@@ -173,13 +176,13 @@ local plugins = {
     'windwp/nvim-autopairs',
     config = function(_, opts)
       require('nvim-autopairs').setup(opts)
-      require 'custom.configs.autopairs'
+      require 'configs.autopairs'
     end,
   },
   {
     'hrsh7th/nvim-cmp',
     dependencies = { 'lukas-reineke/cmp-rg' },
-    opts = require 'custom.configs.cmp',
+    opts = require 'configs.cmp',
   },
   {
     'garyhurtz/cmp_kitty',
@@ -191,12 +194,14 @@ local plugins = {
   {
     'ibhagwan/fzf-lua',
     config = function()
-      require 'custom.configs.fzf'
+      require 'configs.fzf'
     end,
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    opts = overrides.treesitter,
+    opts = {
+      ensure_installed = 'all',
+    },
     config = function(_, opts)
       dofile(vim.g.base46_cache .. 'syntax')
       -- Default clang compiler will generate errors.
@@ -223,9 +228,8 @@ local plugins = {
   },
   { 'towolf/vim-helm',                     ft = 'helm', },
   { 'mhinz/vim-sayonara',                  cmd = 'Sayonara', },
-  { 'nvim-tree/nvim-tree.lua',             opts = overrides.nvimtree, },
+  { 'nvim-tree/nvim-tree.lua',             opts = require('configs.nvim-tree'), },
   { 'NvChad/nvim-colorizer.lua',           opts = { css = true, css_fn = true, mode = 'virtualtext', }, },
-  { 'NvChad/nvterm',                       enabled = false, },
   { 'williamboman/mason.nvim',             enabled = false, },
   { 'lukas-reineke/indent-blankline.nvim', enabled = false, },
   { 'whiteinge/diffconflicts',             cmd = 'DiffConflicts', },

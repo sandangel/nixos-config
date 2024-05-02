@@ -1,11 +1,4 @@
-local M = {}
-
-M.treesitter = {
-  ensure_installed = 'all',
-}
-
--- git support in nvimtree
-M.nvimtree = {
+return {
   on_attach = function(bufnr)
     local api = require 'nvim-tree.api'
     local notify = require 'nvim-tree.notify'
@@ -101,5 +94,3 @@ M.nvimtree = {
     },
   },
 }
-
-return M

@@ -1,7 +1,8 @@
+-- This file needs to have same structure as nvconfig.lua
+-- https://github.com/NvChad/NvChad/blob/v2.5/lua/nvconfig.lua
+
 ---@type ChadrcConfig
 local M = {}
-
-local highlights = require 'custom.highlights'
 
 local function stbufnr()
   return vim.api.nvim_win_get_buf(vim.g.statusline_winid)
@@ -15,10 +16,6 @@ end
 M.ui = {
   theme = 'onedark',
   transparency = true,
-  lsp_semantic_tokens = false,
-  extended_integrations = {
-    'notify',
-  },
 
   statusline = {
     theme = 'minimal',
@@ -63,41 +60,28 @@ M.ui = {
     end,
   },
 
-  hl_override = highlights.override,
+  hl_override = {
+    Comment = { italic = true },
+    ['@comment'] = { italic = true },
+  },
 }
 
--- Settings in v3
--- M.base46 = {
---   integrations = {
---     'cmp',
---     'defaults',
---     'devicons',
---     'git',
---     'lsp',
---     'notify',
---     'nvcheatsheet',
---     'nvimtree',
---     'statusline',
---     'syntax',
---     'tbline',
---     'telescope',
---     'treesitter',
---     'whichkey',
---   },
--- }
-
-M.plugins = 'custom.plugins'
-
--- check core.mappings for table structure
-M.mappings = require 'custom.mappings'
-
--- avoid writing lock file to the config folder because of nix store
-M.lazy_nvim = {
-  lockfile = vim.fn.stdpath('data') .. '/lazy-lock.json',
-  checker = {
-    -- automatically check for plugin updates
-    enabled = true,
-    frequency = 3600 * 2, -- check for updates every 2 hours
+M.base46 = {
+  integrations = {
+    'cmp',
+    'defaults',
+    'devicons',
+    'git',
+    'lsp',
+    'notify',
+    'nvcheatsheet',
+    'nvimtree',
+    'statusline',
+    'syntax',
+    'tbline',
+    'telescope',
+    'treesitter',
+    'whichkey',
   },
 }
 
