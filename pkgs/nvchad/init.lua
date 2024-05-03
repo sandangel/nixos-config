@@ -11,6 +11,10 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+local nvchadpath = vim.fn.stdpath 'data' .. '/lazy/NvChad'
+
+vim.opt.rtp:prepend(nvchadpath)
+
 local lazy_config = require 'configs.lazy'
 
 -- load plugins

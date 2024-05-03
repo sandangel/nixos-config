@@ -205,6 +205,7 @@ local plugins = {
     },
     config = function(_, opts)
       dofile(vim.g.base46_cache .. 'syntax')
+      dofile(vim.g.base46_cache .. 'treesitter')
       -- Default clang compiler will generate errors.
       require('nvim-treesitter.install').compilers = { 'gcc' }
       require('nvim-treesitter.configs').setup(opts)

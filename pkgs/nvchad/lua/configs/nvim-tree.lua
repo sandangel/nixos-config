@@ -1,4 +1,4 @@
-return {
+return vim.tbl_deep_extend('force', require('nvchad.configs.nvimtree'), {
   on_attach = function(bufnr)
     local api = require 'nvim-tree.api'
     local notify = require 'nvim-tree.notify'
@@ -68,29 +68,12 @@ return {
     vim.keymap.set('n', 'q', api.tree.close, opts 'Close')
     vim.keymap.set('n', '?', api.tree.toggle_help, opts 'Help')
   end,
-  git = {
-    enable = true,
-  },
   view = {
     width = {} -- Adaptive size
   },
   renderer = {
-    highlight_git = true,
     icons = {
       git_placement = 'after',
-      show = {
-        git = true,
-      },
-      glyphs = {
-        folder = {
-          default = '',
-          open = '',
-          empty = '',
-          empty_open = '',
-          symlink = '',
-          symlink_open = '',
-        },
-      }
     },
   },
-}
+})
