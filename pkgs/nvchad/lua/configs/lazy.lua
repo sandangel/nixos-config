@@ -1,5 +1,5 @@
-return vim.tbl_deep_extend('force', require('nvchad.configs.lazy_nvim'), {
-  lockfile = vim.fn.stdpath('data') .. '/lazy-lock.json',
+return vim.tbl_deep_extend('force', require 'nvchad.configs.lazy_nvim', {
+  lockfile = vim.fn.stdpath 'data' .. '/lazy-lock.json',
   checker = {
     -- automatically check for plugin updates
     enabled = true,

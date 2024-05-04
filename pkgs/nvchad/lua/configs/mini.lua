@@ -13,13 +13,13 @@ for _, m in ipairs(modules) do
 end
 
 local animate = require 'mini.animate'
-animate.setup({
+animate.setup {
   cursor = {
     enable = false,
   },
   scroll = {
-    timing = animate.gen_timing.linear({ unit = 'step', duration = 2 }),
-    subscroll = animate.gen_subscroll.equal({ max_output_steps = 120 })
+    timing = animate.gen_timing.linear { unit = 'step', duration = 2, },
+    subscroll = animate.gen_subscroll.equal { max_output_steps = 120, },
   },
   resize = {
     enable = false,
@@ -30,14 +30,14 @@ animate.setup({
   close = {
     enable = false,
   },
-})
+}
 
-vim.api.nvim_create_augroup('MiniNvimUser', { clear = true })
+vim.api.nvim_create_augroup('MiniNvimUser', { clear = true, })
 vim.api.nvim_create_autocmd('BufWritePre', {
   group = 'MiniNvimUser',
   pattern = '*',
   callback = function()
-    require('mini.trailspace').trim()
+    require 'mini.trailspace'.trim()
   end,
 })
 vim.api.nvim_create_autocmd('FileType', {

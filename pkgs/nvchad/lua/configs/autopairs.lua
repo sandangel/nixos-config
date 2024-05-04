@@ -4,9 +4,9 @@ local conds = require 'nvim-autopairs.conds'
 
 -- setup cmp for autopairs
 local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
-require('cmp').event:on('confirm_done', cmp_autopairs.on_confirm_done())
+require 'cmp'.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
-local brackets = { { '(', ')' }, { '[', ']' }, { '{', '}' } }
+local brackets = { { '(', ')', }, { '[', ']', }, { '{', '}', }, }
 
 npairs.add_rules {
   -- Rule for a pair with left-side ' ' and right side ' '
@@ -18,7 +18,7 @@ npairs.add_rules {
         return vim.tbl_contains({
           brackets[1][1] .. brackets[1][2],
           brackets[2][1] .. brackets[2][2],
-          brackets[3][1] .. brackets[3][2]
+          brackets[3][1] .. brackets[3][2],
         }, pair)
       end)
       :with_move(conds.none())
@@ -30,9 +30,9 @@ npairs.add_rules {
         return vim.tbl_contains({
           brackets[1][1] .. '  ' .. brackets[1][2],
           brackets[2][1] .. '  ' .. brackets[2][2],
-          brackets[3][1] .. '  ' .. brackets[3][2]
+          brackets[3][1] .. '  ' .. brackets[3][2],
         }, context)
-      end)
+      end),
 }
 
 -- For each pair of brackets we will add another rule
@@ -45,6 +45,6 @@ for _, bracket in pairs(brackets) do
         :with_del(conds.none())
         :use_key(bracket[2])
     -- Removes the trailing whitespace that can occur without this
-        :replace_map_cr(function(_) return '<C-c>2xi<CR><C-c>O' end)
+        :replace_map_cr(function(_) return '<C-c>2xi<CR><C-c>O' end),
   }
 end

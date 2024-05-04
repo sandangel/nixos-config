@@ -1,4 +1,4 @@
-return vim.tbl_deep_extend('force', require('nvchad.configs.nvimtree'), {
+return vim.tbl_deep_extend('force', require 'nvchad.configs.nvimtree', {
   on_attach = function(bufnr)
     local api = require 'nvim-tree.api'
     local notify = require 'nvim-tree.notify'
@@ -7,7 +7,7 @@ return vim.tbl_deep_extend('force', require('nvchad.configs.nvimtree'), {
 
     local function wrap_node(f)
       return function(node, ...)
-        node = node or require('nvim-tree.lib').get_node_at_cursor()
+        node = node or require 'nvim-tree.lib'.get_node_at_cursor()
         f(node, ...)
       end
     end
@@ -37,7 +37,7 @@ return vim.tbl_deep_extend('force', require('nvchad.configs.nvimtree'), {
     end
 
     local function opts(desc)
-      return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+      return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true, }
     end
 
     vim.keymap.set('n', 'h', api.tree.change_root_to_parent, opts 'Up')
@@ -69,7 +69,7 @@ return vim.tbl_deep_extend('force', require('nvchad.configs.nvimtree'), {
     vim.keymap.set('n', '?', api.tree.toggle_help, opts 'Help')
   end,
   view = {
-    width = {} -- Adaptive size
+    width = {}, -- Adaptive size
   },
   renderer = {
     icons = {

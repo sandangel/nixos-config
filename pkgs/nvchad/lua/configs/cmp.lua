@@ -10,7 +10,7 @@ return {
   completion = {
     completeopt = 'menu,menuone,noinsert',
   },
-  mapping = cmp.mapping.preset.insert({
+  mapping = cmp.mapping.preset.insert {
     -- Remove detaul mappings from NvChad
     ['<C-p>'] = function(fallback) fallback() end,
     ['<C-n>'] = function(fallback) fallback() end,
@@ -24,7 +24,7 @@ return {
     ['<C-c>'] = cmp.mapping.complete(),
     ['<Tab>'] = function(fallback)
       if cmp.visible() then
-        cmp.confirm { behavior = cmp.ConfirmBehavior.Replace, select = true }
+        cmp.confirm { behavior = cmp.ConfirmBehavior.Replace, select = true, }
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
       elseif has_words_before() then
@@ -40,14 +40,14 @@ return {
         fallback()
       end
     end,
-  }),
+  },
   sources = cmp.config.sources({
-    { name = 'copilot' },
-    { name = 'codeium' },
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'nvim_lua' },
-    { name = 'path' },
+    { name = 'copilot', },
+    { name = 'codeium', },
+    { name = 'nvim_lsp', },
+    { name = 'luasnip', },
+    { name = 'nvim_lua', },
+    { name = 'path', },
   }, {
     { name = 'buffer', },
     { name = 'kitty', },

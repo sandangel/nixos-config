@@ -1,6 +1,6 @@
 local fzf_history_dir = vim.env.HOME .. '/.local/share/nvim/fzf-history'
 if vim.fn.isdirectory(fzf_history_dir) == 0 then
-  vim.fn.system { 'mkdir', '-p', fzf_history_dir }
+  vim.fn.system { 'mkdir', '-p', fzf_history_dir, }
 end
 local fzf_lua = require 'fzf-lua'
 local utils = require 'fzf-lua.utils'
@@ -67,16 +67,16 @@ fzf_lua.setup {
     buffers = {
       ['enter']  = buf_edit_or_qf,
       ['ctrl-s'] = fzf_lua.actions.buf_vsplit,
-    }
+    },
   },
   lsp = {
     finder = {
       providers = {
-        { 'definitions',     prefix = utils.ansi_codes.green('def ') },
-        { 'references',      prefix = utils.ansi_codes.blue('ref ') },
-        { 'typedefs',        prefix = utils.ansi_codes.red('tdef') },
-        { 'declarations',    prefix = utils.ansi_codes.magenta('decl') },
-        { 'implementations', prefix = utils.ansi_codes.green('impl') },
+        { 'definitions',     prefix = utils.ansi_codes.green 'def ', },
+        { 'references',      prefix = utils.ansi_codes.blue 'ref ', },
+        { 'typedefs',        prefix = utils.ansi_codes.red 'tdef', },
+        { 'declarations',    prefix = utils.ansi_codes.magenta 'decl', },
+        { 'implementations', prefix = utils.ansi_codes.green 'impl', },
       },
     },
   },

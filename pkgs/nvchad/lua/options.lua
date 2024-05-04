@@ -18,10 +18,10 @@ vim.wo.foldmethod = 'expr'
 
 vim.opt.dictionary:append '/usr/share/dict/words'
 vim.opt.diffopt:append 'vertical,algorithm:patience'
-vim.opt.listchars = { tab = '» ', trail = '∙', eol = '¬', nbsp = '▪', precedes = '⟨', extends = '⟩' }
+vim.opt.listchars = { tab = '» ', trail = '∙', eol = '¬', nbsp = '▪', precedes = '⟨', extends = '⟩', }
 vim.opt.wildignore:append '.DS_Store,Icon?,*.dmg,*.git,*.pyc,*.o,*.obj,*.so,*.swp,*.zip'
 
-vim.api.nvim_create_augroup('NeoVimUser', { clear = true })
+vim.api.nvim_create_augroup('NeoVimUser', { clear = true, })
 vim.api.nvim_create_autocmd('VimResized', {
   group = 'NeoVimUser',
   pattern = '*',
@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd('FileChangedShellPost', {
 
 local session_dir = vim.env.HOME .. '/.vim/sessions'
 if vim.fn.isdirectory(session_dir) == 0 then
-  vim.fn.system { 'mkdir', '-p', session_dir }
+  vim.fn.system { 'mkdir', '-p', session_dir, }
 end
 
 vim.api.nvim_create_autocmd('VimLeave', {
@@ -65,10 +65,10 @@ for _, plugin in pairs(enable_providers) do
   vim.cmd('runtime ' .. plugin)
 end
 
-vim.api.nvim_create_autocmd({ 'BufAdd', 'BufEnter' }, {
+vim.api.nvim_create_autocmd({ 'BufAdd', 'BufEnter', }, {
   callback = function()
     vim.t.bufs = vim.tbl_filter(function(buf)
-      return vim.api.nvim_get_option_value('modified', { buf = buf })
+      return vim.api.nvim_get_option_value('modified', { buf = buf, })
     end, vim.t.bufs)
   end,
 })
@@ -82,7 +82,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
         line > 1
         and line <= vim.fn.line '$'
         and vim.bo.filetype ~= 'commit'
-        and vim.fn.index({ 'xxd', 'gitrebase' }, vim.bo.filetype) == -1
+        and vim.fn.index({ 'xxd', 'gitrebase', }, vim.bo.filetype) == -1
     then
       vim.cmd 'normal! g`"'
     end
@@ -90,7 +90,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 })
 
 if vim.g.neovide then
-  vim.opt.guifont = { 'Comic Code Ligatures', 'Symbols Nerd Font', ':h11' }
+  vim.opt.guifont = { 'Comic Code Ligatures', 'Symbols Nerd Font', ':h11', }
   vim.g.neovide_transparency = 0.8
   vim.g.neovide_padding_top = 10
 end

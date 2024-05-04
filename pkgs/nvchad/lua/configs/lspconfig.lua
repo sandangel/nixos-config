@@ -2,15 +2,15 @@ dofile(vim.g.base46_cache .. 'lsp')
 require 'nvchad.lsp'
 
 local lspconfig = require 'lspconfig'
-local root_pattern = require('lspconfig.util').root_pattern
+local root_pattern = require 'lspconfig.util'.root_pattern
 
-local on_init = require('nvchad.configs.lspconfig').on_init
-local capabilities = require('nvchad.configs.lspconfig').capabilities
+local on_init = require 'nvchad.configs.lspconfig'.on_init
+local capabilities = require 'nvchad.configs.lspconfig'.capabilities
 
 local on_attach = function(client, bufnr)
   -- setup signature popup
-  if require('nvconfig').ui.lsp.signature and client.server_capabilities.signatureHelpProvider then
-    require('nvchad.lsp.signature').setup(client, bufnr)
+  if require 'nvconfig'.ui.lsp.signature and client.server_capabilities.signatureHelpProvider then
+    require 'nvchad.lsp.signature'.setup(client, bufnr)
   end
 end
 
@@ -29,29 +29,29 @@ local servers = {
           typeCheckingMode = 'off',
         },
       },
-    }
+    },
   },
   pylsp = {
     settings = {
       pylsp = {
-        configurationSources = { 'flake8' },
+        configurationSources = { 'flake8', },
         plugins = {
-          pylsp_mypy          = { enabled = true, live_mode = false, dmypy = true },
-          pylint              = { enabled = false },
-          flake8              = { enabled = false },
-          black               = { enabled = false },
-          pyls_isort          = { enabled = false },
-          ruff                = { enabled = false },
-          jedi_completion     = { enabled = false },
-          jedi_definition     = { enabled = false },
-          jedi_hover          = { enabled = false },
-          jedi_references     = { enabled = false },
-          jedi_rename         = { enabled = false },
-          jedi_signature_help = { enabled = false },
-          jedi_symbols        = { enabled = false },
-          pycodestyle         = { enabled = false },
-          pyflakes            = { enabled = false },
-          mccabe              = { enabled = false },
+          pylsp_mypy          = { enabled = true, live_mode = false, dmypy = true, },
+          pylint              = { enabled = false, },
+          flake8              = { enabled = false, },
+          black               = { enabled = false, },
+          pyls_isort          = { enabled = false, },
+          ruff                = { enabled = false, },
+          jedi_completion     = { enabled = false, },
+          jedi_definition     = { enabled = false, },
+          jedi_hover          = { enabled = false, },
+          jedi_references     = { enabled = false, },
+          jedi_rename         = { enabled = false, },
+          jedi_signature_help = { enabled = false, },
+          jedi_symbols        = { enabled = false, },
+          pycodestyle         = { enabled = false, },
+          pyflakes            = { enabled = false, },
+          mccabe              = { enabled = false, },
         },
       },
     },
@@ -59,11 +59,11 @@ local servers = {
   yamlls = {
     filetypes = vim.tbl_filter(function(ft)
       -- Not start with Helm files
-      return not vim.tbl_contains({ 'helm' }, ft)
-    end, require('lspconfig.server_configurations.yamlls').default_config.filetypes),
+      return not vim.tbl_contains({ 'helm', }, ft)
+    end, require 'lspconfig.server_configurations.yamlls'.default_config.filetypes),
     settings = {
       yaml = {
-        format = { enable = true, printWidth = 120, singleQuote = true, proseWrap = 'always' },
+        format = { enable = true, printWidth = 120, singleQuote = true, proseWrap = 'always', },
         keyOrdering = false,
         hover = true,
         completion = true,
@@ -75,25 +75,25 @@ local servers = {
           -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
           url = '',
         },
-        schemas = require('schemastore').yaml.schemas {
+        schemas = require 'schemastore'.yaml.schemas {
           replace = {
             ['Deployer Recipe'] = {
               description = 'YAML GitHub Workflow', -- description = "A Deployer yaml recipes",
-              fileMatch = { 'deploy.yml', 'deploy.yaml' },
+              fileMatch = { 'deploy.yml', 'deploy.yaml', },
               name = 'Deployer Recipe',
-              url = 'https://json.schemastore.org/github-workflow.json' -- url = "https://raw.githubusercontent.com/deployphp/deployer/master/src/schema.json"
+              url = 'https://json.schemastore.org/github-workflow.json', -- url = "https://raw.githubusercontent.com/deployphp/deployer/master/src/schema.json"
             },
           },
         },
       },
-      redhat = { telemetry = { enabled = false } },
-    }
+      redhat = { telemetry = { enabled = false, }, },
+    },
   },
   jsonls = {
     settings = {
       json = {
-        schemas = require('schemastore').json.schemas(),
-        validate = { enable = true },
+        schemas = require 'schemastore'.json.schemas(),
+        validate = { enable = true, },
       },
     },
   },
@@ -109,7 +109,7 @@ local servers = {
       preferences = {
         quotePreference = 'single',
       },
-    }
+    },
   },
   lua_ls = {
     settings = {
@@ -118,7 +118,7 @@ local servers = {
           version = 'LuaJIT',
         },
         diagnostics = {
-          globals = { 'vim' },
+          globals = { 'vim', },
         },
         telemetry = {
           enable = false,
@@ -129,7 +129,8 @@ local servers = {
             indent_style = 'space',
             indent_size = '2',
             quote_style = 'single',
-            call_arg_parentheses = 'unambiguous_remove_string_only',
+            call_arg_parentheses = 'remove',
+            trailing_table_separator = 'always',
           },
         },
         workspace = {

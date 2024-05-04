@@ -9,6 +9,56 @@ local plugins = {
     end,
   },
   {
+    'rcarriga/nvim-dap-ui',
+    opts = { floating = { border = 'rounded' } },
+    config = function(_, opts)
+      local dap, dapui = require('dap'), require('dapui')
+      dap.listeners.before.attach.dapui_config = function() dapui.open() end
+      dap.listeners.before.launch.dapui_config = function() dapui.open() end
+      dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
+      dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
+      dapui.setup(opts)
+    end,
+    dependencies = {
+      { 'nvim-neotest/nvim-nio' },
+      {
+        'mfussenegger/nvim-dap',
+        config = function()
+          local map = vim.keymap.set
+          map('n', '<leader>ht', function() require('dap').toggle_breakpoint() end, { desc = 'dap toggle breakpoint' })
+          map('n', '<leader>hc', function()
+            if vim.fn.filereadable('.vscode/launch.json') then
+              require('dap.ext.vscode').load_launchjs()
+            end
+            require('dap').continue()
+          end, { desc = 'dap continue' })
+          map('n', '<leader>ho', function() require('dap').step_over() end, { desc = 'dap step over' })
+          map('n', '<leader>hi', function() require('dap').step_into() end, { desc = 'dap step into' })
+          map('n', '<leader>hr', function() require('dap').repl.open() end, { desc = 'dap repl open' })
+        end
+      },
+      {
+        'mfussenegger/nvim-dap-python',
+        config = function()
+          require('dap-python').test_runner = 'pytest'
+          require('dap-python').setup()
+        end,
+        dependencies = { 'mfussenegger/nvim-dap' },
+      },
+      {
+        'rcarriga/cmp-dap',
+        dependencies = { 'hrsh7th/nvim-cmp' },
+        config = function(_, _)
+          require('cmp').setup.filetype({ 'dap-repl', 'dapui_watches', 'dapui_hover' }, {
+            sources = {
+              { name = 'dap' },
+            },
+          })
+        end,
+      },
+    },
+  },
+  {
     'stevearc/conform.nvim',
     event = 'VeryLazy',
     opts = {
