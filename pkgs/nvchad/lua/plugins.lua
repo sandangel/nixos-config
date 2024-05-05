@@ -5,14 +5,15 @@ local plugins = {
     dependencies = { 'folke/neodev.nvim', 'b0o/schemastore.nvim', },
     event = 'VeryLazy',
     config = function()
-      require('configs.lspconfig')
+      require 'configs.lspconfig'
     end,
   },
   {
     'rcarriga/nvim-dap-ui',
-    opts = { floating = { border = 'rounded' } },
+    opts = { floating = { border = 'rounded', }, },
+    event = 'VeryLazy',
     config = function(_, opts)
-      local dap, dapui = require('dap'), require('dapui')
+      local dap, dapui = require 'dap', require 'dapui'
       dap.listeners.before.attach.dapui_config = function() dapui.open() end
       dap.listeners.before.launch.dapui_config = function() dapui.open() end
       dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
@@ -20,38 +21,38 @@ local plugins = {
       dapui.setup(opts)
     end,
     dependencies = {
-      { 'nvim-neotest/nvim-nio' },
+      { 'nvim-neotest/nvim-nio', },
       {
         'mfussenegger/nvim-dap',
         config = function()
           local map = vim.keymap.set
-          map('n', '<leader>ht', function() require('dap').toggle_breakpoint() end, { desc = 'dap toggle breakpoint' })
+          map('n', '<leader>ht', function() require 'dap'.toggle_breakpoint() end, { desc = 'dap toggle breakpoint', })
           map('n', '<leader>hc', function()
-            if vim.fn.filereadable('.vscode/launch.json') then
-              require('dap.ext.vscode').load_launchjs()
+            if vim.fn.filereadable '.vscode/launch.json' then
+              require 'dap.ext.vscode'.load_launchjs()
             end
-            require('dap').continue()
-          end, { desc = 'dap continue' })
-          map('n', '<leader>ho', function() require('dap').step_over() end, { desc = 'dap step over' })
-          map('n', '<leader>hi', function() require('dap').step_into() end, { desc = 'dap step into' })
-          map('n', '<leader>hr', function() require('dap').repl.open() end, { desc = 'dap repl open' })
-        end
+            require 'dap'.continue()
+          end, { desc = 'dap continue', })
+          map('n', '<leader>ho', function() require 'dap'.step_over() end, { desc = 'dap step over', })
+          map('n', '<leader>hi', function() require 'dap'.step_into() end, { desc = 'dap step into', })
+          map('n', '<leader>hr', function() require 'dap'.repl.open() end, { desc = 'dap repl open', })
+        end,
       },
       {
         'mfussenegger/nvim-dap-python',
         config = function()
-          require('dap-python').test_runner = 'pytest'
-          require('dap-python').setup()
+          require 'dap-python'.test_runner = 'pytest'
+          require 'dap-python'.setup()
         end,
-        dependencies = { 'mfussenegger/nvim-dap' },
+        dependencies = { 'mfussenegger/nvim-dap', },
       },
       {
         'rcarriga/cmp-dap',
-        dependencies = { 'hrsh7th/nvim-cmp' },
+        dependencies = { 'hrsh7th/nvim-cmp', },
         config = function(_, _)
-          require('cmp').setup.filetype({ 'dap-repl', 'dapui_watches', 'dapui_hover' }, {
+          require 'cmp'.setup.filetype({ 'dap-repl', 'dapui_watches', 'dapui_hover', }, {
             sources = {
-              { name = 'dap' },
+              { name = 'dap', },
             },
           })
         end,
@@ -91,18 +92,18 @@ local plugins = {
         },
       },
       formatters_by_ft = {
-        yaml = { 'prettierd' },
-        markdown = { 'prettierd' },
-        json = { 'prettierd' },
-        html = { 'prettierd' },
-        css = { 'prettierd' },
-        javascript = { 'prettierd' },
-        javascriptreact = { 'prettierd' },
-        typescript = { 'prettierd' },
-        typescriptreact = { 'prettierd' },
-        terraform = { 'terraform_fmt' },
-        python = { 'ruff_format', 'ruff_fix' },
-        nix = { 'nixfmt' },
+        yaml = { 'prettierd', },
+        markdown = { 'prettierd', },
+        json = { 'prettierd', },
+        html = { 'prettierd', },
+        css = { 'prettierd', },
+        javascript = { 'prettierd', },
+        javascriptreact = { 'prettierd', },
+        typescript = { 'prettierd', },
+        typescriptreact = { 'prettierd', },
+        terraform = { 'terraform_fmt', },
+        python = { 'ruff_format', 'ruff_fix', },
+        nix = { 'nixfmt', },
       },
       format_on_save = {
         lsp_fallback = true,
@@ -122,11 +123,11 @@ local plugins = {
     event = 'VeryLazy',
     config = function()
       require 'configs.mini'
-    end
+    end,
   },
   {
     'wallpants/github-preview.nvim',
-    cmd = { 'GithubPreviewToggle' },
+    cmd = { 'GithubPreviewToggle', },
     config = true,
   },
   {
@@ -141,9 +142,9 @@ local plugins = {
   {
     'zbirenbaum/copilot.lua',
     event = 'VeryLazy',
-    dependencies = { { 'zbirenbaum/copilot-cmp', config = true }, 'hrsh7th/nvim-cmp' },
+    dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
     config = function()
-      require('copilot').setup({
+      require 'copilot'.setup {
         panel = {
           enabled = false,
         },
@@ -156,8 +157,8 @@ local plugins = {
           gitcommit = true,
         },
         copilot_node_command = 'bun',
-      })
-    end
+      }
+    end,
   },
   {
     'rust-lang/rust.vim',
@@ -173,7 +174,7 @@ local plugins = {
   },
   {
     'AckslD/nvim-neoclip.lua',
-    dependencies = { 'kkharji/sqlite.lua', 'ibhagwan/fzf-lua' },
+    dependencies = { 'kkharji/sqlite.lua', 'ibhagwan/fzf-lua', },
     event = 'VeryLazy',
     opts = {
       history = 10000,
@@ -185,9 +186,9 @@ local plugins = {
     'brenton-leighton/multiple-cursors.nvim',
     config = true,
     keys = {
-      { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i' }, desc = 'cursors add cursor one line down' },
-      { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i' }, desc = 'cursors add cursor one line up' },
-      { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i' }, desc = 'cursors add or delete cursor at mouse position' },
+      { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i', }, desc = 'cursors add cursor one line down', },
+      { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i', }, desc = 'cursors add cursor one line up', },
+      { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i', }, desc = 'cursors add or delete cursor at mouse position', },
     },
   },
   {
@@ -205,12 +206,12 @@ local plugins = {
   },
   {
     'folke/noice.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify' },
+    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', },
     lazy = false,
     ---@type NoiceConfig
     opts = {
       lsp = {
-        progress = { enabled = false },
+        progress = { enabled = false, },
         signature = { enabled = false, silent = true, },
         hover = { enabled = false, silent = true, },
       },
@@ -220,27 +221,27 @@ local plugins = {
     },
     config = function(_, opts)
       dofile(vim.g.base46_cache .. 'notify')
-      require('noice').setup(opts)
+      require 'noice'.setup(opts)
     end,
   },
   {
     'windwp/nvim-autopairs',
     config = function(_, opts)
-      require('nvim-autopairs').setup(opts)
+      require 'nvim-autopairs'.setup(opts)
       require 'configs.autopairs'
     end,
   },
   {
     'hrsh7th/nvim-cmp',
-    dependencies = { 'lukas-reineke/cmp-rg' },
+    dependencies = { 'lukas-reineke/cmp-rg', },
     opts = require 'configs.cmp',
   },
   {
     'garyhurtz/cmp_kitty',
-    dependencies = { 'hrsh7th/nvim-cmp' },
+    dependencies = { 'hrsh7th/nvim-cmp', },
     init = function()
-      require('cmp_kitty'):setup()
-    end
+      require 'cmp_kitty':setup()
+    end,
   },
   {
     'ibhagwan/fzf-lua',
@@ -257,8 +258,8 @@ local plugins = {
       dofile(vim.g.base46_cache .. 'syntax')
       dofile(vim.g.base46_cache .. 'treesitter')
       -- Default clang compiler will generate errors.
-      require('nvim-treesitter.install').compilers = { 'gcc' }
-      require('nvim-treesitter.configs').setup(opts)
+      require 'nvim-treesitter.install'.compilers = { 'gcc', }
+      require 'nvim-treesitter.configs'.setup(opts)
     end,
   },
   {
@@ -278,18 +279,18 @@ local plugins = {
     ft = 'kitty',
     event = 'VeryLazy',
   },
-  { 'towolf/vim-helm',                     ft = 'helm', },
-  { 'mhinz/vim-sayonara',                  cmd = 'Sayonara', },
-  { 'nvim-tree/nvim-tree.lua',             opts = require('configs.nvim-tree'), },
-  { 'NvChad/nvim-colorizer.lua',           opts = { css = true, css_fn = true, mode = 'virtualtext', }, },
-  { 'williamboman/mason.nvim',             enabled = false, },
+  { 'towolf/vim-helm', ft = 'helm', },
+  { 'mhinz/vim-sayonara', cmd = 'Sayonara', },
+  { 'nvim-tree/nvim-tree.lua', opts = require 'configs.nvim-tree', },
+  { 'NvChad/nvim-colorizer.lua', opts = { user_default_options = { css = true, css_fn = true, mode = 'virtualtext', virtualtext = '■■■', }, }, },
+  { 'williamboman/mason.nvim', enabled = false, },
   { 'lukas-reineke/indent-blankline.nvim', enabled = false, },
-  { 'whiteinge/diffconflicts',             cmd = 'DiffConflicts', },
-  { 'machakann/vim-textobj-delimited',     event = 'VeryLazy', },
-  { 'tpope/vim-rsi',                       event = 'VeryLazy', },
-  { 'tpope/vim-repeat',                    event = 'VeryLazy', },
-  { 'markonm/traces.vim',                  event = 'VeryLazy', },
-  { 'romainl/vim-cool',                    event = 'VeryLazy', },
+  { 'whiteinge/diffconflicts', cmd = 'DiffConflicts', },
+  { 'machakann/vim-textobj-delimited', event = 'VeryLazy', },
+  { 'tpope/vim-rsi', event = 'VeryLazy', },
+  { 'tpope/vim-repeat', event = 'VeryLazy', },
+  { 'markonm/traces.vim', event = 'VeryLazy', },
+  { 'romainl/vim-cool', event = 'VeryLazy', },
 }
 
 return plugins
