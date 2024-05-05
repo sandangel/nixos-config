@@ -53,7 +53,4 @@ return {
     { name = 'kitty', },
     { name = 'rg', },
   }),
-  experimental = {
-    ghost_text = true,
-  },
 }
