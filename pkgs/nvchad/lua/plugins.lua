@@ -60,55 +60,31 @@ local plugins = {
     },
   },
   {
-    'stevearc/conform.nvim',
+    'nvimtools/none-ls.nvim',
+    dependencies = { 'nvimtools/none-ls-extras.nvim', 'neovim/nvim-lspconfig', },
     event = 'VeryLazy',
-    opts = {
-      formatters = {
-        ruff_format = {
-          command = 'rye',
-          args = {
-            'fmt',
-            '--',
-            '--force-exclude',
-            '--stdin-filename',
-            '$FILENAME',
-            '-',
+    config = function()
+      local null_ls = require 'null-ls'
 
-          },
+      null_ls.setup {
+        sources = {
+          require 'none-ls.code_actions.eslint_d',
+          null_ls.builtins.completion.spell,
+          null_ls.builtins.diagnostics.codespell,
+          null_ls.builtins.diagnostics.actionlint,
+          null_ls.builtins.diagnostics.stylelint,
+          null_ls.builtins.diagnostics.yamllint,
+          require 'none-ls.diagnostics.eslint_d',
+          null_ls.builtins.formatting.codespell,
+          null_ls.builtins.formatting.prettierd,
+          null_ls.builtins.formatting.nixfmt,
+          null_ls.builtins.formatting.terraform_fmt,
+          require 'none-ls.formatting.eslint_d',
+          require 'none-ls.formatting.ruff',
+          require 'none-ls.formatting.ruff_format',
         },
-        ruff_fix = {
-          command = 'rye',
-          args = {
-            'lint',
-            '--fix',
-            '--',
-            '--force-exclude',
-            '--exit-zero',
-            '--no-cache',
-            '--stdin-filename',
-            '$FILENAME',
-            '-',
-          },
-        },
-      },
-      formatters_by_ft = {
-        yaml = { 'prettierd', },
-        markdown = { 'prettierd', },
-        json = { 'prettierd', },
-        html = { 'prettierd', },
-        css = { 'prettierd', },
-        javascript = { 'prettierd', },
-        javascriptreact = { 'prettierd', },
-        typescript = { 'prettierd', },
-        typescriptreact = { 'prettierd', },
-        terraform = { 'terraform_fmt', },
-        python = { 'ruff_format', 'ruff_fix', },
-        nix = { 'nixfmt', },
-      },
-      format_on_save = {
-        lsp_fallback = true,
-      },
-    },
+      }
+    end,
   },
   {
     'mbbill/undotree',

@@ -7,10 +7,22 @@ local root_pattern = require 'lspconfig.util'.root_pattern
 local on_init = require 'nvchad.configs.lspconfig'.on_init
 local capabilities = require 'nvchad.configs.lspconfig'.capabilities
 
+local group = vim.api.nvim_create_augroup('LspFormatting', {})
+
 local on_attach = function(client, bufnr)
   -- setup signature popup
   if require 'nvconfig'.ui.lsp.signature and client.server_capabilities.signatureHelpProvider then
     require 'nvchad.lsp.signature'.setup(client, bufnr)
+  end
+  if client.supports_method 'textDocument/formatting' then
+    vim.api.nvim_clear_autocmds { group = group, buffer = bufnr, }
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      group = group,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format { async = false, }
+      end,
+    })
   end
 end
 
@@ -21,8 +33,11 @@ local servers = {
   helm_ls = {},
   nixd = {},
   rust_analyzer = {},
-  ruff_lsp = {},
+  ruff_lsp = {
+    root_dir = root_pattern '.git',
+  },
   pyright = {
+    root_dir = root_pattern '.git',
     settings = {
       python = {
         analysis = {
@@ -32,6 +47,7 @@ local servers = {
     },
   },
   pylsp = {
+    root_dir = root_pattern '.git',
     settings = {
       pylsp = {
         configurationSources = { 'flake8', },

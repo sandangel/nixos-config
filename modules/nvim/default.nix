@@ -2,18 +2,20 @@
 
 {
   home.packages = with pkgs; [
-    nvchad
+    actionlint
     bun
-    nodejs
+    codespell
     corepack
     fd
     nixfmt-rfc-style
-    actionlint
+    nodejs
+    nvchad
+    stylelint
     tflint
     tfsec
+    trash-cli
     yamlfmt
     yamllint
-    trash-cli
   ];
   programs.neovim = {
     enable = true;
@@ -26,6 +28,7 @@
         helm-ls
         lua-language-server
         prettierd
+        eslint_d
         nixd
         pyright
         vscode-langservers-extracted
