@@ -75,7 +75,6 @@ local plugins = {
           null_ls.builtins.diagnostics.stylelint,
           null_ls.builtins.diagnostics.yamllint,
           require 'none-ls.diagnostics.eslint_d',
-          null_ls.builtins.formatting.codespell,
           null_ls.builtins.formatting.prettierd,
           null_ls.builtins.formatting.nixfmt,
           null_ls.builtins.formatting.terraform_fmt,
