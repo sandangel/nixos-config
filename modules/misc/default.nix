@@ -31,6 +31,7 @@
       awscli2
       ssm-session-manager-plugin
       terraform
+      vault
 
       # Rust toolchain
       fenix.stable.toolchain

@@ -37,7 +37,7 @@ local function buf_edit_or_qf(selected, opts)
   end
 end
 
-fzf_lua.setup {
+fzf_lua.setup { 'max-perf', {
   keymap = {
     builtin = {
       ['<F1>'] = 'toggle-help',
@@ -64,32 +64,5 @@ fzf_lua.setup {
       ['enter']  = file_edit_or_qf,
       ['ctrl-s'] = fzf_lua.actions.file_vsplit,
     },
-    buffers = {
-      ['enter']  = buf_edit_or_qf,
-      ['ctrl-s'] = fzf_lua.actions.buf_vsplit,
-    },
   },
-  lsp = {
-    finder = {
-      providers = {
-        { 'definitions',     prefix = utils.ansi_codes.green 'def ', },
-        { 'references',      prefix = utils.ansi_codes.blue 'ref ', },
-        { 'typedefs',        prefix = utils.ansi_codes.red 'tdef', },
-        { 'declarations',    prefix = utils.ansi_codes.magenta 'decl', },
-        { 'implementations', prefix = utils.ansi_codes.green 'impl', },
-      },
-    },
-  },
-  grep = {
-    git_icons = false,
-    file_icons = false,
-    color_icons = false,
-  },
-  files = {
-    git_icons = false,
-  },
-  oldfiles = {
-    cwd_only = true,
-    include_current_session = true,
-  },
-}
+}, }

@@ -3,13 +3,9 @@ function nvim() {
   local window_id=$(kitty @ ls | jq -r '.[] | select(.is_focused == true).tabs[] | select(.is_focused == true).windows[] | select(.foreground_processes[].cmdline[0] | contains("/bin/nvim")).id')
   [[ ! $window_id && -e $nvim_addr ]] && rm -rf $nvim_addr
 
-  local session_folder="$HOME/.vim/sessions"
-  local session_name="$session_folder/$(echo $(pwd) | sed "s|$HOME/||" | sed 's|/|.|g').vim"
 
-  if [[ $# -eq 0 && ! $window_id && -f $session_name ]]; then
-    command nvim -c "source $session_name" --listen $nvim_addr
-  elif [[ $# -eq 0 && ! $window_id && ! -f $session_name && $PWD != $HOME ]]; then
-    command nvim -c "mks $session_name" --listen $nvim_addr
+  if [[ $# -eq 0 && ! $window_id  ]]; then
+    command nvim --listen $nvim_addr
   elif [[ $# -eq 0 && $window_id ]]; then
     kitty @ focus-window -m "id:$window_id" --no-response
   elif [[ $# -gt 0 && ! $window_id ]]; then

@@ -33,7 +33,7 @@
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     LC_CTYPE = "en_US.UTF-8";
-    MANPAGER = "sh -c 'col -bx | commnand bat -l man -p'";
+    MANPAGER = "sh -c 'col -bx | command bat -l man -p'";
     PAGER = "less -FirSwX";
 
     GDK_SCALE = "2";
