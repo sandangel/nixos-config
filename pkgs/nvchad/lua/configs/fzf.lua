@@ -2,8 +2,8 @@ local fzf_history_dir = vim.env.HOME .. '/.local/share/nvim/fzf-history'
 if vim.fn.isdirectory(fzf_history_dir) == 0 then
   vim.fn.system { 'mkdir', '-p', fzf_history_dir, }
 end
+
 local fzf_lua = require 'fzf-lua'
-local utils = require 'fzf-lua.utils'
 
 local sel_to_qf = function(selected, opts)
   local qf_list = {}
@@ -29,15 +29,7 @@ local function file_edit_or_qf(selected, opts)
   end
 end
 
-local function buf_edit_or_qf(selected, opts)
-  if #selected > 1 then
-    return sel_to_qf(selected, opts)
-  else
-    return fzf_lua.actions.buf_edit(selected, opts)
-  end
-end
-
-fzf_lua.setup { 'max-perf', {
+fzf_lua.setup {
   keymap = {
     builtin = {
       ['<F1>'] = 'toggle-help',
@@ -55,7 +47,7 @@ fzf_lua.setup { 'max-perf', {
     },
   },
   fzf_opts = {
-    ['--layout'] = false,
+    ['--layout'] = 'default',
     ['--history'] = fzf_history_dir .. '/fzf-lua',
     ['--history-size'] = '10000',
   },
@@ -65,4 +57,12 @@ fzf_lua.setup { 'max-perf', {
       ['ctrl-s'] = fzf_lua.actions.file_vsplit,
     },
   },
-}, }
+  files = {
+    git_icons = false,
+  },
+  grep = {
+    git_icons = false,
+    file_icons = false,
+    color_icons = false,
+  },
+}

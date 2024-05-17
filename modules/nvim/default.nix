@@ -6,7 +6,6 @@
     bun
     codespell
     corepack
-    fd
     nixfmt-rfc-style
     nodejs
     nvchad
