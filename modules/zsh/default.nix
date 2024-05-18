@@ -56,8 +56,8 @@
       pbpaste = "wl-paste";
       sw = "switch";
 
-      # Woven
-      tfinfra = "ccli run --profile mdp-infra-admin terraform --";
+      cs = "gh copilot suggest";
+      ce = "gh copilot explain";
     };
   };
   xdg.configFile."zsh/config".source = ./.;

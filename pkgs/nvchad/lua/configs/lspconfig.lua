@@ -42,7 +42,6 @@ local servers = {
       python = {
         analysis = {
           typeCheckingMode = 'off',
-          ignore = { '*', },
         },
       },
     },
