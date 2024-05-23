@@ -4,16 +4,16 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "vinceliuice";
       repo = "Fluent-icon-theme";
-      rev = "2024-02-25";
-      hash = "sha256-Cadp2+4kBZ74kdD5x0O85FszxvN6/sg6yccxughyX1Q=";
+      rev = "53866de0b88132627d1301964a51e997edfd3391"; # 2024-05-19
+      hash = "sha256-Mv5O2UGUfMgHZkeD3LD37Q0w8jM+j4yz26garhDUFGM=";
     };
   });
   fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: {
     src = pkgs.fetchFromGitHub {
       owner = "vinceliuice";
       repo = "Fluent-gtk-theme";
-      rev = "2024-04-28";
-      hash = "sha256-0zf3fHtWcrbT26jgwgsPEDDhBWErOkgXyvGwSWV8rGs=";
+      rev = "423fe6fad9a43dce32ea19f137533399ad6c7420"; # 2024-05-19
+      hash = "sha256-0jlwJnqHnZrL6RshjSiHg1kiv+TRsc+2p1G7ze7/fy8=";
     };
   });
   gtk-theme = "Fluent-Dark";

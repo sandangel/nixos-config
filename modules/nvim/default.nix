@@ -37,13 +37,6 @@
         terraform-ls
         tree-sitter
         docker-compose-language-service
-        (python3.withPackages (
-          ps: with ps; [
-            python-lsp-server
-            pylsp-mypy
-            ruff-lsp
-          ]
-        ))
       ])
       ++ (with pkgs.nodePackages; [
         typescript-language-server

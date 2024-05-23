@@ -7,6 +7,7 @@
     # System utilities
     gnused
     coreutils
+    bind
 
     # Apple Silicon monitoring tool
     asitop

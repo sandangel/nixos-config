@@ -2,7 +2,7 @@
 local plugins = {
   {
     'neovim/nvim-lspconfig',
-    dependencies = { 'folke/neodev.nvim', 'b0o/schemastore.nvim', },
+    dependencies = { 'folke/neodev.nvim', 'b0o/schemastore.nvim', { 'nvimtools/none-ls.nvim', dependencies = { 'nvimtools/none-ls-extras.nvim', }, }, },
     event = 'VeryLazy',
     config = function()
       require 'configs.lspconfig'
@@ -58,32 +58,6 @@ local plugins = {
         end,
       },
     },
-  },
-  {
-    'nvimtools/none-ls.nvim',
-    dependencies = { 'nvimtools/none-ls-extras.nvim', 'neovim/nvim-lspconfig', },
-    event = 'VeryLazy',
-    config = function()
-      local null_ls = require 'null-ls'
-
-      null_ls.setup {
-        sources = {
-          require 'none-ls.code_actions.eslint_d',
-          null_ls.builtins.completion.spell,
-          null_ls.builtins.diagnostics.codespell,
-          null_ls.builtins.diagnostics.actionlint,
-          null_ls.builtins.diagnostics.stylelint,
-          null_ls.builtins.diagnostics.yamllint,
-          require 'none-ls.diagnostics.eslint_d',
-          null_ls.builtins.formatting.prettierd,
-          null_ls.builtins.formatting.nixfmt,
-          null_ls.builtins.formatting.terraform_fmt,
-          require 'none-ls.formatting.eslint_d',
-          require 'none-ls.formatting.ruff',
-          require 'none-ls.formatting.ruff_format',
-        },
-      }
-    end,
   },
   {
     'mbbill/undotree',

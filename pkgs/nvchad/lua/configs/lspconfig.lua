@@ -33,7 +33,7 @@ local servers = {
   helm_ls = {},
   nixd = {},
   rust_analyzer = {},
-  ruff_lsp = {
+  ruff = {
     root_dir = root_pattern '.git',
   },
   pyright = {
@@ -42,32 +42,6 @@ local servers = {
       python = {
         analysis = {
           typeCheckingMode = 'off',
-        },
-      },
-    },
-  },
-  pylsp = {
-    root_dir = root_pattern '.git',
-    settings = {
-      pylsp = {
-        configurationSources = { 'flake8', },
-        plugins = {
-          pylsp_mypy          = { enabled = true, live_mode = false, dmypy = true, },
-          pylint              = { enabled = false, },
-          flake8              = { enabled = false, },
-          black               = { enabled = false, },
-          pyls_isort          = { enabled = false, },
-          ruff                = { enabled = false, },
-          jedi_completion     = { enabled = false, },
-          jedi_definition     = { enabled = false, },
-          jedi_hover          = { enabled = false, },
-          jedi_references     = { enabled = false, },
-          jedi_rename         = { enabled = false, },
-          jedi_signature_help = { enabled = false, },
-          jedi_symbols        = { enabled = false, },
-          pycodestyle         = { enabled = false, },
-          pyflakes            = { enabled = false, },
-          mccabe              = { enabled = false, },
         },
       },
     },
@@ -172,3 +146,43 @@ for name, opts in pairs(servers) do
 
   lspconfig[name].setup(opts)
 end
+
+local null_ls = require 'null-ls'
+local h = require 'null-ls.helpers'
+
+-- Need to set root_dir to `.git` for pyproject because there might be
+-- multiple pyproject files in a python monorepo. So by default we only
+-- check the pyproject at root to avoid config duplication.
+
+null_ls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = root_pattern '.git',
+  sources = {
+    require 'none-ls.code_actions.eslint_d',
+
+    null_ls.builtins.completion.spell,
+
+    null_ls.builtins.diagnostics.codespell.with {
+      cwd = h.cache.by_bufnr(function(params)
+        return (root_pattern '.git')(params.bufname)
+      end),
+    },
+    null_ls.builtins.diagnostics.actionlint,
+    null_ls.builtins.diagnostics.mypy.with {
+      cwd = h.cache.by_bufnr(function(params)
+        return (root_pattern '.git')(params.bufname)
+      end),
+    },
+    null_ls.builtins.diagnostics.stylelint,
+    null_ls.builtins.diagnostics.yamllint,
+    require 'none-ls.diagnostics.eslint_d',
+
+    null_ls.builtins.formatting.prettierd,
+    null_ls.builtins.formatting.nixfmt,
+    null_ls.builtins.formatting.terraform_fmt,
+    require 'none-ls.formatting.eslint_d',
+    require 'none-ls.formatting.ruff',
+    require 'none-ls.formatting.ruff_format',
+  },
+}

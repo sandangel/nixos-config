@@ -7,6 +7,21 @@
     binutils
     glxinfo
     xdg-utils
+    # Fix issue with error: "cannot allocate memory in static TLS block" when LD_AUDIT is set for packages depending on jemalloc
+    # https://github.com/flox/flox/issues/1341#issuecomment-2111136929
+    (bind.overrideAttrs (oldAttrs: {
+      nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ makeWrapper ];
+      postInstall =
+        # All binaries can be found in nixpkgs
+        # https://github.com/NixOS/nixpkgs/blob/master/pkgs/servers/dns/bind/default.nix
+        ''
+          for binary in $out/bin/{host,dig,delv,nslookup,nsupdate}; do
+            wrapProgram $binary --unset LD_AUDIT
+          done
+        ''
+        # Output will be moved so need to wrapProgram first before oldAttrs.postInstall
+        + oldAttrs.postInstall;
+    }))
 
     # To run GUI apps
     nixGL
@@ -33,8 +48,6 @@
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     LC_CTYPE = "en_US.UTF-8";
-    MANPAGER = "sh -c 'col -bx | command bat -l man -p'";
-    PAGER = "less -FirSwX";
 
     GDK_SCALE = "2";
     QT_QPA_PLATFORM = "wayland";

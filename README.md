@@ -96,10 +96,12 @@ nix run home-manager/master -- init --switch --impure --flake ".#$USER"
 make switch
 ```
 
-Install wl-clipboard, xclip, podman, chromium using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status
+Install xclip, podman, chromium using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status.
+
+wl-clipboard does not work well with VMWare clipboard sharing with host machine.
 
 ```zsh
-rpm-ostree install wl-clipboard xclip podman-docker podman-compose chromium
+rpm-ostree install xclip podman-docker podman-compose chromium
 rpm-ostree override remove ghostscript
 ```
 
