@@ -2,7 +2,7 @@ function pbcopy() {
   if [[ $(uname -s) == *"Darwin"* ]]; then
     command pbcopy $1
   else
-    wl-copy $1
+    cat - | xclip -selection clipboard
   fi
 }
 

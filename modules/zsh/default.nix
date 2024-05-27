@@ -52,8 +52,8 @@
       gs = "git status";
       rm = "trash";
 
-      pbcopy = "wl-copy";
-      pbpaste = "wl-paste";
+      pbcopy = "xclip -selection clipboard";
+      pbpaste = "xclip -selection clipboard -o";
       sw = "switch";
 
       cs = "gh copilot suggest";

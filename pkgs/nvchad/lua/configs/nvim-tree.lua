@@ -15,7 +15,7 @@ return vim.tbl_deep_extend('force', require 'nvchad.configs.nvimtree', {
     local function copy_to_clipboard(content)
       vim.fn.setreg('"', content)
       -- setreg * and + does not work
-      vim.api.nvim_command('silent !echo -n "' .. content .. '" | wl-copy')
+      vim.api.nvim_command('silent !echo -n "' .. content .. '" | xclip -selection clipboard')
       return notify.info(string.format('Copied %s to system clipboard!', content))
     end
 
@@ -70,6 +70,7 @@ return vim.tbl_deep_extend('force', require 'nvchad.configs.nvimtree', {
   end,
   view = {
     width = {}, -- Adaptive size
+    side = 'right',
   },
   renderer = {
     icons = {
