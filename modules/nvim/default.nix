@@ -4,7 +4,6 @@
   home.packages = with pkgs; [
     actionlint
     bun
-    codespell
     corepack
     nixfmt-rfc-style
     nodejs
@@ -29,7 +28,6 @@
         prettierd
         eslint_d
         nixd
-        pyright
         vscode-langservers-extracted
         yaml-language-server
         gopls

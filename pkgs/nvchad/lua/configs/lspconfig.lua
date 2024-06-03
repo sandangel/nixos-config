@@ -38,13 +38,6 @@ local servers = {
   },
   pyright = {
     root_dir = root_pattern '.git',
-    settings = {
-      python = {
-        analysis = {
-          typeCheckingMode = 'off',
-        },
-      },
-    },
   },
   yamlls = {
     filetypes = vim.tbl_filter(function(ft)
@@ -101,42 +94,7 @@ local servers = {
       },
     },
   },
-  lua_ls = {
-    settings = {
-      Lua = {
-        runtime = {
-          version = 'LuaJIT',
-        },
-        diagnostics = {
-          globals = { 'vim', },
-        },
-        telemetry = {
-          enable = false,
-        },
-        format = {
-          enable = true,
-          defaultConfig = {
-            indent_style = 'space',
-            indent_size = '2',
-            quote_style = 'single',
-            call_arg_parentheses = 'remove',
-            trailing_table_separator = 'always',
-          },
-        },
-        workspace = {
-          library = {
-            [vim.fn.expand '$VIMRUNTIME/lua'] = true,
-            [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
-            [vim.fn.stdpath 'data' .. '/lazy/ui/nvchad_types'] = true,
-            [vim.fn.stdpath 'data' .. '/lazy/lazy.nvim/lua/lazy'] = true,
-            [vim.fn.stdpath 'data' .. '/lazy/noice.nvim/lua/noice'] = true,
-          },
-          maxPreload = 100000,
-          preloadFileSize = 10000,
-        },
-      },
-    },
-  },
+  lua_ls = {},
 }
 
 for name, opts in pairs(servers) do
@@ -169,11 +127,6 @@ null_ls.setup {
       end),
     },
     null_ls.builtins.diagnostics.actionlint,
-    null_ls.builtins.diagnostics.mypy.with {
-      cwd = h.cache.by_bufnr(function(params)
-        return (root_pattern '.git')(params.bufname)
-      end),
-    },
     null_ls.builtins.diagnostics.stylelint,
     null_ls.builtins.diagnostics.yamllint,
     require 'none-ls.diagnostics.eslint_d',

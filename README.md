@@ -57,7 +57,7 @@ this in the VM and only do terminal UIs. Terminal workflows have no performance
 issues ever.
 
 **This can't actually work! This only works on a powerful workstation!**
-I've been doing this for almost  2 years now. It works for me.
+I've been doing this for almost 2 years now. It works for me.
 I also use this VM on a M1 MacBook Pro with 64GiB RAM (to be fair, it is maxed out on specs),
 and I have no issues whatsoever.
 
@@ -69,13 +69,13 @@ Create a VMware Fusion VM with the following settings. My configurations
 are made for VMware Fusion exclusively currently and you will have issues
 on other virtualization solutions without minor changes.
 
-  * ISO: Fedora SilverBlue 39 or later.
-  * Disk: 300 GB+
-  * CPU/Memory: I give at least half my cores and half my RAM, as much as you can.
-  * Graphics: Full acceleration, full resolution, maximum graphics RAM.
-  * Network: Shared with my Mac.
-  * Remove sound card, remove video camera if you like
-  * Profile: Disable almost all keybindings, except mapping CMD+C and CMD+V to Ctrl+C and Ctrl+V
+- ISO: Fedora SilverBlue 39 or later.
+- Disk: 300 GB+
+- CPU/Memory: I give at least half my cores and half my RAM, as much as you can.
+- Graphics: Full acceleration, full resolution, maximum graphics RAM.
+- Network: Shared with my Mac.
+- Remove sound card, remove video camera if you like
+- Profile: Disable almost all keybindings, except mapping CMD+C and CMD+V to Ctrl+C and Ctrl+V
 
 Boot the VM, follow Fedora SilverBlue GUI installation guide.
 
@@ -98,11 +98,12 @@ make switch
 
 Install xclip, podman, chromium using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status.
 
-wl-clipboard does not work well with VMWare clipboard sharing with host machine.
+wl-clipboard does not work well with VMWare clipboard sharing with host machine. Enable Podman socket for testcontainers python to work with Docker like API.
 
 ```zsh
 rpm-ostree install xclip podman-docker podman-compose chromium
 rpm-ostree override remove ghostscript
+systemctl --user enable podman.socket
 ```
 
 Activate ZSH

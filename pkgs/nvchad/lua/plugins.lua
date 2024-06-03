@@ -2,7 +2,16 @@
 local plugins = {
   {
     'neovim/nvim-lspconfig',
-    dependencies = { 'folke/neodev.nvim', 'b0o/schemastore.nvim', { 'nvimtools/none-ls.nvim', dependencies = { 'nvimtools/none-ls-extras.nvim', }, }, },
+    dependencies = { {
+      'folke/lazydev.nvim',
+      ft = 'lua',
+      opts = {
+        library = {
+          vim.fn.stdpath 'data' .. '/lazy/ui/nvchad_types',
+          vim.fn.stdpath 'data' .. '/lazy/lazy.nvim/lua/lazy',
+        },
+      },
+    }, 'b0o/schemastore.nvim', { 'nvimtools/none-ls.nvim', dependencies = { 'nvimtools/none-ls-extras.nvim', }, }, },
     event = 'VeryLazy',
     config = function()
       require 'configs.lspconfig'
