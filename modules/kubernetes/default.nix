@@ -3,13 +3,14 @@
 {
   home.packages = with pkgs; [
     k9s
+    kind
     kubectl
     kubectx
+    kubernetes-helm
     kubeswitch
     pinniped
+    skaffold
     vcluster
-    kind
-    kubernetes-helm
   ];
 
   home.file.".kube/switch-config.yaml".source = ./switch-config.yaml;
