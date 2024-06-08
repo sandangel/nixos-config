@@ -5,11 +5,6 @@ end
 
 local fzf_lua = require 'fzf-lua'
 
-local toggle_cwd_only = function(_, opts)
-  opts.cwd_only = not opts.cwd_only
-  opts.__call_fn { cwd_only = opts.cwd_only, resume = true, }
-end
-
 fzf_lua.setup {
   keymap = {
     builtin = {
@@ -35,12 +30,6 @@ fzf_lua.setup {
   defaults = {
     copen = 'FzfLua quickfix',
   },
-  actions = {
-    files = {
-      ['enter']  = fzf_lua.actions.file_edit_or_qf,
-      ['ctrl-s'] = fzf_lua.actions.file_vsplit,
-    },
-  },
   files = {
     git_icons = false,
   },
@@ -50,6 +39,12 @@ fzf_lua.setup {
     color_icons = false,
   },
   oldfiles = {
-    actions = { ['ctrl-g'] = toggle_cwd_only, },
+    actions  = {
+      ['ctrl-g'] = function(_, opts)
+        opts.cwd_only = not opts.cwd_only
+        opts.__call_fn { cwd_only = opts.cwd_only, resume = true, }
+      end,
+    },
+    cwd_only = true,
   },
 }
