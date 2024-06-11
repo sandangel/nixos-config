@@ -11,6 +11,8 @@
 
     # Apple Silicon monitoring tool
     asitop
+
+    docker-client
   ];
   imports = [
     ../../modules/direnv
