@@ -17,7 +17,7 @@
       # Nix
       nurl
       devenv
-      flox
+      # flox
       cachix
 
       # Git
@@ -33,7 +33,7 @@
       vault
 
       # Rust toolchain
-      fenix.stable.toolchain
+      # fenix.stable.toolchain
       gcc
 
       # Python toolchain

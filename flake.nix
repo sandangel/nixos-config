@@ -1,27 +1,33 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    # Mirroring nixpkgs unstable
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
 
+    # Updating nix itself
     nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
 
+    # For running GUI apps
     nixGL.url = "github:nix-community/nixGL";
     nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv";
 
-    flox.url = "github:flox/flox";
+    # flox.url = "github:flox/flox";
+    # Fix static linking issues
     ld-floxlib.url = "github:flox/ld-floxlib";
 
+    # Should folow nixpkgs for home-manager packages
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Do not follow nixpkgs so it can be built reliably
     neovim.url = "github:nix-community/neovim-nightly-overlay";
 
     # For rust nightly
-    fenix.url = "github:nix-community/fenix";
-    fenix.inputs.nixpkgs.follows = "nixpkgs";
+    # fenix.url = "github:nix-community/fenix";
+    # fenix.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs =
     inputs@{
@@ -30,10 +36,10 @@
       home-manager,
       neovim,
       devenv,
-      flox,
+      # flox,
       ld-floxlib,
       nixGL,
-      fenix,
+      # fenix,
       ...
     }:
     let
@@ -84,7 +90,7 @@
           comic-code = prev.callPackage ./pkgs/comic-code { };
           nvchad = prev.callPackage ./pkgs/nvchad { };
           devenv = devenv.packages.${final.stdenv.system}.default;
-          flox = flox.packages.${final.stdenv.system}.default;
+          # flox = flox.packages.${final.stdenv.system}.default;
         };
 
         flake.overlays.linux = final: prev: {
@@ -101,7 +107,7 @@
               overlays = [
                 self.overlays.default
                 self.overlays.linux
-                fenix.overlays.default
+                # fenix.overlays.default
               ];
             };
             extraSpecialArgs = {
@@ -119,7 +125,7 @@
               config.allowUnfree = true;
               overlays = [
                 self.overlays.default
-                fenix.overlays.default
+                # fenix.overlays.default
               ];
             };
             extraSpecialArgs = {

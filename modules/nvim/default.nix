@@ -4,6 +4,7 @@
   home.packages = with pkgs; [
     actionlint
     bun
+    codespell
     corepack
     nixfmt-rfc-style
     nodejs

@@ -4,16 +4,16 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "vinceliuice";
       repo = "Fluent-icon-theme";
-      rev = "53866de0b88132627d1301964a51e997edfd3391"; # 2024-05-19
-      hash = "sha256-Mv5O2UGUfMgHZkeD3LD37Q0w8jM+j4yz26garhDUFGM=";
+      rev = "b10ec6ccda700901b715c980d03305f2b48f71e8"; # 2024-06-20
+      hash = "sha256-rimr4Ghdg/KL4bRyt2n0H2Zwey+ozFT3bvAcOkKQ8ns=";
     };
   });
   fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: {
     src = pkgs.fetchFromGitHub {
       owner = "vinceliuice";
       repo = "Fluent-gtk-theme";
-      rev = "423fe6fad9a43dce32ea19f137533399ad6c7420"; # 2024-05-19
-      hash = "sha256-0jlwJnqHnZrL6RshjSiHg1kiv+TRsc+2p1G7ze7/fy8=";
+      rev = "fd0e59dd818b20bfee763c568cae347f02986aac"; # 2024-06-21
+      hash = "sha256-v7rbHFroNVZbMtPFJHI8Vm5nMDr7YR5b28e+5QXsACc=";
     };
   });
   gtk-theme = "Fluent-Dark";
@@ -195,13 +195,13 @@ in
       ];
       favorite-apps = [
         "org.gnome.Nautilus.desktop"
-        "firefox.desktop"
         "org.gnome.Extensions.desktop"
         "org.gnome.Settings.desktop"
         "kitty.desktop"
         "org.gnome.tweaks.desktop"
         "ca.desrt.dconf-editor.desktop"
         "org.gnome.Software.desktop"
+        "one.ablaze.floorp.desktop"
       ];
     };
 
