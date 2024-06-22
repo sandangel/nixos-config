@@ -149,3 +149,31 @@ defaults write -g KeyRepeat -float 0.7 && defaults write -g InitialKeyRepeat -in
 ```
 
 Then install Raycast, Shottr, Firefox, Karabiner. Will need to restart after finished.
+
+## Troubleshooting
+
+### Resize BTRFS partition after installed:
+
+Following this article below:
+
+- https://www.suse.com/support/kb/doc/?id=000018798
+
+First inscrease the disk size on VMWare Fusion.
+
+Then boot into rescue mode.
+
+```sh
+parted /dev/nvme0n2
+
+resizepart
+
+quit
+```
+
+Then mount the partition and resize the filesystem.
+
+```sh
+mount /dev/nvme0n2p1 /mnt
+
+btrfs filesystem resize max /mnt
+```
