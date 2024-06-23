@@ -65,7 +65,18 @@ for _, plugin in pairs(enable_providers) do
   vim.cmd('runtime ' .. plugin)
 end
 
+vim.api.nvim_create_autocmd("VimEnter", {
+  group = vim.api.nvim_create_augroup("lazyvim_autoupdate", { clear = true }),
+  callback = function()
+    if require("lazy.status").has_updates then
+      require("lazy").update({ show = false, })
+    end
+  end,
+})
+
+
 vim.api.nvim_create_autocmd({ 'BufAdd', 'BufEnter', }, {
+  group = vim.api.nvim_create_augroup("buf_modified_filter", { clear = true }),
   callback = function()
     vim.t.bufs = vim.tbl_filter(function(buf)
       return vim.api.nvim_get_option_value('modified', { buf = buf, })
@@ -75,6 +86,7 @@ vim.api.nvim_create_autocmd({ 'BufAdd', 'BufEnter', }, {
 
 -- Restore current cursor position
 vim.api.nvim_create_autocmd('BufReadPost', {
+  group = vim.api.nvim_create_augroup("buf_restore_cursor_position", { clear = true }),
   pattern = '*',
   callback = function()
     local line = vim.fn.line "'\""
