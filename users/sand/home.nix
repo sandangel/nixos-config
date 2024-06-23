@@ -34,6 +34,7 @@
   targets.genericLinux.enable = true;
 
   imports = [
+    ../../modules/cloud
     ../../modules/direnv
     ../../modules/git
     ../../modules/gnome
