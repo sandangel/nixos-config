@@ -96,14 +96,14 @@ nix run home-manager/master -- init --switch --impure --flake ".#$USER"
 make switch
 ```
 
-Install xclip, podman-compose using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status.
+Install xclip, podman-compose podman-docker using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status.
 
 wl-clipboard does not work well with VMWare clipboard sharing with host machine. Enable Podman socket for testcontainers python to work with Docker like API.
 
 Then install Floorp as a faster firefox alternative.
 
 ```zsh
-rpm-ostree install xclip podman-compose
+rpm-ostree install xclip podman-compose podman-docker
 rpm-ostree override remove ghostscript
 systemctl --user enable podman.socket
 flatpak install one.ablaze.floorp

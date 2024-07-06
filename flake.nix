@@ -12,11 +12,11 @@
 
     devenv.url = "github:cachix/devenv";
 
-    # flox.url = "github:flox/flox";
     # Fix static linking issues
+    flox.url = "github:flox/flox";
     ld-floxlib.url = "github:flox/ld-floxlib";
 
-    # Should folow nixpkgs for home-manager packages
+    # Should follow nixpkgs for home-manager packages
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,7 +36,7 @@
       home-manager,
       neovim,
       devenv,
-      # flox,
+      flox,
       ld-floxlib,
       nixGL,
       # fenix,
@@ -90,7 +90,7 @@
           comic-code = prev.callPackage ./pkgs/comic-code { };
           nvchad = prev.callPackage ./pkgs/nvchad { };
           devenv = devenv.packages.${final.stdenv.system}.default;
-          # flox = flox.packages.${final.stdenv.system}.default;
+          flox = flox.packages.${final.stdenv.system}.default;
         };
 
         flake.overlays.linux = final: prev: {

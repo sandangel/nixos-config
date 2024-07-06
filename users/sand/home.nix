@@ -25,6 +25,9 @@
 
     # To run GUI apps
     nixGL
+
+    # Fix static link .so
+    flox
   ];
 
   xdg.enable = true;
