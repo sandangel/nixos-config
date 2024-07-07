@@ -4,7 +4,7 @@ stdenvNoCC.mkDerivation {
   version = "0.1.0";
   src =
     if stdenv.isLinux then
-      /home/nix-config/pkgs/comic-code/comic-code.tar.gz
+      /home/sand/.nix-config/pkgs/comic-code/comic-code.tar.gz
     else
       /Users/nix-config/pkgs/comic-code/comic-code.tar.gz;
   phases = [
