@@ -13,6 +13,11 @@ vim.opt.rtp:prepend(lazypath)
 
 local nvchadpath = vim.fn.stdpath 'data' .. '/lazy/NvChad'
 
+if not vim.loop.fs_stat(nvchadpath) then
+  local repo = 'https://github.com/NvChad/NvChad.git'
+  vim.fn.system { 'git', 'clone', repo, '--branch=v2.5', nvchadpath, }
+end
+
 vim.opt.rtp:prepend(nvchadpath)
 
 local lazy_config = require 'configs.lazy'

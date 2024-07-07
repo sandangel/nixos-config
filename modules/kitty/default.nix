@@ -1,9 +1,4 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
+{ pkgs, lib, ... }:
 lib.mkMerge [
   {
     xdg.configFile."kitty".source = ./.;
@@ -23,7 +18,5 @@ lib.mkMerge [
         "TerminalEmulator"
       ];
     };
-
-    xdg.configFile."autostart/kitty.desktop".source = "${config.home.homeDirectory}/.nix-profile/share/applications/kitty.desktop";
   })
 ]

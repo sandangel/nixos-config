@@ -63,13 +63,12 @@ and I have no issues whatsoever.
 
 **Does this work with Apple Silicon Macs?** Yes, I'm running this on Apple M1
 
-## Setup
+## Common VM setup
 
 Create a VMware Fusion VM with the following settings. My configurations
 are made for VMware Fusion exclusively currently and you will have issues
 on other virtualization solutions without minor changes.
 
-- ISO: Fedora SilverBlue 39 or later.
 - Disk: 300 GB+
 - CPU/Memory: I give at least half my cores and half my RAM, as much as you can.
 - Graphics: Full acceleration, full resolution, maximum graphics RAM.
@@ -77,56 +76,78 @@ on other virtualization solutions without minor changes.
 - Remove sound card, remove video camera if you like
 - Profile: Disable almost all keybindings, except mapping CMD+C and CMD+V to Ctrl+C and Ctrl+V
 
+## Setup MicroOS
+
+Bootup the iso image (Jul 7th, 2024), choose install MicroOS Kalpa and enter username/password
+
+In software stack, change to Gnome. This way we have Gnome installed with predefined username/password.
+
+After bootup the machine, install open-vm-tools-desktop to enable shared clipboard and drag and drop (for VMWare Fusion)
+
+```sh
+sudo transactional-update pkg in open-vm-tools-desktop podman-docker
+systemctl reboot
+```
+
+Now install nix (nix-installer v0.19.0)
+
+```sh
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install ostree --persistence=/var/lib/nix
+systemctl reboot
+```
+
+## Setup Silverblue
+
+Bootup Fedora SilverBlue 39 or later.
+
 Boot the VM, follow Fedora SilverBlue GUI installation guide.
 
 After the VM reboots, install Nix for ostree distro:
 
 ```zsh
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install ostree
+
+rpm-ostree install podman-docker
 ```
 
-Then clone the repo and run home-manager to apply all configurations:
+## Setup home-manager configurations
+
+Clone the repo and run home-manager to apply all configurations:
 
 ```zsh
-sudo mkdir -p /home/nix-config
-sudo chown -R $USER:$USER /home/nix-config
-git clone https://github.com/sandangel/nixos-config /home/nix-config
-cd /home/nix-config
+git clone https://github.com/sandangel/nixos-config ~/.nix-config
+cd ~/.nix-config
 nix run home-manager/master -- init --switch --impure --flake ".#$USER"
 make switch
 ```
 
-Install xclip, podman-compose podman-docker using rpm-ostree because it has a better compatibility with silverblue and remove ghostscript for conflicting key abbr with git status.
-
-wl-clipboard does not work well with VMWare clipboard sharing with host machine. Enable Podman socket for testcontainers python to work with Docker like API.
-
-Then install Floorp as a faster firefox alternative.
+Install Floorp browser and Extensions. Enable Podman socket for testcontainers python to work with Docker like API.
 
 ```zsh
-rpm-ostree install xclip podman-compose podman-docker
-rpm-ostree override remove ghostscript
 systemctl --user enable podman.socket
-flatpak install one.ablaze.floorp
+sudo touch /etc/containers/nodocker
+flatpak install one.ablaze.floorp org.gnome.Extensions
 ```
 
 Activate ZSH
 
 ```zsh
-sudo echo /home/$USER/.nix-profile/bin/zsh >> /etc/shells
-chsh -s /home/$USER/.nix-profile/bin/zsh
+sudo su -c "printf $HOME/.nix-profile/bin/zsh >> /etc/shells"
+chsh -s $HOME/.nix-profile/bin/zsh
+exec zsh
 ```
 
 Mount host shared folders
 
 ```zsh
-sudo mkdir -p /home/host
-sudo echo "vmhgfs-fuse    /home/host   fuse    defaults,allow_other    0    0" >> /etc/fstab
+sudo mkdir -p $HOME/.host
+sudo su -c "printf vmhgfs-fuse $HOME/.host fuse defaults 0 0 >> /etc/fstab"
 ```
 
 Mount host shared folders temporarily for copying data:
 
 ```zsh
-/usr/bin/vmhgfs-fuse .host:/ /home/host -o subtype=vmhgfs-fuse,allow_other
+/usr/bin/vmhgfs-fuse .host:/ $HOME/.host -o subtype=vmhgfs-fuse
 ```
 
 Optional: Fix GDM monitor resolution
