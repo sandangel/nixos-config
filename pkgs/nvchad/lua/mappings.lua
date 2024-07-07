@@ -168,7 +168,7 @@ M.lspconfig = {
     },
     ['gr'] = {
       function()
-        require 'nvchad.lsp.renamer'()
+        require 'nvchad.lsp.renamer' ()
       end,
       'LSP rename',
     },
@@ -212,7 +212,7 @@ M.nvimtree = {
 
 M.neoclip = {
   n = {
-    ['gy'] = { '<cmd>Telescope neoclip<CR>', 'Yank history', },
+    ['gy'] = { '<cmd>lua require("neoclip.fzf")()<CR>', 'Yank history', },
   },
 }
 

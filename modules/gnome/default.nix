@@ -18,7 +18,7 @@ let
   });
   gtk-theme = "Fluent-Dark";
   icon-theme = "Fluent-dark";
-  picture-uri = "file:///var/home/nix-config/images/wall.png";
+  picture-uri = "file:///home/sand/.nix-config/images/wall.png";
 in
 {
   home.file.".themes".source = "${fluent-gtk-theme}/share/themes";
