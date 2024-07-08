@@ -63,6 +63,6 @@
     CHROMIUM_USER_FLAGS = "--force-device-scale-factor=2";
 
     # Fix static links in nixpkgs
-    LD_AUDIT = "${pkgs.ld-floxlib}/lib/ld-floxlib.so";
+    # LD_AUDIT = "${pkgs.ld-floxlib}/lib/ld-floxlib.so";
   };
 }
