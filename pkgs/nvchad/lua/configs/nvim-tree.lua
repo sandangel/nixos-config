@@ -14,16 +14,16 @@ return vim.tbl_deep_extend('force', require 'nvchad.configs.nvimtree', {
 
     local function copy_to_clipboard(content)
       vim.fn.setreg('"', content)
-      -- setreg * and + does not work
-      vim.api.nvim_command('silent !echo -n "' .. content .. '" | xclip -selection clipboard')
+      vim.fn.setreg('*', content)
+      vim.fn.setreg('+', content)
       return notify.info(string.format('Copied %s to system clipboard!', content))
     end
 
-    local function copy_filename(node)
+    local function copy_basename(node)
       return copy_to_clipboard(node.name)
     end
 
-    local function copy_path(node)
+    local function copy_relative_path(node)
       local absolute_path = node.absolute_path
       local relative_path = utils.path_relative(absolute_path, core.get_cwd())
       local content = node.nodes ~= nil and utils.path_add_trailing(relative_path) or relative_path
@@ -57,8 +57,8 @@ return vim.tbl_deep_extend('force', require 'nvchad.configs.nvimtree', {
     vim.keymap.set('n', 'x', api.fs.cut, opts 'Cut')
     vim.keymap.set('n', 'c', api.fs.copy.node, opts 'Copy')
     vim.keymap.set('n', 'p', api.fs.paste, opts 'Paste')
-    vim.keymap.set('n', 'y', wrap_node(copy_filename), opts 'Copy Name')
-    vim.keymap.set('n', 'Y', wrap_node(copy_path), opts 'Copy Relative Path')
+    vim.keymap.set('n', 'y', wrap_node(copy_basename), opts 'Copy Name')
+    vim.keymap.set('n', 'Y', wrap_node(copy_relative_path), opts 'Copy Relative Path')
     vim.keymap.set('n', 'gy', wrap_node(copy_absolute_path), opts 'Copy Absolute Path')
     vim.keymap.set('n', '[c', api.node.navigate.git.prev, opts 'Prev Git')
     vim.keymap.set('n', ']c', api.node.navigate.git.next, opts 'Next Git')

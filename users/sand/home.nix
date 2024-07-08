@@ -7,7 +7,8 @@
     binutils
     glxinfo
     xdg-utils
-    wl-clipboard
+    wl-clipboard # For copy in neovim to system clipboard
+    xclip # For copy in CLI to system clipboard
     # Fix issue with error: "cannot allocate memory in static TLS block" when LD_AUDIT is set for packages depending on jemalloc
     # https://github.com/flox/flox/issues/1341#issuecomment-2111136929
     (bind.overrideAttrs (oldAttrs: {

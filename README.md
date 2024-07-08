@@ -85,7 +85,7 @@ In software stack, change to Gnome. This way we have Gnome installed with predef
 After bootup the machine, install open-vm-tools-desktop to enable shared clipboard and drag and drop (for VMWare Fusion)
 
 ```sh
-sudo transactional-update pkg in open-vm-tools-desktop podman-docker
+sudo transactional-update pkg in open-vm-tools-desktop podman-docker kitty-terminfo
 systemctl reboot
 ```
 
