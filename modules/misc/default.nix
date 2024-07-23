@@ -29,6 +29,9 @@
       # fenix.stable.toolchain
       gcc
 
+      # Image viewer
+      chafa
+
       # Python toolchain
       rye
       # hatch

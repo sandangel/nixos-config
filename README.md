@@ -78,11 +78,11 @@ on other virtualization solutions without minor changes.
 
 ## Setup MicroOS
 
-Bootup the iso image (Jul 7th, 2024), choose install MicroOS Kalpa and enter username/password
+Boot up the iso image (Jul 7th, 2024), choose install MicroOS Kalpa and enter username/password
 
 In software stack, change to Gnome. This way we have Gnome installed with predefined username/password.
 
-After bootup the machine, install open-vm-tools-desktop to enable shared clipboard and drag and drop (for VMWare Fusion)
+After boot up the machine, install open-vm-tools-desktop to enable shared clipboard and drag and drop (for VMWare Fusion)
 
 ```sh
 sudo transactional-update pkg in open-vm-tools-desktop podman-docker kitty-terminfo
@@ -98,7 +98,7 @@ systemctl reboot
 
 ## Setup Silverblue
 
-Bootup Fedora SilverBlue 39 or later.
+Boot up Fedora SilverBlue 39 or later.
 
 Boot the VM, follow Fedora SilverBlue GUI installation guide.
 

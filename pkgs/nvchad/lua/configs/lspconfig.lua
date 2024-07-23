@@ -119,8 +119,6 @@ null_ls.setup {
   sources = {
     require 'none-ls.code_actions.eslint_d',
 
-    null_ls.builtins.completion.spell,
-
     null_ls.builtins.diagnostics.codespell.with {
       cwd = h.cache.by_bufnr(function(params)
         return (root_pattern '.git')(params.bufname)

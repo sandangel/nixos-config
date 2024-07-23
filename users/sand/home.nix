@@ -7,8 +7,7 @@
     binutils
     glxinfo
     xdg-utils
-    wl-clipboard # For copy in neovim to system clipboard
-    xclip # For copy in CLI to system clipboard
+
     # Fix issue with error: "cannot allocate memory in static TLS block" when LD_AUDIT is set for packages depending on jemalloc
     # https://github.com/flox/flox/issues/1341#issuecomment-2111136929
     (bind.overrideAttrs (oldAttrs: {
@@ -48,7 +47,39 @@
     ../../modules/misc
     ../../modules/nvim
     ../../modules/zsh
+    ../../modules/clipboard
   ];
+
+  systemd.user.services = {
+    home-manager-update = {
+      Unit = {
+        Description = "Update packages managed by home-manager.";
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = toString (
+          pkgs.writeShellScript "home-manager-update-sh" ''
+            set -eou pipefail
+            cd /home/${username}/.nix-config
+            /nix/var/nix/profiles/default/bin/nix flake update
+            /home/${username}/.nix-profile/bin/make switch
+          ''
+        );
+      };
+      Install.WantedBy = [ "default.target" ];
+    };
+  };
+
+  systemd.user.timers = {
+    home-manager-update = {
+      Unit.Description = "Timer for home-manager-update service.";
+      Timer = {
+        Unit = "home-manager-update.service";
+        OnUnitActiveSec = "${toString (24 * 7)}h";
+      };
+      Install.WantedBy = [ "timers.target" ];
+    };
+  };
 
   home.sessionVariables = {
     LANG = "en_US.UTF-8";

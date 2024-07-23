@@ -181,14 +181,14 @@ M.lspconfig = {
     ['K'] = { '', },
     ['[d'] = {
       function()
-        vim.diagnostic.goto_prev { float = { border = 'rounded', }, severity = vim.diagnostic.severity.ERROR, }
+        vim.diagnostic.get_prev({ float = { border = 'rounded', }, severity = vim.diagnostic.severity.ERROR, })
       end,
       'Goto prev diagnostic',
     },
 
     [']d'] = {
       function()
-        vim.diagnostic.goto_next { float = { border = 'rounded', }, severity = vim.diagnostic.severity.ERROR, }
+        vim.diagnostic.get_next { float = { border = 'rounded', }, severity = vim.diagnostic.severity.ERROR, }
       end,
       'Goto next diagnostic',
     },
@@ -291,6 +291,11 @@ M.abolish = {
     ['cr.'] = { '<Plug>(abolish-coerce-word).', 'Coerce dot.case', opts = { noremap = false, }, },
   },
 }
+
+-- Remove default mappings in Neovim
+vim.keymap.del('n', 'grn')
+vim.keymap.del('n', 'gra')
+vim.keymap.del('n', 'grr')
 
 for group, configs in pairs(M) do
   for mode, mappings in pairs(configs) do

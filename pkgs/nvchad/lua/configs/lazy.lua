@@ -6,4 +6,5 @@ return vim.tbl_deep_extend('force', require 'nvchad.configs.lazy_nvim', {
     frequency = 3600 * 2, -- check for updates every 2 hours
     notify = false,
   },
+  rocks = { enabled = false }
 })
