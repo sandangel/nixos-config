@@ -36,8 +36,8 @@
       home-manager,
       neovim,
       devenv,
-      flox,
-      ld-floxlib,
+      # flox,
+      # ld-floxlib,
       nixGL,
       # fenix,
       ...
