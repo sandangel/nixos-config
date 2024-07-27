@@ -1,4 +1,4 @@
-# Nix on Fedora SilverBlue Configurations
+# Nix on VM Configurations
 
 This repository contains my Fedora SilverBlue configurations. This repository
 isn't meant to be a turnkey solution to copying my setup or learning Nix,
@@ -104,17 +104,26 @@ Boot the VM, follow Fedora SilverBlue GUI installation guide.
 
 After the VM reboots, install Nix for ostree distro:
 
-```zsh
+```sh
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install ostree
 
-rpm-ostree install podman-docker
+rpm-ostree install podman-docker podman-compose gnome-tweaks
+```
+
+Edit rpm-ostree configuration to allow auto download updates:
+
+```sh
+sudo vim /etc/rpm-ostreed.conf
+
+# Change to the config below:
+# AutomaticUpdatePolicy=stage
 ```
 
 ## Setup home-manager configurations
 
 Clone the repo and run home-manager to apply all configurations:
 
-```zsh
+```sh
 git clone https://github.com/sandangel/nixos-config ~/.nix-config
 cd ~/.nix-config
 nix run home-manager/master -- init --switch --impure --flake ".#$USER"
@@ -123,7 +132,7 @@ make switch
 
 Install Floorp browser and Extensions. Enable Podman socket for testcontainers python to work with Docker like API.
 
-```zsh
+```sh
 systemctl --user enable podman.socket
 sudo touch /etc/containers/nodocker
 flatpak install one.ablaze.floorp org.gnome.Extensions
@@ -131,7 +140,7 @@ flatpak install one.ablaze.floorp org.gnome.Extensions
 
 Activate ZSH
 
-```zsh
+```sh
 sudo su -c "printf $HOME/.nix-profile/bin/zsh >> /etc/shells"
 chsh -s $HOME/.nix-profile/bin/zsh
 exec zsh
@@ -139,20 +148,20 @@ exec zsh
 
 Mount host shared folders
 
-```zsh
+```sh
 sudo mkdir -p $HOME/.host
 sudo su -c "printf vmhgfs-fuse $HOME/.host fuse defaults 0 0 >> /etc/fstab"
 ```
 
 Mount host shared folders temporarily for copying data:
 
-```zsh
+```sh
 /usr/bin/vmhgfs-fuse .host:/ $HOME/.host -o subtype=vmhgfs-fuse
 ```
 
 Optional: Fix GDM monitor resolution
 
-```zsh
+```sh
 sudo cp -f ~/.config/monitors.xml ~gdm/.config/monitors.xml
 sudo chown $(id -u gdm):$(id -g gdm) ~gdm/.config/monitors.xml
 sudo restorecon ~gdm/.config/monitors.xml

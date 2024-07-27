@@ -10,7 +10,7 @@ lib.mkMerge [
     xdg.desktopEntries.kitty = {
       name = "kitty";
       genericName = "Terminal emulator";
-      exec = "${pkgs.nixGL}/bin/nixGL ${pkgs.kitty}/bin/kitty --start-as=maximized";
+      exec = "${pkgs.nixGL}/bin/nixGL ${pkgs.kitty}/bin/kitty --detach --single-instance --start-as=maximized";
       icon = "kitty";
       comment = "Fast, feature-rich, GPU based terminal";
       categories = [

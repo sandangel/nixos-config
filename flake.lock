@@ -147,11 +147,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1721650703,
-        "narHash": "sha256-GNPOqEGUd+AMiR84AD7yiPFQd/c/6K1URkBx9SL8dbk=",
+        "lastModified": 1721762143,
+        "narHash": "sha256-mLTwGASk6DUJSKXdXLo01m1Vh9cWcNxELwnmYSLedBA=",
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "6450828d038d743e97e2e7ff567ce5fa9f17a224",
+        "rev": "5f06510dc5ea5e82db7a85f2e47c5face6e51717",
         "type": "github"
       },
       "original": {
@@ -572,11 +572,11 @@
         "sqlite3pp": "sqlite3pp"
       },
       "locked": {
-        "lastModified": 1721675893,
-        "narHash": "sha256-cxAkVxdznp7oht7OUTI8y499OsThI7DnkQxnqFLdNbw=",
+        "lastModified": 1721763115,
+        "narHash": "sha256-aAAQGJ4QGQee+tv5x4CyWmQRbAZQQB6djK4FjKnGYuA=",
         "owner": "flox",
         "repo": "flox",
-        "rev": "b8bb4342d6f0db744414f4c72aed16cde7880670",
+        "rev": "76b5352b984f4299f0edc993248df8aaaafe5426",
         "type": "github"
       },
       "original": {
