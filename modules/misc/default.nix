@@ -18,7 +18,6 @@
       # Nix
       nurl
       devenv
-      # flox
       cachix
 
       # Git

@@ -28,7 +28,7 @@
     nixGL
 
     # Fix static link .so
-    flox
+    # flox
   ];
 
   xdg.enable = true;

@@ -13,8 +13,8 @@
     devenv.url = "github:cachix/devenv";
 
     # Fix static linking issues
-    flox.url = "github:flox/flox";
-    ld-floxlib.url = "github:flox/ld-floxlib";
+    # flox.url = "github:flox/flox";
+    # ld-floxlib.url = "github:flox/ld-floxlib";
 
     # Should follow nixpkgs for home-manager packages
     home-manager = {
@@ -90,12 +90,12 @@
           comic-code = prev.callPackage ./pkgs/comic-code { };
           nvchad = prev.callPackage ./pkgs/nvchad { };
           devenv = devenv.packages.${final.stdenv.system}.default;
-          flox = flox.packages.${final.stdenv.system}.default;
+          # flox = flox.packages.${final.stdenv.system}.default;
         };
 
         flake.overlays.linux = final: prev: {
           nixGL = nixGL.packages.${final.stdenv.system}.default;
-          ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
+          # ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
         };
 
         flake.homeConfigurations.${linux-user} = withSystem "aarch64-linux" (

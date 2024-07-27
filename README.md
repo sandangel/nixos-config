@@ -119,6 +119,38 @@ sudo vim /etc/rpm-ostreed.conf
 # AutomaticUpdatePolicy=stage
 ```
 
+## Setup Arch Linux on UTM
+
+```sh
+su
+
+pacman -S sudo
+export EDITOR=nvim
+visudo
+# Uncomment wheel group and save
+exit
+```
+
+```sh
+sudo pacman -S spice-vdagent
+
+sudo pacman -S gnome-shell nautilus gnome-terminal gnome-control-center xdg-user-dirs gdm networkmanager gnome-keyring
+
+sudo systemctl enable NetworkManager
+sudo systemctl enable gdm
+reboot
+```
+
+```sh
+sudo pacman -S git firefox gnome-tweaks qemu-guest-agent
+git clone https://github.com/sandangel/nixos-config.git ~/.nix-config
+mkdir -p ~/.host
+sudo mount -t 9p -o trans=virtio share ~/.host -oversion=9p2000.L
+sudo chown $USER ~/.host
+cp ~/.host/New\ Mac/nixos-config/pkgs/comic-code/comic-code.tar.gz ~/.nix-config/pkgs/comic-code/
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
+
 ## Setup home-manager configurations
 
 Clone the repo and run home-manager to apply all configurations:
@@ -126,6 +158,7 @@ Clone the repo and run home-manager to apply all configurations:
 ```sh
 git clone https://github.com/sandangel/nixos-config ~/.nix-config
 cd ~/.nix-config
+nix shell nixpkgs#gnumake
 nix run home-manager/master -- init --switch --impure --flake ".#$USER"
 make switch
 ```
