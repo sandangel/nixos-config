@@ -1,20 +1,23 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    actionlint
-    bun
-    codespell
-    corepack
-    nixfmt-rfc-style
-    nodejs
-    nvchad
-    stylelint
-    tflint
-    # tfsec
-    trash-cli
-    # yamlfmt
-    yamllint
+  home.packages =
+    with pkgs;
+    (
+      [
+        actionlint
+        bun
+        codespell
+        corepack
+        nixfmt-rfc-style
+        nodejs
+        nvchad
+        stylelint
+        tflint
+        # tfsec
+        trash-cli
+        # yamlfmt
+        yamllint
         helm-ls
         lua-language-server
         # prettierd
@@ -34,10 +37,12 @@
         terraform-ls
         tree-sitter
         docker-compose-language-service
-  ] ++ (with pkgs.nodePackages; [
+      ]
+      ++ (with nodePackages; [
         typescript-language-server
         dockerfile-language-server-nodejs
-      ]);
+      ])
+    );
 
   xdg.configFile."nvim" = {
     source = "${pkgs.nvchad}";

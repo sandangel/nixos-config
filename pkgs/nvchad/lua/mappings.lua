@@ -293,9 +293,11 @@ M.abolish = {
 }
 
 -- Remove default mappings in Neovim
-vim.keymap.del('n', 'grn')
-vim.keymap.del('n', 'gra')
-vim.keymap.del('n', 'grr')
+if vim.fn.maparg('grn', 'n') ~= '' then
+  vim.keymap.del('n', 'grn')
+  vim.keymap.del('n', 'gra')
+  vim.keymap.del('n', 'grr')
+end
 
 for group, configs in pairs(M) do
   for mode, mappings in pairs(configs) do
