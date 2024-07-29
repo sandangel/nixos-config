@@ -43,6 +43,7 @@
     ../../modules/direnv
     ../../modules/git
     ../../modules/gnome
+    ../../modules/hyprland
     ../../modules/kitty
     ../../modules/kubernetes
     ../../modules/misc
