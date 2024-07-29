@@ -5,8 +5,8 @@
   home.homeDirectory = "/home/${username}";
   home.packages = with pkgs; [
     binutils
-    glxinfo
-    xdg-utils
+    # glxinfo
+    # xdg-utils
 
     bind
     # # Fix issue with error: "cannot allocate memory in static TLS block" when LD_AUDIT is set for packages depending on jemalloc
@@ -26,7 +26,7 @@
     # }))
 
     # To run GUI apps
-    nixGL
+    # nixGL
 
     # Fix static link .so
     # flox
@@ -94,6 +94,13 @@
     MOZ_ENABLE_WAYLAND = "1";
     MOZ_USE_XINPUT2 = 1;
     CHROMIUM_USER_FLAGS = "--force-device-scale-factor=2";
+    SSH_ASKPASS="/usr/lib/seahorse/ssh-askpass";
+
+    # Override MESA version since UTM QEMU some how populate the version
+    # to be 2.1, which does not meet the requirement of Kitty
+    # https://github.com/utmapp/UTM/issues/6454#issuecomment-2204562856
+    MESA_GL_VERSION_OVERRIDE="4.3";  
+    MESA_GLSL_VERSION_OVERRIDE="430";
 
     # Fix static links in nixpkgs
     # LD_AUDIT = "${pkgs.ld-floxlib}/lib/ld-floxlib.so";

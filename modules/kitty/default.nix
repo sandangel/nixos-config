@@ -6,11 +6,11 @@ lib.mkMerge [
   }
 
   (lib.mkIf pkgs.stdenv.isLinux {
-    home.packages = with pkgs; [ kitty ];
+    # home.packages = with pkgs; [ kitty ];
     xdg.desktopEntries.kitty = {
       name = "kitty";
       genericName = "Terminal emulator";
-      exec = "${pkgs.nixGL}/bin/nixGL ${pkgs.kitty}/bin/kitty --detach --single-instance --start-as=maximized";
+      exec = "kitty --detach --single-instance --start-as=maximized";
       icon = "kitty";
       comment = "Fast, feature-rich, GPU based terminal";
       categories = [

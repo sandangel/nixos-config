@@ -7,8 +7,8 @@
     nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
 
     # For running GUI apps
-    nixGL.url = "github:nix-community/nixGL";
-    nixGL.inputs.nixpkgs.follows = "nixpkgs";
+    # nixGL.url = "github:nix-community/nixGL";
+    # nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv";
 
@@ -23,7 +23,7 @@
     };
 
     # Do not follow nixpkgs so it can be built reliably
-    neovim.url = "github:nix-community/neovim-nightly-overlay";
+    # neovim.url = "github:nix-community/neovim-nightly-overlay";
 
     # For rust nightly
     # fenix.url = "github:nix-community/fenix";
@@ -34,11 +34,11 @@
       self,
       flake-parts,
       home-manager,
-      neovim,
+      # neovim,
       devenv,
       # flox,
       # ld-floxlib,
-      nixGL,
+      # nixGL,
       # fenix,
       ...
     }:
@@ -81,20 +81,15 @@
           };
 
         flake.overlays.default = final: prev: {
-          neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
-          kubeswitch = prev.kubeswitch.overrideAttrs (o: {
-            postInstall = ''
-              mv $out/bin/main $out/bin/switcher
-            '';
-          });
+          # neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
           comic-code = prev.callPackage ./pkgs/comic-code { };
           nvchad = prev.callPackage ./pkgs/nvchad { };
-          devenv = devenv.packages.${final.stdenv.system}.default;
+          # devenv = devenv.packages.${final.stdenv.system}.default;
           # flox = flox.packages.${final.stdenv.system}.default;
         };
 
         flake.overlays.linux = final: prev: {
-          nixGL = nixGL.packages.${final.stdenv.system}.default;
+          # nixGL = nixGL.packages.${final.stdenv.system}.default;
           # ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
         };
 

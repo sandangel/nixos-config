@@ -21,10 +21,6 @@
       . $HOME/.config/zsh/config/kitty.zsh
       . $HOME/.config/zsh/config/utils.zsh
 
-      source <(${pkgs.kubeswitch}/bin/switcher init zsh)
-      source <(${pkgs.kubeswitch}/bin/switcher completion zsh)
-      source <(compdef _switcher switch)
-
       export PATH=$HOME/.rye/shims:$PATH
       source <(${pkgs.rye}/bin/rye self completion)
 

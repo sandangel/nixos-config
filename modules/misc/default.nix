@@ -7,8 +7,8 @@
     [
       # Utilities
       glib
-      gnumake
-      killall
+      # gnumake
+      # killall
       vim
 
       # Fonts
@@ -17,16 +17,16 @@
 
       # Nix
       nurl
-      devenv
+      # devenv
       cachix
 
       # Git
       gh
-      git
+      # git
 
       # Rust toolchain
       # fenix.stable.toolchain
-      gcc
+      # gcc
 
       # Image viewer
       chafa
