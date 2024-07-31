@@ -244,9 +244,12 @@ user_pref("browser.search.suggest.enabled", true);
 
 // PREF: enable container tabs
 user_pref("privacy.userContext.enabled", true);
-//
+
 // PREF: Sidebar to the right
 user_pref("sidebar.position_start", false);
+
+// PREF: Disable asking password
+user_pref("signon.rememberSignons", false);
 
 /****************************************************************************
  * SECTION: SMOOTHFOX                                                       *

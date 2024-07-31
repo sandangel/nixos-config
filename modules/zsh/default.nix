@@ -54,7 +54,7 @@
 
       pbcopy = "xclip -selection clipboard";
       pbpaste = "xclip -selection clipboard -o";
-      sw = "switch";
+      sw = "kswitch";
 
       cs = "gh copilot suggest";
       ce = "gh copilot explain";
