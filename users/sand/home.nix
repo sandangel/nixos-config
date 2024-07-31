@@ -41,6 +41,7 @@
   imports = [
     ../../modules/cloud
     ../../modules/direnv
+    ../../modules/firefox
     ../../modules/git
     ../../modules/gnome
     ../../modules/hyprland
