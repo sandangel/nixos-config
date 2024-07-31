@@ -148,13 +148,14 @@ reboot
 ```
 
 ```sh
-mkdir -p ~/Work/OSS && cd ~/Work/OSS
 git clone https://aur.archlinux.org/paru-bin.git
 cd paru-bin
 makepkg -si
 
 cd .. && git clone https://gitlab.archlinux.org/archlinux/packaging/packages/open-vm-tools.git
 cd open-vm-tools
+nvim PKGBUILD
+# Edit PKGBUILD to support aarch64
 makepkg -si
 mkdir -p ~/.host
 
@@ -197,6 +198,7 @@ Activate ZSH
 sudo su -c "printf $HOME/.nix-profile/bin/zsh >> /etc/shells"
 chsh -s $HOME/.nix-profile/bin/zsh
 exec zsh
+systemctl enable --user ssh-agent.service
 ```
 
 Mount host shared folders
