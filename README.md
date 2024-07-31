@@ -227,6 +227,27 @@ You should have a graphical functioning dev VM.
 
 At this point, I never use Mac terminals ever again. I run `make switch` to make changes my VM.
 
+Then mount @work subvolume to the $HOME/Work folder
+
+Create Disk then use Gparted to create GPT partition table, new partition which format to btrfs and `WORK` label.
+
+Then create btrfs subvolume for @work:
+
+```sh
+sudo mount /dev/nvme0n2p1 /mnt
+sudo btrfs subvolume create /mnt/@work
+# Test mounting subvolume
+mkdir -p ~/Work
+sudo mount -o defaults,noatime,compress=zstd,subvol=@work /dev/nvme0n2p1 $HOME/Work
+sudo umount /mnt
+```
+
+Now auto mount @work subvolume to ~/Work folder
+
+```sh
+sudo su -c "printf LABEL=WORK $HOME/Work btrfs defaults,subvol=/@work,compress=zstd,noatime 0 0 >> /etc/fstab"
+```
+
 **Config for macOS host:**
 
 ```sh

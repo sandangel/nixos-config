@@ -1,3 +1,4 @@
+arch-install-scripts
 base
 base-devel
 bash-completion
@@ -13,8 +14,11 @@ gdm
 git
 gnome-browser-connector
 gnome-control-center
+gnome-disk-utility
 gnome-shell
 gnome-terminal
+gparted
+gtkmm3
 kitty
 linux-aarch64
 linux-firmware
@@ -24,6 +28,8 @@ networkmanager
 open-vm-tools
 paru-bin
 polkit
+snap-pac
+snapper
 sudo
 terminus-font
 xclip
