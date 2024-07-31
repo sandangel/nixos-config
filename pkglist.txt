@@ -20,7 +20,6 @@ linux-aarch64
 linux-firmware
 mesa-utils
 nautilus
-neovim
 networkmanager
 open-vm-tools
 paru-bin

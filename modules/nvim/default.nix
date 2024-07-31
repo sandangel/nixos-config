@@ -44,6 +44,13 @@
       ])
     );
 
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    withNodeJs = true;
+    withPython3 = true;
+  };
+
   xdg.configFile."nvim" = {
     source = "${pkgs.nvchad}";
   };
