@@ -1,6 +1,6 @@
 function nvim() {
   [[ -z $nvim_addr ]] && { command nvim ${@}; return }
-  local window_id=$(kitty @ ls | jq -r '.[] | select(.is_focused == true).tabs[] | select(.is_focused == true).windows[] | select(.foreground_processes[].cmdline[0] | contains("/bin/nvim")).id')
+  local window_id=$(kitty @ ls | jq -r '.[] | select(.is_focused == true).tabs[] | select(.is_focused == true).windows[] | select(.foreground_processes[].cmdline[0] | contains("nvim")).id')
   [[ ! $window_id && -e $nvim_addr ]] && rm -rf $nvim_addr
 
 
