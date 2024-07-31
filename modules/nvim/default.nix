@@ -5,7 +5,7 @@
     with pkgs;
     (
       [
-        actionlint
+        # actionlint
         bun
         codespell
         corepack
@@ -18,7 +18,7 @@
         trash-cli
         # yamlfmt
         yamllint
-        helm-ls
+        # helm-ls
         lua-language-server
         # prettierd
         # https://github.com/mantoni/eslint_d.js/issues/287

@@ -49,7 +49,7 @@
     ../../modules/misc
     ../../modules/nvim
     ../../modules/zsh
-    ../../modules/clipboard
+    # ../../modules/clipboard
   ];
 
   systemd.user.services = {
@@ -99,9 +99,10 @@
     # Override MESA version since UTM QEMU some how populate the version
     # to be 2.1, which does not meet the requirement of Kitty
     # https://github.com/utmapp/UTM/issues/6454#issuecomment-2204562856
-    MESA_GL_VERSION_OVERRIDE = "4.3";
-    MESA_GLSL_VERSION_OVERRIDE = "430";
-    MESA_GLES_VERSION_OVERRIDE = "3.1";
+    # This is needed for QEMU in UTM
+    # MESA_GL_VERSION_OVERRIDE = "4.3";
+    # MESA_GLSL_VERSION_OVERRIDE = "430";
+    # MESA_GLES_VERSION_OVERRIDE = "3.1";
 
     # Fix static links in nixpkgs
     # LD_AUDIT = "${pkgs.ld-floxlib}/lib/ld-floxlib.so";

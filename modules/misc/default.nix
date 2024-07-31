@@ -17,7 +17,7 @@
 
       # Nix
       nurl
-      # devenv
+      devenv
       cachix
 
       # Git
