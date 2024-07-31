@@ -49,7 +49,6 @@
     ../../modules/misc
     ../../modules/nvim
     ../../modules/zsh
-    # ../../modules/clipboard
   ];
 
   systemd.user.services = {

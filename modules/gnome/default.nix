@@ -192,6 +192,7 @@ in
         forge.extensionUuid
         user-themes.extensionUuid
         transparent-top-bar-adjustable-transparency.extensionUuid
+        clipboard-indicator.extensionUuid
       ];
       favorite-apps = [
         "org.gnome.Nautilus.desktop"
@@ -201,7 +202,7 @@ in
         "org.gnome.tweaks.desktop"
         "ca.desrt.dconf-editor.desktop"
         "org.gnome.Software.desktop"
-        "one.ablaze.floorp.desktop"
+        "firefox.desktop"
       ];
     };
 

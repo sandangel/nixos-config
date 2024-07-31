@@ -119,7 +119,7 @@ sudo vim /etc/rpm-ostreed.conf
 # AutomaticUpdatePolicy=stage
 ```
 
-## Setup Arch Linux on UTM
+## Setup Arch Linux
 
 ```sh
 su
@@ -132,9 +132,15 @@ exit
 ```
 
 ```sh
-sudo pacman -S spice-vdagent
+# For UTM QEMU
+# sudo pacman -S spice-vdagent
 
-sudo pacman -S gnome-shell nautilus gnome-terminal gnome-control-center gdm networkmanager gnome-keyring xdg-utils firefox gnome-browser-connector kitty neovim
+pacman -S git
+git clone https://github.com/sandangel/nixos-config ~/.nix-config && cd ~/.nix-config
+pacman -S --needed $(comm -12 <(pacman -Slq | sort) <(sort pkglist.txt))
+# To remove packages not in the list
+# pacman -Rsu $(comm -23 <(pacman -Qq | sort) <(sort pkglist.txt))
+sudo ln -s ~/.nix-config/pkglist.hook /etc/pacman.d/hooks/pkglist.hook
 
 sudo systemctl enable NetworkManager
 sudo systemctl enable gdm
@@ -142,24 +148,29 @@ reboot
 ```
 
 ```sh
-sudo pacman -S git
-mkdir -p ~/.host
-# sudo mount -t virtiofs share ~/.host
-sudo mount -t 9p -o trans=virtio share ~/.host -oversion=9p2000.L
-
-rm -rf ~/.ssh
-
-cp ~/.host/New\ Mac/nixos-config/pkgs/comic-code/comic-code.tar.gz ~/.nix-config/pkgs/comic-code/
-cp -r ~/.host/New\ Mac/ssh ~/.ssh
-git clone https://github.com/sandangel/nixos-config.git ~/.nix-config
-
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-
-sudo pacman -S --needed base-devel
 mkdir -p ~/Work/OSS && cd ~/Work/OSS
 git clone https://aur.archlinux.org/paru-bin.git
 cd paru-bin
 makepkg -si
+
+cd .. && git clone https://gitlab.archlinux.org/archlinux/packaging/packages/open-vm-tools.git
+cd open-vm-tools
+makepkg -si
+mkdir -p ~/.host
+
+# For Apple VF
+# sudo mount -t virtiofs share ~/.host
+# For VMWare Fusion
+/usr/bin/vmhgfs-fuse .host:/ $HOME/.host -o subtype=vmhgfs-fuse
+# For UTM QEMU
+# sudo mount -t 9p -o trans=virtio share ~/.host -oversion=9p2000.L
+
+rm -rf ~/.ssh
+
+cp ~/.host/Downloads/New\ Mac/nixos-config/pkgs/comic-code/comic-code.tar.gz ~/.nix-config/pkgs/comic-code/
+cp -r ~/.host/Downloads/New\ Mac/ssh ~/.ssh
+
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
 ## Setup home-manager configurations
@@ -167,8 +178,6 @@ makepkg -si
 Clone the repo and run home-manager to apply all configurations:
 
 ```sh
-git clone https://github.com/sandangel/nixos-config ~/.nix-config
-cd ~/.nix-config
 nix shell nixpkgs#gnumake
 nix run home-manager/master -- init --switch --impure --flake ".#$USER"
 make switch
@@ -208,6 +217,7 @@ Optional: Fix GDM monitor resolution
 ```sh
 sudo cp -f ~/.config/monitors.xml ~gdm/.config/monitors.xml
 sudo chown $(id -u gdm):$(id -g gdm) ~gdm/.config/monitors.xml
+# If using SELinux
 sudo restorecon ~gdm/.config/monitors.xml
 ```
 
