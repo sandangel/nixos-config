@@ -134,7 +134,7 @@ exit
 ```sh
 sudo pacman -S spice-vdagent
 
-sudo pacman -S gnome-shell nautilus gnome-terminal gnome-control-center xdg-user-dirs gdm networkmanager gnome-keyring
+sudo pacman -S gnome-shell nautilus gnome-terminal gnome-control-center gdm networkmanager gnome-keyring xdg-utils firefox gnome-browser-connector kitty neovim
 
 sudo systemctl enable NetworkManager
 sudo systemctl enable gdm
@@ -142,13 +142,24 @@ reboot
 ```
 
 ```sh
-sudo pacman -S git firefox gnome-tweaks qemu-guest-agent
-git clone https://github.com/sandangel/nixos-config.git ~/.nix-config
+sudo pacman -S git
 mkdir -p ~/.host
+# sudo mount -t virtiofs share ~/.host
 sudo mount -t 9p -o trans=virtio share ~/.host -oversion=9p2000.L
-sudo chown $USER ~/.host
+
+rm -rf ~/.ssh
+
 cp ~/.host/New\ Mac/nixos-config/pkgs/comic-code/comic-code.tar.gz ~/.nix-config/pkgs/comic-code/
+cp -r ~/.host/New\ Mac/ssh ~/.ssh
+git clone https://github.com/sandangel/nixos-config.git ~/.nix-config
+
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+
+sudo pacman -S --needed base-devel
+mkdir -p ~/Work/OSS && cd ~/Work/OSS
+git clone https://aur.archlinux.org/paru-bin.git
+cd paru-bin
+makepkg -si
 ```
 
 ## Setup home-manager configurations

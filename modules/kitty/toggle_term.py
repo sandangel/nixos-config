@@ -23,7 +23,7 @@ def handle_result(args, answer, target_window_id, boss: Boss):
         for p in w.child.foreground_processes:
             cmdline = p.get("cmdline")
             if len(cmdline) > 0:
-                if "/bin/nvim" in cmdline[0]:
+                if "nvim" in cmdline[0]:
                     nvim_win = w
                     cwd = p.get("cwd")
                     break

@@ -35,7 +35,7 @@
       flake-parts,
       home-manager,
       # neovim,
-      devenv,
+      # devenv,
       # flox,
       # ld-floxlib,
       # nixGL,
