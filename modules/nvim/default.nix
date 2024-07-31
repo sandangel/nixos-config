@@ -5,7 +5,7 @@
     with pkgs;
     (
       [
-        # actionlint
+        actionlint
         bun
         codespell
         corepack
