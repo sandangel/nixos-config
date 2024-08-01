@@ -29,7 +29,7 @@ SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o Strict
 
 switch:
 	# nixos-rebuild switch --use-remote-sudo --impure --flake ".#$(NIXNAME)"
-	home-manager switch --impure --flake ".#$(NIXUSER)" -b backup
+	/home/$(NIXUSER)/.nix-profile/bin/home-manager switch --impure --flake ".#$(NIXUSER)" -b backup
 	# rsync -av $(MAKEFILE_DIR)/users/$(NIXUSER)/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
 
 # bootstrap a brand new VM. The VM should have NixOS ISO on the CD drive

@@ -68,7 +68,6 @@
           ''
         );
       };
-      Install.WantedBy = [ "default.target" ];
     };
   };
 
@@ -77,7 +76,8 @@
       Unit.Description = "Timer for home-manager-update service.";
       Timer = {
         Unit = "home-manager-update.service";
-        OnUnitActiveSec = "${toString (24 * 7)}h";
+        OnCalendar = "Sun *-*-* 05:00:00"; # Weekly on Sunday
+        Persistent = true;
       };
       Install.WantedBy = [ "timers.target" ];
     };
