@@ -184,12 +184,15 @@ nix run home-manager/master -- init --switch --impure --flake ".#$USER"
 make switch
 ```
 
-Install Floorp browser and Extensions. Enable Podman socket for testcontainers python to work with Docker like API.
+Install Firefox add-ons and Gnome Extensions.
+
+Enable Podman socket for testcontainers python to work with Docker like API.
 
 ```sh
+# Arch Linux does not have any registries configured
+sudo su -c 'printf unqualified-search-registries = ["docker.io"] >> /etc/containers/registries.conf.d/10-unqualified-search-registries.conf'
 systemctl --user enable podman.socket
 sudo touch /etc/containers/nodocker
-flatpak install one.ablaze.floorp org.gnome.Extensions
 ```
 
 Activate ZSH

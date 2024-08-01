@@ -3,9 +3,6 @@ base
 base-devel
 bash-completion
 btrfs-progs
-docker
-docker-buildx
-docker-compose
 dosfstools
 efibootmgr
 efivar
@@ -24,9 +21,13 @@ linux-aarch64
 linux-firmware
 mesa-utils
 nautilus
+neovim
 networkmanager
 open-vm-tools
 paru-bin
+podman
+podman-compose
+podman-docker
 polkit
 snap-pac
 snapper
