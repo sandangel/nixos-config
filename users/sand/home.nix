@@ -64,7 +64,7 @@
             set -eou pipefail
             cd /home/${username}/.nix-config
             /nix/var/nix/profiles/default/bin/nix flake update
-            /home/${username}/.nix-profile/bin/make switch
+            /usr/bin/make switch
           ''
         );
       };
