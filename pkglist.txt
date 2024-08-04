@@ -2,6 +2,7 @@ arch-install-scripts
 base
 base-devel
 bash-completion
+btrfs-assistant
 btrfs-progs
 dosfstools
 efibootmgr
@@ -29,6 +30,7 @@ podman
 podman-compose
 podman-docker
 polkit
+qt6-wayland
 snap-pac
 snapper
 sudo

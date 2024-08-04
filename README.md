@@ -172,6 +172,13 @@ cp ~/.host/Downloads/New\ Mac/nixos-config/pkgs/comic-code/comic-code.tar.gz ~/.
 cp -r ~/.host/Downloads/New\ Mac/ssh ~/.ssh
 
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+
+# Create root config for snapper
+sudo snapper -c root create-config /
+sudo snapper -c root create --description "initial snapshot"
+
+# Remove orphan packages
+# sudo pacman -Rs $(pacman -Qtdq)
 ```
 
 ## Setup home-manager configurations
