@@ -141,6 +141,8 @@ pacman -S --needed $(comm -12 <(pacman -Slq | sort) <(sort pkglist.txt))
 # To remove packages not in the list
 # pacman -Rsu $(comm -23 <(pacman -Qq | sort) <(sort pkglist.txt))
 sudo ln -s ~/.nix-config/pkglist.hook /etc/pacman.d/hooks/pkglist.hook
+sudo nvim /etc/default/grub-btrfs/config
+# Add GRUB_BTRFS_NKERNEL=("Image")
 
 sudo systemctl enable NetworkManager
 sudo systemctl enable gdm
