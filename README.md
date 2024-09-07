@@ -181,6 +181,10 @@ sudo snapper -c root create --description "initial snapshot"
 
 # Remove orphan packages
 # sudo pacman -Rs $(pacman -Qtdq)
+
+# Setup GnuPG
+echo 'pinentry-program /usr/bin/pinentry-gnome3' > ~/.gnupg/gpg-agent.conf
+gpgconf --kill gpg-agent
 ```
 
 ## Setup home-manager configurations

@@ -8,6 +8,7 @@ dosfstools
 efibootmgr
 efivar
 firefox
+flatpak
 gdm
 git
 gnome-browser-connector
@@ -17,12 +18,14 @@ gnome-shell
 gnome-terminal
 gnome-tweaks
 gparted
+graphviz
 grub
 gtkmm3
 inotify-tools
 kitty
 linux-aarch64
 linux-firmware
+loupe
 mesa-utils
 nautilus
 neovim

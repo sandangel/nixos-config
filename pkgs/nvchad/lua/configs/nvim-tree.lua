@@ -72,6 +72,9 @@ return vim.tbl_deep_extend('force', require 'nvchad.configs.nvimtree', {
     width = {}, -- Adaptive size
     side = 'right',
   },
+  trash = {
+    cmd = 'trash',
+  },
   renderer = {
     icons = {
       git_placement = 'after',
