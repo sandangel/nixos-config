@@ -271,10 +271,14 @@ Then create btrfs subvolume for @work:
 
 ```sh
 sudo mount /dev/nvme0n2p1 /mnt
+# Or for Parallels Desktop
+sudo mount /dev/sdb1 /mnt
 sudo btrfs subvolume create /mnt/@work
 # Test mounting subvolume
 mkdir -p ~/Work
 sudo mount -o defaults,noatime,compress=zstd,subvol=@work /dev/nvme0n2p1 $HOME/Work
+# Or for Parallels Desktop
+sudo mount -o defaults,noatime,compress=zstd,subvol=@work /dev/sdb1 $HOME/Work
 sudo umount /mnt
 ```
 
