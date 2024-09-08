@@ -5,7 +5,7 @@ let
       owner = "vinceliuice";
       repo = "Fluent-icon-theme";
       rev = "master";
-      hash = "sha256-Ae/rE+5g3N8u721nOI7blbMnjkkN0ztt7HbtoHkGa0w=";
+      hash = "sha256-10jmsaV67nhHdUh50CjCyZUfVL27ty18RgNNfB7p/F4=";
     };
   });
   fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: {
@@ -13,7 +13,7 @@ let
       owner = "vinceliuice";
       repo = "Fluent-gtk-theme";
       rev = "master";
-      hash = "sha256-k/onrNwRhupaYi3WMDn4Dw9bjM6jO90q2LyvUF24teE=";
+      hash = "sha256-DfL2qaHfN6AEaZIbcMb29E4MrYr/rW9QND9mHuPTwaI=";
     };
   });
   gtk-theme = "Fluent-Dark";
@@ -61,7 +61,7 @@ in
     };
 
     "org/gnome/desktop/peripherals/keyboard" = {
-      delay = lib.hm.gvariant.mkUint32 150;
+      delay = lib.hm.gvariant.mkUint32 220;
       repeat-interval = lib.hm.gvariant.mkUint32 3;
     };
 
