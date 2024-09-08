@@ -65,8 +65,8 @@ and I have no issues whatsoever.
 
 ## Common VM setup
 
-Create a VMware Fusion VM with the following settings. My configurations
-are made for VMware Fusion exclusively currently and you will have issues
+Create a VMWare Fusion VM with the following settings. My configurations
+are made for VMWare Fusion exclusively currently and you will have issues
 on other virtualization solutions without minor changes.
 
 - Disk: 300 GB+
@@ -141,8 +141,6 @@ pacman -S --needed $(comm -12 <(pacman -Slq | sort) <(sort pkglist.txt))
 # To remove packages not in the list
 # pacman -Rsu $(comm -23 <(pacman -Qq | sort) <(sort pkglist.txt))
 sudo ln -s ~/.nix-config/pkglist.hook /etc/pacman.d/hooks/pkglist.hook
-sudo nvim /etc/default/grub-btrfs/config
-# Add GRUB_BTRFS_NKERNEL=("Image")
 
 sudo systemctl enable NetworkManager
 sudo systemctl enable gdm
@@ -154,12 +152,17 @@ git clone https://aur.archlinux.org/paru-bin.git
 cd paru-bin
 makepkg -si
 
+# For VMWare Fusion
 cd .. && git clone https://gitlab.archlinux.org/archlinux/packaging/packages/open-vm-tools.git
 cd open-vm-tools
 nvim PKGBUILD
 # Edit PKGBUILD to support aarch64
 makepkg -si
 mkdir -p ~/.host
+# For Parallels Desktop
+# Mount the Parallel Tools CD, then open the folder in terminal
+sudo ./install
+reboot
 
 # For Apple VF
 # sudo mount -t virtiofs share ~/.host
@@ -167,22 +170,39 @@ mkdir -p ~/.host
 /usr/bin/vmhgfs-fuse .host:/ $HOME/.host -o subtype=vmhgfs-fuse
 # For UTM QEMU
 # sudo mount -t 9p -o trans=virtio share ~/.host -oversion=9p2000.L
+# For Parallels Desktop
+# The shared folder is mounted at /mnt/psf
 
 rm -rf ~/.ssh
 
 cp ~/.host/Downloads/New\ Mac/nixos-config/pkgs/comic-code/comic-code.tar.gz ~/.nix-config/pkgs/comic-code/
+# For Parallels Desktop
+# cp /mnt/psf/Downloads/New\ Mac/nixos-config/pkgs/comic-code/comic-code.tar.gz ~/.nix-config/pkgs/comic-code/
 cp -r ~/.host/Downloads/New\ Mac/ssh ~/.ssh
-
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+# cp -r /mnt/psf/Downloads/New\ Mac/ssh ~/.ssh
 
 # Create root config for snapper
 sudo snapper -c root create-config /
 sudo snapper -c root create --description "initial snapshot"
+# Update grub-btrfs config to detect snapshots
+sudo nvim /etc/default/grub-btrfs/config
+# Update this line to
+GRUB_BTRFS_NKERNEL=("Image")
+# Then update grub config file
+sudo nvim /etc/default/grub
+# Add these options to GRUB_CMDLINE_LINUX_DEFAULT to fix dmesg issues
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet systemd.gpt_auto=no rootfstype=btrfs raid=noautodetect"
+GRUB_PRELOAD_MODULES="part_gpt"
+# Generate grub config
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 
 # Remove orphan packages
-# sudo pacman -Rs $(pacman -Qtdq)
+sudo pacman -Rs $(pacman -Qtdq)
 
 # Setup GnuPG
+mkdir -p ~/.gnupg
 echo 'pinentry-program /usr/bin/pinentry-gnome3' > ~/.gnupg/gpg-agent.conf
 gpgconf --kill gpg-agent
 ```
@@ -203,7 +223,7 @@ Enable Podman socket for testcontainers python to work with Docker like API.
 
 ```sh
 # Arch Linux does not have any registries configured
-sudo su -c 'printf unqualified-search-registries = ["docker.io"] >> /etc/containers/registries.conf.d/10-unqualified-search-registries.conf'
+sudo su -c 'printf "unqualified-search-registries = [\"docker.io\"]" >> /etc/containers/registries.conf.d/10-unqualified-search-registries.conf'
 systemctl --user enable podman.socket
 sudo touch /etc/containers/nodocker
 ```
@@ -217,7 +237,7 @@ exec zsh
 systemctl enable --user ssh-agent.service
 ```
 
-Mount host shared folders
+Mount host shared folders for VMWare Fusion:
 
 ```sh
 sudo mkdir -p $HOME/.host
@@ -261,7 +281,7 @@ sudo umount /mnt
 Now auto mount @work subvolume to ~/Work folder
 
 ```sh
-sudo su -c "printf LABEL=WORK $HOME/Work btrfs defaults,subvol=/@work,compress=zstd,noatime 0 0 >> /etc/fstab"
+sudo su -c "printf 'LABEL=WORK $HOME/Work btrfs defaults,subvol=/@work,compress=zstd,noatime 0 0' >> /etc/fstab"
 ```
 
 **Config for macOS host:**
