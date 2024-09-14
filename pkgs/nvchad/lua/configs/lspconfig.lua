@@ -86,7 +86,7 @@ local servers = {
   terraformls = {
     root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
   },
-  tsserver = {
+  ts_ls = {
     init_options = {
       hostInfo = 'neovim',
       preferences = {
