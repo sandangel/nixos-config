@@ -87,7 +87,6 @@
 
   programs.info.enable = true;
   programs.nix-index.enable = true;
-  programs.jq.enable = true;
 
   manual = {
     html.enable = false;
