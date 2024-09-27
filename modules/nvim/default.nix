@@ -1,5 +1,7 @@
 { pkgs, ... }:
-
+let
+  nvchad = pkgs.callPackage ../../pkgs/nvchad { };
+in
 {
   home.packages =
     with pkgs;

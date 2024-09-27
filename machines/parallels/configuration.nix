@@ -118,8 +118,6 @@
     { ... }:
     {
       home.packages = with pkgs; [
-        (callPackage ../../pkgs/comic-code { })
-        (callPackage ../../pkgs/nvchad { })
         binutils
         bind
       ];

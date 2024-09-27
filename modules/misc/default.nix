@@ -1,5 +1,8 @@
 { pkgs, ... }:
+let
+  comic-code = pkgs.callPackage ../../pkgs/comic-code { };
 
+in
 {
   # home.stateVersion = "22.05";
   home.packages = (
