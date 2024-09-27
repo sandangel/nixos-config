@@ -54,6 +54,6 @@ in
   };
 
   xdg.configFile."nvim" = {
-    source = "${pkgs.nvchad}";
+    source = "${nvchad}";
   };
 }
