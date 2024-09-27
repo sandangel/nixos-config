@@ -137,11 +137,11 @@ local plugins = {
       vim.g.rustfmt_autosave = 1
     end,
   },
-  {
-    'mrjones2014/smart-splits.nvim',
-    event = 'VeryLazy',
-    build = './kitty/install-kittens.bash',
-  },
+  -- {
+  --   'mrjones2014/smart-splits.nvim',
+  --   event = 'VeryLazy',
+  --   build = './kitty/install-kittens.bash',
+  -- },
   {
     'AckslD/nvim-neoclip.lua',
     dependencies = { 'kkharji/sqlite.lua', 'ibhagwan/fzf-lua', },
@@ -206,13 +206,13 @@ local plugins = {
     dependencies = { 'lukas-reineke/cmp-rg', },
     opts = require 'configs.cmp',
   },
-  {
-    'garyhurtz/cmp_kitty',
-    dependencies = { 'hrsh7th/nvim-cmp', },
-    init = function()
-      require 'cmp_kitty':setup()
-    end,
-  },
+  -- {
+  --   'garyhurtz/cmp_kitty',
+  --   dependencies = { 'hrsh7th/nvim-cmp', },
+  --   init = function()
+  --     require 'cmp_kitty':setup()
+  --   end,
+  -- },
   {
     'ibhagwan/fzf-lua',
     config = function()

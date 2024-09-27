@@ -3,6 +3,11 @@ lib.mkMerge [
   {
     xdg.configFile."kitty".source = ./.;
     xdg.configFile."kitty".recursive = true;
+    programs.zsh = {
+      initExtra = ''
+        . $HOME/.config/kitty/kitty.zsh
+      '';
+    };
   }
 
   (lib.mkIf pkgs.stdenv.isLinux {

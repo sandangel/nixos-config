@@ -44,8 +44,9 @@
     ../../modules/firefox
     ../../modules/git
     ../../modules/gnome
-    ../../modules/hyprland
+    # ../../modules/hyprland
     ../../modules/kitty
+    ../../modules/ghostty
     ../../modules/kubernetes
     ../../modules/misc
     ../../modules/nvim
