@@ -89,34 +89,47 @@ local plugins = {
     config = true,
   },
   {
-    'Exafunction/codeium.nvim',
+    "supermaven-inc/supermaven-nvim",
+    event = 'VeryLazy',
     dependencies = {
-      'nvim-lua/plenary.nvim',
       'hrsh7th/nvim-cmp',
     },
-    event = 'VeryLazy',
-    config = true,
-  },
-  {
-    'zbirenbaum/copilot.lua',
-    event = 'VeryLazy',
-    dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
     config = function()
-      require 'copilot'.setup {
-        panel = {
-          enabled = false,
-        },
-        suggestion = {
-          enabled = false,
-        },
-        filetypes = {
-          yaml = true,
-          markdown = true,
-          gitcommit = true,
-        },
-      }
+      require("supermaven-nvim").setup({
+        disable_keymaps = true,
+        disable_inline_completion = true,
+      })
     end,
   },
+  -- {
+  --   'Exafunction/codeium.nvim',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'hrsh7th/nvim-cmp',
+  --   },
+  --   event = 'VeryLazy',
+  --   config = true,
+  -- },
+  -- {
+  --   'zbirenbaum/copilot.lua',
+  --   event = 'VeryLazy',
+  --   dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
+  --   config = function()
+  --     require 'copilot'.setup {
+  --       panel = {
+  --         enabled = false,
+  --       },
+  --       suggestion = {
+  --         enabled = false,
+  --       },
+  --       filetypes = {
+  --         yaml = true,
+  --         markdown = true,
+  --         gitcommit = true,
+  --       },
+  --     }
+  --   end,
+  -- },
   {
     'rust-lang/rust.vim',
     ft = 'rust',

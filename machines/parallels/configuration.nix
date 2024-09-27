@@ -2,7 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, modulesPath, lib, ... }:
+{
+  config,
+  pkgs,
+  modulesPath,
+  lib,
+  ...
+}:
 
 {
   nix.extraOptions = ''
@@ -15,12 +21,12 @@
   ];
   boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
   boot.initrd.kernelModules = [ "virtio-gpu" ];
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      (modulesPath + "/profiles/qemu-guest.nix")
-      <home-manager/nixos>
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    (modulesPath + "/profiles/qemu-guest.nix")
+    <home-manager/nixos>
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -99,57 +105,64 @@
   users.users.sand = {
     isNormalUser = true;
     description = "San Nguyen";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ];
   };
 
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
-  home-manager.users.sand = { ... }: {
-    home.packages = [
-      (pkgs.callPackage ../../pkgs/comic-code { })
-      (pkgs.callPackage ../../pkgs/nvchad { })
-      binutils
-      bind
-    ];
-    imports = [
-      ../../modules/cloud
-      ../../modules/direnv
-      ../../modules/firefox
-      ../../modules/git
-      ../../modules/gnome
-      ../../modules/hyprland
-      ../../modules/kubernetes
-      ../../modules/misc
-      ../../modules/nvim
-      ../../modules/zsh
-    ];
-    programs.zsh.enable = true;
-    programs.alacritty.enable = true;
-    wayland.windowManager.hyprland.enable = true;
-    wayland.windowManager.hyprland.extraConfig = ''
-      monitor = , 4112x2572, auto, 2
-
-      $terminal = alacritty
-      $hypr_nvim_nav = ~/.nix-config/modules/hyprland/hypr-nvim-nav
-      $hypr_toggle_term = ~/.nix-config/modules/hyprland/hypr-toggle-term
-
-      exec-once = dbus-update-activation-environment --systemd --all
-      exec-once = $terminal
-
-      env = XCURSOR_SIZE,24
-      env = HYPRCURSOR_SIZE,24
-
-      general {
-        
-      }
-
-      bind = Alt_R, W, exec, alacritty
-    '';
-    wayland.windowManager.hyprland.xwayland.enable = true;
-    wayland.windowManager.hyprland.systemd.enable = true;
-    wayland.windowManager.hyprland.systemd.variables = [ "--all" ];
-    home.stateVersion = "24.05";
-  };
+  home-manager.users.sand =
+    { ... }:
+    {
+      home.packages = with pkgs; [
+        (callPackage ../../pkgs/comic-code { })
+        (callPackage ../../pkgs/nvchad { })
+        binutils
+        bind
+      ];
+      imports = [
+        ../../modules/cloud
+        ../../modules/direnv
+        ../../modules/firefox
+        ../../modules/git
+        ../../modules/gnome
+        ../../modules/hyprland
+        ../../modules/kitty
+        ../../modules/kubernetes
+        ../../modules/misc
+        ../../modules/nvim
+        ../../modules/zsh
+      ];
+      programs.zsh.enable = true;
+      programs.alacritty.enable = true;
+      wayland.windowManager.hyprland.enable = true;
+      # wayland.windowManager.hyprland.extraConfig = ''
+      #   monitor = , 4112x2572, auto, 2
+      #
+      #   $terminal = alacritty
+      #   $hypr_nvim_nav = ~/.nix-config/modules/hyprland/hypr-nvim-nav
+      #   $hypr_toggle_term = ~/.nix-config/modules/hyprland/hypr-toggle-term
+      #
+      #   exec-once = dbus-update-activation-environment --systemd --all
+      #   exec-once = $terminal
+      #
+      #   env = XCURSOR_SIZE,24
+      #   env = HYPRCURSOR_SIZE,24
+      #
+      #   general {
+      #
+      #   }
+      #
+      #   bind = Alt_R, W, exec, alacritty
+      # '';
+      wayland.windowManager.hyprland.xwayland.enable = true;
+      wayland.windowManager.hyprland.systemd.enable = true;
+      wayland.windowManager.hyprland.systemd.variables = [ "--all" ];
+      home.stateVersion = "24.05";
+    };
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -160,8 +173,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
     vim
     git
   ];
