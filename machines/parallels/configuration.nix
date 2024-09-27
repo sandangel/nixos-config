@@ -179,6 +179,9 @@
     #  wget
     vim
     git
+    gcc
+    wl-clipboard
+    xclip
   ];
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
