@@ -105,6 +105,7 @@
   users.users.sand = {
     isNormalUser = true;
     description = "San Nguyen";
+    shell = pkgs.zsh;
     extraGroups = [
       "networkmanager"
       "wheel"
