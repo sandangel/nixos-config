@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 lib.mkMerge [
   {
-    programs.kitty.enable = true;
+    # programs.kitty.enable = true;
     xdg.configFile."kitty".source = ./.;
     xdg.configFile."kitty".recursive = true;
     programs.zsh = {
