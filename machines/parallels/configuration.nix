@@ -3,7 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
-  config,
+  # config,
   pkgs,
   modulesPath,
   lib,
@@ -15,8 +15,8 @@
     experimental-features = nix-command flakes
   '';
   nix.nixPath = [
-    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-    "nixos-config=/home/sand/.nix-config/machines/parallels/configuration.nix"
+    "nixpkgs=flake:nixpkgs"
+    "nixos-config=/etc/nixos/configuration.nix"
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
   boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
@@ -102,6 +102,7 @@
   # services.xserver.libinput.enable = true;
 
   programs.zsh.enable = true;
+  programs.nix-ld.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sand = {
@@ -121,11 +122,8 @@
   home-manager.users.sand =
     { ... }:
     {
-      home.packages = with pkgs; [
-        binutils
-        bind
-      ];
       imports = [
+        ../../modules/alacritty
         ../../modules/cloud
         ../../modules/direnv
         ../../modules/firefox
@@ -133,36 +131,12 @@
         ../../modules/gnome
         ../../modules/hyprland
         ../../modules/kitty
+        ../../modules/ghostty
         ../../modules/kubernetes
         ../../modules/misc
         ../../modules/nvim
         ../../modules/zsh
       ];
-      programs.zsh.enable = true;
-      programs.alacritty.enable = true;
-      wayland.windowManager.hyprland.enable = true;
-      # wayland.windowManager.hyprland.extraConfig = ''
-      #   monitor = , 4112x2572, auto, 2
-      #
-      #   $terminal = alacritty
-      #   $hypr_nvim_nav = ~/.nix-config/modules/hyprland/hypr-nvim-nav
-      #   $hypr_toggle_term = ~/.nix-config/modules/hyprland/hypr-toggle-term
-      #
-      #   exec-once = dbus-update-activation-environment --systemd --all
-      #   exec-once = $terminal
-      #
-      #   env = XCURSOR_SIZE,24
-      #   env = HYPRCURSOR_SIZE,24
-      #
-      #   general {
-      #
-      #   }
-      #
-      #   bind = Alt_R, W, exec, alacritty
-      # '';
-      wayland.windowManager.hyprland.xwayland.enable = true;
-      wayland.windowManager.hyprland.systemd.enable = true;
-      wayland.windowManager.hyprland.systemd.variables = [ "--all" ];
       home.stateVersion = "24.05";
     };
 
@@ -177,14 +151,13 @@
   environment.systemPackages = with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
-    vim
-    git
     gcc
+    git
+    gnumake
+    vim
     wl-clipboard
     xclip
   ];
-
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   virtualisation.docker.enable = true;
   # Allow apps to update firmware

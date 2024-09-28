@@ -44,7 +44,7 @@
     ../../modules/firefox
     ../../modules/git
     ../../modules/gnome
-    # ../../modules/hyprland
+    ../../modules/hyprland
     ../../modules/kitty
     ../../modules/ghostty
     ../../modules/kubernetes
@@ -88,14 +88,15 @@
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     LC_CTYPE = "en_US.UTF-8";
-
-    GDK_SCALE = "2";
-    QT_QPA_PLATFORM = "wayland";
-    SDL_VIDEODRIVER = "wayland";
-    XDG_SESSION_TYPE = "wayland";
-    MOZ_ENABLE_WAYLAND = "1";
-    MOZ_USE_XINPUT2 = 1;
-    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=2";
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
 
     # Override MESA version since UTM QEMU some how populate the version
     # to be 2.1, which does not meet the requirement of Kitty

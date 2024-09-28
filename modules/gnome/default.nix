@@ -25,6 +25,27 @@ in
 
   home.file.".icons".source = "${fluent-icon-theme}/share/icons";
 
+  home.sessionVariables = {
+    XDG_SESSION_TYPE = "wayland";
+
+    NIXOS_OZONE_WL = "1";
+
+    GDK_BACKEND = "wayland,x11";
+    GDK_SCALE = "1";
+
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_QPA_PLATFORMTHEME = "qt6ct";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+
+    SDL_VIDEODRIVER = "wayland";
+    CLUTTER_BACKEND = "wayland";
+
+    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_USE_XINPUT2 = "1";
+
+    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=1";
+  };
   gtk = {
     enable = true;
 
@@ -61,7 +82,7 @@ in
     };
 
     "org/gnome/desktop/peripherals/keyboard" = {
-      delay = lib.hm.gvariant.mkUint32 250;
+      delay = lib.hm.gvariant.mkUint32 220;
       repeat-interval = lib.hm.gvariant.mkUint32 3;
     };
 

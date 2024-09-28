@@ -1,0 +1,30 @@
+[window]
+decorations = "None"
+opacity = 0.95
+padding = { x = 10, y = 10 }
+startup_mode = "Maximized"
+
+[scrolling]
+history = 100000
+
+[font]
+normal = { family = "Comic Code Ligatures", style = "Regular" }
+bold = { family = "Comic Code Ligatures", style = "Regular" }
+italic = { family = "Comic Code Ligatures", style = "Italic" }
+bold_italic = { family = "Comic Code Ligatures", style = "Italic" }
+
+[selection]
+save_to_clipboard = true
+
+[cursor]
+style = { shape = "Beam", blinking = "On" }
+vi_mode_style = { shape = "Block", blinking = "Off" }
+
+[keyboard]
+bindings = [
+  { key = "V", mods = "Control", mode = "~Vi", action = "Paste" },
+  { key = "Enter", mods = "Control|Shift", action = "CreateNewWindow" },
+  { key = "+", mods = "Control|Shift", action = "IncreaseFontSize" },
+  { key = "_", mods = "Control|Shift", action = "DecreaseFontSize" },
+  { key = "0", mods = "Control|Shift", action = "ResetFontSize" },
+]

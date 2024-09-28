@@ -2,6 +2,7 @@
   inputs = {
     # Mirroring nixpkgs unstable
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
+    ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
 
     # Updating nix itself
     nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
@@ -34,6 +35,8 @@
       self,
       flake-parts,
       home-manager,
+      nixpkgs,
+      ghostty,
       # neovim,
       # devenv,
       # flox,
@@ -91,6 +94,14 @@
         flake.overlays.linux = final: prev: {
           # nixGL = nixGL.packages.${final.stdenv.system}.default;
           # ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
+        };
+
+        flake.nixosConfigurations.nixos = nixpkgs.lib.nixosSystem rec {
+          system = "aarch64-linux";
+          modules = [
+            ./machines/parallels/configuration.nix
+            { environment.systemPackages = [ ghostty.packages.${system}.ghostty ]; }
+          ];
         };
 
         flake.homeConfigurations.${linux-user} = withSystem "aarch64-linux" (

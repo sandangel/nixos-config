@@ -35,7 +35,7 @@
     offset = +5x+50
     origin = top-right
 
-    # Turn on the progess bar
+    # Turn on the progress bar
     progress_bar = true
 
     # Set the progress bar height. This includes the frame, so make sure
@@ -257,7 +257,7 @@
     ### Wayland ###
     # These settings are Wayland-specific. They have no effect when using X11
 
-    # Uncomment this if you want to let notications appear under fullscreen
+    # Uncomment this if you want to let notifications appear under fullscreen
     # applications (default: overlay)
     # layer = top
 
