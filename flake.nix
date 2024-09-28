@@ -85,10 +85,11 @@
 
         flake.overlays.default = final: prev: {
           # neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
-          comic-code = prev.callPackage ./pkgs/comic-code { };
-          nvchad = prev.callPackage ./pkgs/nvchad { };
+          # comic-code = prev.callPackage ./pkgs/comic-code { };
+          # nvchad = prev.callPackage ./pkgs/nvchad { };
           # devenv = devenv.packages.${final.stdenv.system}.default;
           # flox = flox.packages.${final.stdenv.system}.default;
+          ghostty = ghostty.packages.${final.stdenv.system}.ghostty;
         };
 
         flake.overlays.linux = final: prev: {

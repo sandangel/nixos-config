@@ -44,7 +44,8 @@
     ../../modules/firefox
     ../../modules/git
     ../../modules/gnome
-    ../../modules/hyprland
+    # ../../modules/hyprland
+    ../../modules/alacritty
     ../../modules/kitty
     ../../modules/ghostty
     ../../modules/kubernetes
@@ -52,37 +53,6 @@
     ../../modules/nvim
     ../../modules/zsh
   ];
-
-  systemd.user.services = {
-    home-manager-update = {
-      Unit = {
-        Description = "Update packages managed by home-manager.";
-      };
-      Service = {
-        Type = "oneshot";
-        ExecStart = toString (
-          pkgs.writeShellScript "home-manager-update-sh" ''
-            set -eou pipefail
-            cd /home/${username}/.nix-config
-            /nix/var/nix/profiles/default/bin/nix flake update
-            /usr/bin/make switch
-          ''
-        );
-      };
-    };
-  };
-
-  systemd.user.timers = {
-    home-manager-update = {
-      Unit.Description = "Timer for home-manager-update service.";
-      Timer = {
-        Unit = "home-manager-update.service";
-        OnCalendar = "Sun *-*-* 05:00:00"; # Weekly on Sunday
-        Persistent = true;
-      };
-      Install.WantedBy = [ "timers.target" ];
-    };
-  };
 
   home.sessionVariables = {
     LANG = "en_US.UTF-8";
@@ -109,4 +79,6 @@
     # Fix static links in nixpkgs
     # LD_AUDIT = "${pkgs.ld-floxlib}/lib/ld-floxlib.so";
   };
+
+  home.stateVersion = "24.05";
 }

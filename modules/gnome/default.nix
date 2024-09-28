@@ -28,8 +28,6 @@ in
   home.sessionVariables = {
     XDG_SESSION_TYPE = "wayland";
 
-    NIXOS_OZONE_WL = "1";
-
     GDK_BACKEND = "wayland,x11";
     GDK_SCALE = "1";
 
@@ -82,7 +80,7 @@ in
     };
 
     "org/gnome/desktop/peripherals/keyboard" = {
-      delay = lib.hm.gvariant.mkUint32 220;
+      delay = lib.hm.gvariant.mkUint32 150;
       repeat-interval = lib.hm.gvariant.mkUint32 3;
     };
 
