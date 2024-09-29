@@ -29,21 +29,21 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   networking.hostId = "4127fee0";
-  # networking.interfaces.enp0s5.useDHCP = lib.mkDefault true;
+  networking.interfaces.ens160.useDHCP = lib.mkDefault true;
 
   # Share our host filesystem
-  # fileSystems."/host" = {
-  #   fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
-  #   device = ".host:/";
-  #   options = [
-  #     "umask=22"
-  #     "uid=1000"
-  #     "gid=1000"
-  #     "allow_other"
-  #     "auto_unmount"
-  #     "defaults"
-  #   ];
-  # };
+  fileSystems."/host" = {
+    fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
+    device = ".host:/";
+    options = [
+      "umask=22"
+      "uid=1000"
+      "gid=1000"
+      "allow_other"
+      "auto_unmount"
+      "defaults"
+    ];
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

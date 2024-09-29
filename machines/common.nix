@@ -99,8 +99,10 @@
   programs.nix-ld.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.mutableUsers = true;
   users.users.sand = {
     isNormalUser = true;
+    initialPassword = "sand";
     description = "San Nguyen";
     shell = pkgs.zsh;
     extraGroups = [
@@ -143,14 +145,14 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
     alacritty
-    kitty
     gcc
     git
     gnumake
+    kitty
+    umount
     vim
+    wget
     wl-clipboard
     xclip
   ];

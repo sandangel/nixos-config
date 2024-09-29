@@ -35,8 +35,8 @@
   xdg.enable = true;
 
   # To source .desktop applications installed by home-manager
-  programs.bash.enable = true;
-  targets.genericLinux.enable = true;
+  # programs.bash.enable = true;
+  # targets.genericLinux.enable = true;
 
   imports = [
     ../../modules/cloud
