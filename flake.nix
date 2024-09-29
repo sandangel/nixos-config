@@ -3,6 +3,8 @@
     # Mirroring nixpkgs unstable
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
     ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
 
     # Updating nix itself
     nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
@@ -37,6 +39,7 @@
       home-manager,
       nixpkgs,
       ghostty,
+      disko,
       # neovim,
       # devenv,
       # flox,
@@ -89,7 +92,7 @@
           # nvchad = prev.callPackage ./pkgs/nvchad { };
           # devenv = devenv.packages.${final.stdenv.system}.default;
           # flox = flox.packages.${final.stdenv.system}.default;
-          ghostty = ghostty.packages.${final.stdenv.system}.ghostty;
+          # ghostty = ghostty.packages.${final.stdenv.system}.ghostty;
         };
 
         flake.overlays.linux = final: prev: {
@@ -97,11 +100,28 @@
           # ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
         };
 
-        flake.nixosConfigurations.nixos = nixpkgs.lib.nixosSystem rec {
+        flake.nixosConfigurations.parallels-desktop = nixpkgs.lib.nixosSystem rec {
           system = "aarch64-linux";
           modules = [
             ./machines/parallels/configuration.nix
+            ./machines/common.nix
             { environment.systemPackages = [ ghostty.packages.${system}.ghostty ]; }
+            home-manager.nixosModules.home-manager
+          ];
+        };
+        flake.nixosConfigurations.vmware-fusion = nixpkgs.lib.nixosSystem rec {
+          system = "aarch64-linux";
+          modules = [
+            ./machines/vmware-fusion/configuration.nix
+            disko.nixosModules.disko
+            ./machines/vmware-fusion/disko-config.nix
+            ./machines/common.nix
+            {
+              disko.devices.disk.main.device = "/dev/nvme0n3";
+              disko.devices.disk.work.device = "/dev/nvme0n4";
+              environment.systemPackages = [ ghostty.packages.${system}.ghostty ];
+            }
+            home-manager.nixosModules.home-manager
           ];
         };
 

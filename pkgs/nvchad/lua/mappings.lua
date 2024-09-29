@@ -69,6 +69,27 @@ M.undotree = {
   },
 }
 
+M.smart_splits = {
+  i = {
+    ['<C-h>'] = { function() require 'smart-splits'.move_cursor_left() end, 'Window left', },
+    ['<C-l>'] = { function() require 'smart-splits'.move_cursor_right() end, 'Window right', },
+    ['<C-j>'] = { function() require 'smart-splits'.move_cursor_down() end, 'Window down', },
+    ['<C-k>'] = { function() require 'smart-splits'.move_cursor_up() end, 'Window up', },
+  },
+  n = {
+    ['<C-h>'] = { function() require 'smart-splits'.move_cursor_left() end, 'Window left', },
+    ['<C-l>'] = { function() require 'smart-splits'.move_cursor_right() end, 'Window right', },
+    ['<C-j>'] = { function() require 'smart-splits'.move_cursor_down() end, 'Window down', },
+    ['<C-k>'] = { function() require 'smart-splits'.move_cursor_up() end, 'Window up', },
+  },
+  t = {
+    ['<C-h>'] = { function() require 'smart-splits'.move_cursor_left() end, 'Window left', },
+    ['<C-l>'] = { function() require 'smart-splits'.move_cursor_right() end, 'Window right', },
+    ['<C-j>'] = { function() require 'smart-splits'.move_cursor_down() end, 'Window down', },
+    ['<C-k>'] = { function() require 'smart-splits'.move_cursor_up() end, 'Window up', },
+  },
+}
+
 M.noice = {
   n = {
     ['<C-f>'] = {

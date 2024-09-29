@@ -3,15 +3,13 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
-  modulesPath,
   ...
 }:
 
 {
-  boot.initrd.kernelModules = [ "virtio-gpu" ];
+  virtualisation.vmware.guest.enable = true;
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    (modulesPath + "/profiles/qemu-guest.nix")
   ];
 }
