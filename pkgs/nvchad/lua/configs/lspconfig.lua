@@ -43,7 +43,7 @@ local servers = {
     filetypes = vim.tbl_filter(function(ft)
       -- Not start with Helm files
       return not vim.tbl_contains({ 'helm', }, ft)
-    end, require 'lspconfig.server_configurations.yamlls'.default_config.filetypes),
+    end, require 'lspconfig.configs.yamlls'.default_config.filetypes),
     settings = {
       yaml = {
         format = { enable = true, printWidth = 120, singleQuote = true, proseWrap = 'always', },

@@ -35,8 +35,6 @@ if not (vim.uv or vim.loop).fs_stat(nvchadpath) then
 end
 vim.opt.rtp:prepend(nvchadpath)
 
--- local lazy_config = require 'configs.lazy'
-
 -- load plugins
 require 'lazy'.setup({
   {
@@ -53,14 +51,14 @@ require 'lazy'.setup({
   { import = 'plugins', },
 }, {
   lockfile = vim.fn.stdpath 'data' .. '/lazy-lock.json',
-    checker = {
-        -- automatically check for plugin updates
-	     enabled = true,
-	         frequency = 3600 * 2, -- check for updates every 2 hours
-	             notify = false,
-	               },
-	                 rocks = { enabled = false }
-	                 })
+  checker = {
+    -- automatically check for plugin updates
+    enabled = true,
+    frequency = 3600 * 2, -- check for updates every 2 hours
+    notify = false,
+  },
+  rocks = { enabled = false }
+})
 
 -- load theme
 dofile(vim.g.base46_cache .. 'defaults')
