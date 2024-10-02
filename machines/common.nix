@@ -10,9 +10,10 @@
 }:
 
 {
-  boot.kernelParams = [ "video=Virtual-1:4112x2572@60" ];
+  boot.kernelParams = [ "video=Virtual-1:4112x2572" ];
   nix.extraOptions = ''
     experimental-features = nix-command flakes
+    trusted-users = root sand
   '';
   nix.nixPath = [
     "nixpkgs=flake:nixpkgs"
@@ -63,9 +64,14 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.excludePackages = [ pkgs.xterm ];
 
-  programs.hyprland.enable = true;
-  programs.hyprland.xwayland.enable = true;
+  programs.hyprland.enable = false;
+  programs.hyprland.xwayland.enable = false;
+  programs.dconf.enable = true;
+
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.login.enableGnomeKeyring = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -125,7 +131,7 @@
         ../modules/firefox
         ../modules/git
         ../modules/gnome
-        ../modules/hyprland
+        # ../modules/hyprland
         ../modules/kitty
         ../modules/ghostty
         ../modules/kubernetes
@@ -150,12 +156,21 @@
     git
     gnumake
     kitty
+    slurp
     umount
     vim
     wget
-    wl-clipboard
     xclip
+    xdg-utils
   ];
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    LIBSEAT_BACKEND = "logind";
+  };
+
+  hardware.graphics.enable = true;
+  hardware.graphics.extraPackages = [ pkgs.mesa.drivers ];
 
   virtualisation.docker.enable = true;
   # Allow apps to update firmware

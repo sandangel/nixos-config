@@ -1,4 +1,9 @@
 function nvim() {
+  if [[ -z $HYPRLAND_INSTANCE_SIGNATURE ]]; then
+    command nvim $@
+    return 0
+  fi
+
   local nvim_addr=/tmp/nvim-hypr-$(hyprctl activeworkspace -j | jq -r '.id')
 
   if [[ $# -eq 0 && ! -e $nvim_addr  ]]; then

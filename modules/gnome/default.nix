@@ -44,6 +44,9 @@ in
 
     CHROMIUM_USER_FLAGS = "--force-device-scale-factor=1";
   };
+  home.packages = with pkgs; [
+    gnome-tweaks
+  ];
   gtk = {
     enable = true;
 
@@ -159,7 +162,7 @@ in
       switch-to-workspace-down = [ ];
       switch-to-workspace-last = [ ];
       switch-to-workspace-left = [ "<Super>b" ];
-      switch-to-workspace-right = [ "<Super>n" ];
+      switch-to-workspace-right = [ "<Super>f" ];
       switch-to-workspace-up = [ ];
       toggle-maximized = [ ];
       unmaximize = [ ];
@@ -327,7 +330,7 @@ in
       show-screenshot-ui = [ ];
       toggle-application-view = [ ];
       toggle-message-tray = [ ];
-      toggle-overview = [ "<Super>f" ];
+      toggle-overview = [ "<Super>g" ];
     };
 
     "org/gnome/system/location" = {

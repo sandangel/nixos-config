@@ -1,8 +1,10 @@
 {
   inputs = {
     # Mirroring nixpkgs unstable
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
+    ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
+    ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -10,8 +12,8 @@
     nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
 
     # For running GUI apps
-    # nixGL.url = "github:nix-community/nixGL";
-    # nixGL.inputs.nixpkgs.follows = "nixpkgs";
+    nixGL.url = "github:nix-community/nixGL";
+    nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv";
 
@@ -44,7 +46,7 @@
       # devenv,
       # flox,
       # ld-floxlib,
-      # nixGL,
+      nixGL,
       # fenix,
       ...
     }:
@@ -96,7 +98,7 @@
         };
 
         flake.overlays.linux = final: prev: {
-          # nixGL = nixGL.packages.${final.stdenv.system}.default;
+          nixGL = nixGL.packages.${final.stdenv.system}.default;
           # ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
         };
 
@@ -105,7 +107,12 @@
           modules = [
             ./machines/parallels/configuration.nix
             ./machines/common.nix
-            { environment.systemPackages = [ ghostty.packages.${system}.ghostty ]; }
+            {
+              environment.systemPackages = [
+                ghostty.packages.${system}.ghostty
+                nixGL.packages.${system}.default
+              ];
+            }
             home-manager.nixosModules.home-manager
           ];
         };
@@ -119,7 +126,10 @@
             {
               disko.devices.disk.main.device = "/dev/nvme0n3";
               disko.devices.disk.work.device = "/dev/nvme0n4";
-              environment.systemPackages = [ ghostty.packages.${system}.ghostty ];
+              environment.systemPackages = [
+                ghostty.packages.${system}.ghostty
+                nixGL.packages.${system}.default
+              ];
             }
             home-manager.nixosModules.home-manager
           ];
