@@ -106,8 +106,12 @@
           system = "aarch64-linux";
           modules = [
             ./machines/parallels/configuration.nix
+            disko.nixosModules.disko
+            ./machines/parallels/disko-config.nix
             ./machines/common.nix
             {
+              disko.devices.disk.main.device = "/dev/sda";
+              disko.devices.disk.work.device = "/dev/sdb";
               environment.systemPackages = [
                 ghostty.packages.${system}.ghostty
                 nixGL.packages.${system}.default
