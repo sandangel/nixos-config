@@ -23,6 +23,9 @@
       export PATH=$HOME/.rye/shims:$PATH
       source <(${pkgs.rye}/bin/rye self completion)
 
+      # Set timezone based on IP, since automatic timezone on gnome is not working
+      timedatectl set-timezone "$(curl --fail https://ipapi.co/timezone)"
+
       if [ -f /opt/homebrew/bin/brew ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
       fi

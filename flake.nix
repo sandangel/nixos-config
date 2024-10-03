@@ -12,8 +12,8 @@
     nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
 
     # For running GUI apps
-    # nixGL.url = "github:nix-community/nixGL";
-    # nixGL.inputs.nixpkgs.follows = "nixpkgs";
+    nixGL.url = "github:nix-community/nixGL";
+    nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv";
 
@@ -46,7 +46,7 @@
       # devenv,
       # flox,
       # ld-floxlib,
-      # nixGL,
+      nixGL,
       # fenix,
       ...
     }:
@@ -98,7 +98,7 @@
         };
 
         flake.overlays.linux = final: prev: {
-          # nixGL = nixGL.packages.${final.stdenv.system}.default;
+          nixGL = nixGL.packages.${final.stdenv.system}.default;
           # ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
         };
 
@@ -110,6 +110,7 @@
             {
               environment.systemPackages = [
                 ghostty.packages.${system}.ghostty
+                nixGL.packages.${system}.default
               ];
             }
             home-manager.nixosModules.home-manager
@@ -127,6 +128,7 @@
               disko.devices.disk.work.device = "/dev/nvme0n4";
               environment.systemPackages = [
                 ghostty.packages.${system}.ghostty
+                nixGL.packages.${system}.default
               ];
             }
             home-manager.nixosModules.home-manager

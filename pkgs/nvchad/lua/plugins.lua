@@ -88,19 +88,19 @@ local plugins = {
     cmd = { 'GithubPreviewToggle', },
     config = true,
   },
-  {
-    "supermaven-inc/supermaven-nvim",
-    event = 'VeryLazy',
-    dependencies = {
-      'hrsh7th/nvim-cmp',
-    },
-    config = function()
-      require("supermaven-nvim").setup({
-        disable_keymaps = true,
-        disable_inline_completion = true,
-      })
-    end,
-  },
+  -- {
+  --   "supermaven-inc/supermaven-nvim",
+  --   event = 'VeryLazy',
+  --   dependencies = {
+  --     'hrsh7th/nvim-cmp',
+  --   },
+  --   config = function()
+  --     require("supermaven-nvim").setup({
+  --       disable_keymaps = true,
+  --       disable_inline_completion = true,
+  --     })
+  --   end,
+  -- },
   -- {
   --   'Exafunction/codeium.nvim',
   --   dependencies = {

@@ -162,11 +162,13 @@
     wget
     xclip
     xdg-utils
+    zed-editor
   ];
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     LIBSEAT_BACKEND = "logind";
+    SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
   };
 
   hardware.graphics.enable = true;
