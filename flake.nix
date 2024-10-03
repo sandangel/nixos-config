@@ -2,9 +2,9 @@
   inputs = {
     # Mirroring nixpkgs unstable
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
-    ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
-    ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
+    # ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
+    # ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
+    # ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -40,7 +40,7 @@
       flake-parts,
       home-manager,
       nixpkgs,
-      ghostty,
+      # ghostty,
       disko,
       # neovim,
       # devenv,
@@ -113,7 +113,7 @@
               disko.devices.disk.main.device = "/dev/sda";
               disko.devices.disk.work.device = "/dev/sdb";
               environment.systemPackages = [
-                ghostty.packages.${system}.ghostty
+                # ghostty.packages.${system}.ghostty
                 nixGL.packages.${system}.default
               ];
             }
@@ -131,7 +131,7 @@
               disko.devices.disk.main.device = "/dev/nvme0n3";
               disko.devices.disk.work.device = "/dev/nvme0n4";
               environment.systemPackages = [
-                ghostty.packages.${system}.ghostty
+                # ghostty.packages.${system}.ghostty
                 nixGL.packages.${system}.default
               ];
             }
