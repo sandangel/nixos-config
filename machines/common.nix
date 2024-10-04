@@ -8,12 +8,14 @@
   lib,
   ...
 }:
-
+let
+  username = "sand";
+in
 {
   boot.kernelParams = [ "video=Virtual-1:4112x2572" ];
   nix.extraOptions = ''
     experimental-features = nix-command flakes
-    trusted-users = root sand
+    trusted-users = root ${username}
   '';
   nix.nixPath = [
     "nixpkgs=flake:nixpkgs"
@@ -106,9 +108,9 @@
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = true;
-  users.users.sand = {
+  users.users.${username} = {
     isNormalUser = true;
-    initialPassword = "sand";
+    initialPassword = username;
     description = "San Nguyen";
     shell = pkgs.zsh;
     extraGroups = [
@@ -121,23 +123,11 @@
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
   home-manager.backupFileExtension = "bak";
-  home-manager.users.sand =
+  home-manager.users.${username} =
     { ... }:
     {
       imports = [
-        ../modules/alacritty
-        ../modules/cloud
-        ../modules/direnv
-        ../modules/firefox
-        ../modules/git
-        ../modules/gnome
-        # ../modules/hyprland
-        ../modules/kitty
-        ../modules/ghostty
-        ../modules/kubernetes
-        ../modules/misc
-        ../modules/nvim
-        ../modules/zsh
+        ../users/${username}/home.nix
       ];
       home.stateVersion = "24.05";
     };
@@ -154,8 +144,10 @@
     alacritty
     gcc
     git
+    glxinfo
     gnumake
     kitty
+    neovim
     slurp
     umount
     vim
@@ -169,6 +161,7 @@
     NIXOS_OZONE_WL = "1";
     LIBSEAT_BACKEND = "logind";
     SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+    EDITOR = "${pkgs.neovim}/bin/nvim";
   };
 
   hardware.graphics.enable = true;
@@ -204,5 +197,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }

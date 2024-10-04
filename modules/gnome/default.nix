@@ -83,7 +83,7 @@ in
     };
 
     "org/gnome/desktop/peripherals/keyboard" = {
-      delay = lib.hm.gvariant.mkUint32 150;
+      delay = lib.hm.gvariant.mkUint32 250;
       repeat-interval = lib.hm.gvariant.mkUint32 3;
     };
 
