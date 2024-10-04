@@ -14,7 +14,7 @@ local function gen_block(icon, txt, sep_l_hlgroup, iconHl_group, txt_hl_group)
 end
 
 M.ui = {
-  theme = 'onedark',
+  theme = 'jabuti',
   transparency = true,
 
   lsp = {

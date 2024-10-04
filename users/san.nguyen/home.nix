@@ -22,4 +22,6 @@
     ../../modules/nvim
     ../../modules/zsh
   ];
+
+  home.stateVersion = "24.05";
 }

@@ -25,6 +25,28 @@ in
 
   home.file.".icons".source = "${fluent-icon-theme}/share/icons";
 
+  home.sessionVariables = {
+    XDG_SESSION_TYPE = "wayland";
+
+    GDK_BACKEND = "wayland,x11";
+    GDK_SCALE = "1";
+
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_QPA_PLATFORMTHEME = "qt6ct";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+
+    SDL_VIDEODRIVER = "wayland";
+    CLUTTER_BACKEND = "wayland";
+
+    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_USE_XINPUT2 = "1";
+
+    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=1";
+  };
+  home.packages = with pkgs; [
+    gnome-tweaks
+  ];
   gtk = {
     enable = true;
 
@@ -140,7 +162,7 @@ in
       switch-to-workspace-down = [ ];
       switch-to-workspace-last = [ ];
       switch-to-workspace-left = [ "<Super>b" ];
-      switch-to-workspace-right = [ "<Super>n" ];
+      switch-to-workspace-right = [ "<Super>f" ];
       switch-to-workspace-up = [ ];
       toggle-maximized = [ ];
       unmaximize = [ ];
@@ -308,7 +330,7 @@ in
       show-screenshot-ui = [ ];
       toggle-application-view = [ ];
       toggle-message-tray = [ ];
-      toggle-overview = [ "<Super>f" ];
+      toggle-overview = [ "<Super>g" ];
     };
 
     "org/gnome/system/location" = {

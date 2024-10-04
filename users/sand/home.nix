@@ -35,8 +35,8 @@
   xdg.enable = true;
 
   # To source .desktop applications installed by home-manager
-  programs.bash.enable = true;
-  targets.genericLinux.enable = true;
+  # programs.bash.enable = true;
+  # targets.genericLinux.enable = true;
 
   imports = [
     ../../modules/cloud
@@ -44,57 +44,20 @@
     ../../modules/firefox
     ../../modules/git
     ../../modules/gnome
-    ../../modules/hyprland
+    # ../../modules/hyprland
+    ../../modules/alacritty
     ../../modules/kitty
+    ../../modules/ghostty
     ../../modules/kubernetes
     ../../modules/misc
     ../../modules/nvim
     ../../modules/zsh
   ];
 
-  systemd.user.services = {
-    home-manager-update = {
-      Unit = {
-        Description = "Update packages managed by home-manager.";
-      };
-      Service = {
-        Type = "oneshot";
-        ExecStart = toString (
-          pkgs.writeShellScript "home-manager-update-sh" ''
-            set -eou pipefail
-            cd /home/${username}/.nix-config
-            /nix/var/nix/profiles/default/bin/nix flake update
-            /usr/bin/make switch
-          ''
-        );
-      };
-    };
-  };
-
-  systemd.user.timers = {
-    home-manager-update = {
-      Unit.Description = "Timer for home-manager-update service.";
-      Timer = {
-        Unit = "home-manager-update.service";
-        OnCalendar = "Sun *-*-* 05:00:00"; # Weekly on Sunday
-        Persistent = true;
-      };
-      Install.WantedBy = [ "timers.target" ];
-    };
-  };
-
   home.sessionVariables = {
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     LC_CTYPE = "en_US.UTF-8";
-
-    GDK_SCALE = "2";
-    QT_QPA_PLATFORM = "wayland";
-    SDL_VIDEODRIVER = "wayland";
-    XDG_SESSION_TYPE = "wayland";
-    MOZ_ENABLE_WAYLAND = "1";
-    MOZ_USE_XINPUT2 = 1;
-    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=2";
 
     # Override MESA version since UTM QEMU some how populate the version
     # to be 2.1, which does not meet the requirement of Kitty
@@ -107,4 +70,6 @@
     # Fix static links in nixpkgs
     # LD_AUDIT = "${pkgs.ld-floxlib}/lib/ld-floxlib.so";
   };
+
+  home.stateVersion = "24.05";
 }

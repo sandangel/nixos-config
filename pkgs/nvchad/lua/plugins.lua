@@ -88,15 +88,28 @@ local plugins = {
     cmd = { 'GithubPreviewToggle', },
     config = true,
   },
-  {
-    'Exafunction/codeium.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'hrsh7th/nvim-cmp',
-    },
-    event = 'VeryLazy',
-    config = true,
-  },
+  -- {
+  --   "supermaven-inc/supermaven-nvim",
+  --   event = 'VeryLazy',
+  --   dependencies = {
+  --     'hrsh7th/nvim-cmp',
+  --   },
+  --   config = function()
+  --     require("supermaven-nvim").setup({
+  --       disable_keymaps = true,
+  --       disable_inline_completion = true,
+  --     })
+  --   end,
+  -- },
+  -- {
+  --   'Exafunction/codeium.nvim',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'hrsh7th/nvim-cmp',
+  --   },
+  --   event = 'VeryLazy',
+  --   config = true,
+  -- },
   {
     'zbirenbaum/copilot.lua',
     event = 'VeryLazy',
@@ -193,13 +206,13 @@ local plugins = {
     dependencies = { 'lukas-reineke/cmp-rg', },
     opts = require 'configs.cmp',
   },
-  {
-    'garyhurtz/cmp_kitty',
-    dependencies = { 'hrsh7th/nvim-cmp', },
-    init = function()
-      require 'cmp_kitty':setup()
-    end,
-  },
+  -- {
+  --   'garyhurtz/cmp_kitty',
+  --   dependencies = { 'hrsh7th/nvim-cmp', },
+  --   init = function()
+  --     require 'cmp_kitty':setup()
+  --   end,
+  -- },
   {
     'ibhagwan/fzf-lua',
     config = function()

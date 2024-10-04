@@ -101,6 +101,17 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   end,
 })
 
+vim.api.nvim_create_user_command("HyprNavigate", function(opts)
+  local direction = opts.args
+  local mappings = { l = 'h', d = 'j', u = 'k', r = 'l' }
+  local flag = mappings[direction]
+  if vim.fn.winnr() == vim.fn.winnr(flag) then
+    vim.fn.jobstart({ 'hyprctl', 'dispatch', 'movefocus', direction })
+  else
+    vim.cmd('wincmd ' .. flag)
+  end
+end, { nargs = '?' })
+
 if vim.g.neovide then
   vim.opt.guifont = { 'Comic Code Ligatures', 'Symbols Nerd Font', ':h11', }
   vim.g.neovide_transparency = 0.8
