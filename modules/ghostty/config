@@ -46,12 +46,10 @@ font-codepoint-map = U+21B5,U+25B8,U+2605,U+2630,U+2632,U+2714,U+E0A3,U+E615,U+E
 theme = Snazzy
 
 window-decoration = false
-background-opacity = 0.95
-background-blur-radius = 20
 gtk-titlebar = false
 gtk-tabs-location = bottom
-unfocused-split-opacity = 0.9
 
+clipboard-read = allow
 copy-on-select = clipboard
 macos-option-as-alt = right
 shell-integration = zsh

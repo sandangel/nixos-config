@@ -20,8 +20,8 @@ in
   nix.nixPath = [
     "nixpkgs=flake:nixpkgs"
     "nixos-config=/etc/nixos/configuration.nix"
-    "/nix/var/nix/profiles/per-user/root/channels"
   ];
+  nix.settings.auto-optimise-store = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -43,7 +43,7 @@ in
   # Set to null to allow changing timezone via DBus
   # So GeoIP location detection can work
   time.timeZone = lib.mkForce null;
-  services.automatic-timezoned.enable = true;
+  # services.automatic-timezoned.enable = false;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -68,9 +68,41 @@ in
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.excludePackages = [ pkgs.xterm ];
 
-  programs.hyprland.enable = false;
-  programs.hyprland.xwayland.enable = false;
-  programs.dconf.enable = true;
+  programs.hyprland.enable = true;
+  programs.hyprland.systemd.setPath.enable = true;
+  xdg.portal.enable = true;
+  # Fix gnome/hyprland conflict packages
+  xdg.portal.extraPortals = lib.mkForce [
+    # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/programs/wayland/hyprland.nix
+    pkgs.xdg-desktop-portal-hyprland
+    # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/services/x11/desktop-managers/gnome.nix
+    pkgs.xdg-desktop-portal-gnome
+    (pkgs.xdg-desktop-portal-gtk.override {
+      # Do not build portals that we already have.
+      buildPortalsInGnome = false;
+    })
+  ];
+  xdg.portal.config = {
+    common = {
+      default = [
+        "xdph"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
+    };
+  };
+  systemd.user.services = {
+    prlcc = {
+      wantedBy = lib.mkForce [ ];
+    };
+    prldnd = {
+      wantedBy = lib.mkForce [ ];
+    };
+    prlsga = {
+      wantedBy = lib.mkForce [ ];
+    };
+  };
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.login.enableGnomeKeyring = true;
@@ -141,20 +173,27 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    alacritty
-    gcc
-    git
-    glxinfo
-    gnumake
-    kitty
-    neovim
+    # System
     slurp
     umount
     vim
-    wget
-    xclip
     xdg-utils
+    glxinfo
+    gnumake
+    gcc
+
+    # Development
+    alacritty
+    git
+    kitty
+    wget
+    neovim
     zed-editor
+
+    # Clipboard
+    xclip
+    wl-clipboard
+    clipnotify
   ];
 
   environment.sessionVariables = {

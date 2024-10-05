@@ -78,7 +78,7 @@
   };
 
   imports = [
-    # ../../modules/hyprland
+    ../../modules/hyprland
     ../../modules/alacritty
     ../../modules/cloud
     ../../modules/direnv

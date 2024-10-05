@@ -1,28 +1,19 @@
 { pkgs, ... }:
+let
+  clipsync = pkgs.writeShellScriptBin "clipsync" (builtins.readFile ./scripts/hypr-clipsync.sh);
+in
 {
   home.packages = with pkgs; [
     hyprpaper
     fuzzel
     xorg.xhost
-    clipse
-    xfce.thunar
-    xfce.tumbler
-    xfce.xfce4-terminal
     lxqt.lxqt-policykit
+    clipse
+    socat
+    clipsync
+    waybar
+    libnotify
   ];
-  xdg.portal = {
-    enable = true;
-    config = {
-      common = {
-        default = [
-          "xdph"
-          "gtk"
-        ];
-        "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-        "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
-      };
-    };
-  };
   xdg.configFile."hypr/hyprpaper.conf".source = ./hyprpaper.conf;
   wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland.extraConfig = builtins.readFile ./hyprland.conf;
@@ -36,5 +27,6 @@
   };
   imports = [
     ./dunst
+    ./waybar
   ];
 }
