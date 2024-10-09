@@ -2,7 +2,7 @@
     border: none;
     border-radius: 0;
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: Liberation Mono;
+    font-family: Comic Code Ligatures;
     min-height: 20px;
 }
 
@@ -18,19 +18,19 @@ window#waybar.hidden {
     margin-right: 8px;
     border-radius: 10px;
     transition: none;
-    background: #383c4a;
+    background: #292A37;
 }
 
 #workspaces button {
     transition: none;
-    color: #7c818c;
+    color: #ffffff;
     background: transparent;
     padding: 5px;
     font-size: 18px;
 }
 
 #workspaces button.persistent {
-    color: #7c818c;
+    color: #ffffff;
     font-size: 12px;
 }
 
@@ -40,8 +40,8 @@ window#waybar.hidden {
     box-shadow: inherit;
     text-shadow: inherit;
     border-radius: inherit;
-    color: #383c4a;
-    background: #7c818c;
+    color: #ffffff;
+    background: #67698a;
 }
 
 #workspaces button.focused {
@@ -50,47 +50,21 @@ window#waybar.hidden {
 
 #language {
     padding-left: 16px;
-    padding-right: 8px;
-    border-radius: 10px 0px 0px 10px;
-    transition: none;
-    color: #ffffff;
-    background: #383c4a;
-}
-
-#keyboard-state {
-    margin-right: 8px;
     padding-right: 16px;
-    border-radius: 0px 10px 10px 0px;
+    border-radius: 10px;
     transition: none;
     color: #ffffff;
-    background: #383c4a;
-}
-
-#custom-pacman {
-    padding-left: 16px;
-    padding-right: 8px;
-    border-radius: 10px 0px 0px 10px;
-    transition: none;
-    color: #ffffff;
-    background: #383c4a;
-}
-
-#custom-mail {
+    background: #292A37;
     margin-right: 8px;
-    padding-right: 16px;
-    border-radius: 0px 10px 10px 0px;
-    transition: none;
-    color: #ffffff;
-    background: #383c4a;
 }
 
-#mode {
+#submap {
     padding-left: 16px;
     padding-right: 16px;
     border-radius: 10px;
     transition: none;
     color: #ffffff;
-    background: #383c4a;
+    background: #292A37;
 }
 
 #clock {
@@ -99,7 +73,7 @@ window#waybar.hidden {
     border-radius: 10px 0px 0px 10px;
     transition: none;
     color: #ffffff;
-    background: #383c4a;
+    background: #292A37;
 }
 
 #custom-weather {
@@ -107,22 +81,7 @@ window#waybar.hidden {
     border-radius: 0px 10px 10px 0px;
     transition: none;
     color: #ffffff;
-    background: #383c4a;
-}
-
-#pulseaudio {
-    margin-right: 8px;
-    padding-left: 16px;
-    padding-right: 16px;
-    border-radius: 10px;
-    transition: none;
-    color: #ffffff;
-    background: #383c4a;
-}
-
-#pulseaudio.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
+    background: #292A37;
 }
 
 #custom-mem {
@@ -132,7 +91,17 @@ window#waybar.hidden {
     border-radius: 10px;
     transition: none;
     color: #ffffff;
-    background: #383c4a;
+    background: #292A37;
+}
+
+#cpu {
+    margin-right: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 10px;
+    transition: none;
+    color: #ffffff;
+    background: #292A37;
 }
 
 #temperature {
@@ -142,21 +111,20 @@ window#waybar.hidden {
     border-radius: 10px;
     transition: none;
     color: #ffffff;
-    background: #383c4a;
+    background: #292A37;
 }
+/*
+palette = 1=#ec6a88
+palette = 9=#ff7eb6
+# green
+palette = 2=#3FDAA4
+palette = 10=#08bdba
+# yellow
+palette = 3=#e1c697
+*/
 
 #temperature.critical {
-    background-color: #eb4d4b;
-}
-
-#backlight {
-    margin-right: 8px;
-    padding-left: 16px;
-    padding-right: 16px;
-    border-radius: 10px;
-    transition: none;
-    color: #ffffff;
-    background: #383c4a;
+    background-color: #ec6a88;
 }
 
 #battery {
@@ -166,21 +134,21 @@ window#waybar.hidden {
     border-radius: 10px;
     transition: none;
     color: #ffffff;
-    background: #383c4a;
+    background: #292A37;
 }
 
 #battery.charging {
     color: #ffffff;
-    background-color: #26A65B;
+    background-color: #3FDAA4;
 }
 
 #battery.warning:not(.charging) {
-    background-color: #ffbe61;
+    background-color: #e1c697;
     color: black;
 }
 
 #battery.critical:not(.charging) {
-    background-color: #f53c3c;
+    background-color: #ec6a88;
     color: #ffffff;
     animation-name: blink;
     animation-duration: 0.5s;
@@ -195,12 +163,12 @@ window#waybar.hidden {
     border-radius: 10px;
     transition: none;
     color: #ffffff;
-    background: #383c4a;
+    background: #292A37;
 }
 
 @keyframes blink {
     to {
         background-color: #ffffff;
-        color: #000000;
+        color: #292A37;
     }
 }

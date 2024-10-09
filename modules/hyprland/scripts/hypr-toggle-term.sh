@@ -3,7 +3,7 @@
 active_workspace_id=$(hyprctl activeworkspace -j | jq -r '.id')
 win_count=$(hyprctl activeworkspace -j | jq -r '.windows')
 is_zoomed=$(hyprctl activeworkspace -j | jq -r '.hasfullscreen')
-nvim_win_id=$(hyprctl clients -j | jq -r ".[] | select(.workspace.id == $active_workspace_id) | select(.title == \"nvim\") | .address")
+nvim_win_id=$(hyprctl clients -j | jq -r "first(.[] | select(.workspace.id == $active_workspace_id) | select(.tags | index(\"nvim\"))).address")
 active_win_id=$(hyprctl activewindow -j | jq -r '.address')
 
 if [[ "$active_win_id" == "$nvim_win_id" ]]; then

@@ -42,7 +42,7 @@
           pkgs.writeShellScript "flake-update-sh" ''
             set -eou pipefail
             cd /home/sand/.nix-config
-            /nix/var/nix/profiles/default/bin/nix flake update
+            /run/current-system/sw/bin/nix flake update
           ''
         );
       };
@@ -57,11 +57,10 @@
           pkgs.writeShellScript "timezone-update-sh" ''
             set -eou pipefail
             # Set timezone based on IP, since automatic timezone on gnome is not working
-            timedatectl set-timezone "$(curl -s --fail https://ipapi.co/timezone)"
+            timedatectl set-timezone "$(curl --fail https://ipapi.co/timezone)"
           ''
         );
       };
-      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 
@@ -71,7 +70,18 @@
       Timer = {
         Unit = "flake-update.service";
         OnCalendar = "Sun *-*-* 05:00:00"; # Weekly on Sunday
-        Persistent = true;
+        Persistent = true; # Run for missing ones
+      };
+      Install.WantedBy = [ "timers.target" ];
+    };
+    timezone-update = {
+      Unit = {
+        Description = "Timer for timezone-update service";
+      };
+      Timer = {
+        OnBootSec = "1min";
+        Unit = "timezone-update.service";
+        OnCalendar = "hourly";
       };
       Install.WantedBy = [ "timers.target" ];
     };

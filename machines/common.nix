@@ -13,6 +13,7 @@ let
 in
 {
   boot.kernelParams = [ "video=Virtual-1:4112x2572" ];
+  nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
     trusted-users = root ${username}
@@ -21,7 +22,19 @@ in
     "nixpkgs=flake:nixpkgs"
     "nixos-config=/etc/nixos/configuration.nix"
   ];
-  nix.settings.auto-optimise-store = true;
+  nix.settings = {
+    auto-optimise-store = true;
+    substituters = [
+      "https://hyprland.cachix.org"
+      "https://devenv.cachix.org"
+      "https://cache.flox.dev"
+    ];
+    trusted-public-keys = [
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+      "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+    ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -38,6 +51,12 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
+  # Sometimes the local DNS server stop working
+  # So we use the Google Public ones.
+  networking.nameservers = [
+    "8.8.8.8"
+    "8.8.4.4"
+  ];
 
   # Set your time zone.
   # Set to null to allow changing timezone via DBus

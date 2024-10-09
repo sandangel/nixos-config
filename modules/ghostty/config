@@ -43,8 +43,6 @@ font-codepoint-map = U+e300-U+e3eb=JetBrainsMono Nerd Font Mono
 # Misc Code Point Fixes
 font-codepoint-map = U+21B5,U+25B8,U+2605,U+2630,U+2632,U+2714,U+E0A3,U+E615,U+E62B=JetBrainsMono Nerd Font Mono
 
-theme = Snazzy
-
 window-decoration = false
 gtk-titlebar = false
 gtk-tabs-location = bottom
@@ -83,3 +81,33 @@ keybind = ctrl+shift+minus=decrease_font_size:1
 # keybind = alt+seven=goto_tab:7
 # keybind = alt+eight=goto_tab:8
 # keybind = alt+nine=goto_tab:9
+
+# Colors can be changed by setting the 16 colors of `palette`, which each color
+# being defined as regular and bold.
+
+background = 292A37
+foreground = ffffff
+# black
+palette = 0=#272734
+palette = 8=#67698a
+# red
+palette = 1=#ec6a88
+palette = 9=#ff7eb6
+# green
+palette = 2=#3FDAA4
+palette = 10=#08bdba
+# yellow
+palette = 3=#e1c697
+palette = 11=#e8d4b0
+# blue
+palette = 4=#78a9ff
+palette = 12=#3fc6de
+# purple
+palette = 5=#be95ff
+palette = 13=#936fdc
+# aqua
+palette = 6=#09deda
+palette = 14=#6be6e6
+# white
+palette = 7=#d9e0ee
+palette = 15=#ffffff

@@ -5,13 +5,11 @@ in
 {
   home.packages = with pkgs; [
     hyprpaper
-    fuzzel
     xorg.xhost
     lxqt.lxqt-policykit
     clipse
     socat
     clipsync
-    waybar
     libnotify
   ];
   xdg.configFile."hypr/hyprpaper.conf".source = ./hyprpaper.conf;
@@ -28,5 +26,6 @@ in
   imports = [
     ./dunst
     ./waybar
+    ./wofi
   ];
 }

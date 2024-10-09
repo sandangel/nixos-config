@@ -2,12 +2,12 @@
     // "layer": "top", // Waybar at top layer
     // "position": "bottom", // Waybar position (top|bottom|left|right)
     // "height": 30, // Waybar height (to be removed for auto height)
-    "margin": "20 20 0 20",
+    "margin": "12 20 0 20",
     // "width": 1280, // Waybar width
     // Choose the order of the modules
-    "modules-left": ["hyprland/workspaces", "hyprland/window", "hyprland/language" , "hyprland/submap"],
+    "modules-left": ["hyprland/workspaces", "hyprland/window", "hyprland/submap"],
     "modules-center": ["clock", "custom/weather"],
-    "modules-right": ["custom/mem", "battery", "tray"],
+    "modules-right": ["hyprland/language", "cpu", "custom/mem", "battery", "tray"],
 
 
     //***************************
@@ -27,16 +27,14 @@
     },
 
     "hyprland/window": {
-      "format": "👉 {} ",
-      "rewrite": {
-          "(.*) — Mozilla Firefox": "🌎 $1",
-          "(.*) - fish": "> [$1]"
-      },
+      "format": " {} ",
       "separate-outputs": true
     },
 
     "hyprland/submap": {
-        "format": "<span style=\"italic\">✌️ {}</span>",
+        "format": "✌️ {}",
+        "max-length": 8,
+        "tooltip": false
     },
 
     "hyprland/language": {
@@ -57,20 +55,16 @@
     },
 
     "custom/mem": {
-        "format": "{} ",
+        "format": "{} ",
         "interval": 3,
         "exec": "free -h | awk '/Mem:/{printf $4}'",
         "tooltip": false,
     },
 
-    "temperature": {
-        // "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
-        // "format-critical": "{temperatureC}°C {icon}",
-        "format": "{temperatureC}°C {icon}",
-        "format-icons": ["", "", "", "", ""],
-        "tooltip": false,
+    "cpu": {
+        "interval": 10,
+        "format": "{}% ",
+        "max-length": 10
     },
 
     "battery": {
