@@ -89,18 +89,6 @@ in
 
   programs.hyprland.enable = true;
   programs.hyprland.systemd.setPath.enable = true;
-  xdg.portal.enable = true;
-  # Fix gnome/hyprland conflict packages
-  xdg.portal.extraPortals = lib.mkForce [
-    # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/programs/wayland/hyprland.nix
-    pkgs.xdg-desktop-portal-hyprland
-    # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/services/x11/desktop-managers/gnome.nix
-    pkgs.xdg-desktop-portal-gnome
-    (pkgs.xdg-desktop-portal-gtk.override {
-      # Do not build portals that we already have.
-      buildPortalsInGnome = false;
-    })
-  ];
   xdg.portal.config = {
     common = {
       default = [
