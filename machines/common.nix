@@ -195,7 +195,7 @@ in
     kitty
     wget
     neovim
-    zed-editor
+    flatpak
 
     # Clipboard
     xclip
