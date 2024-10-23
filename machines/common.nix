@@ -13,7 +13,7 @@ let
 in
 {
   boot.kernelParams = [ "video=Virtual-1:4112x2572" ];
-  nix.package = pkgs.nixFlakes;
+  nix.package = pkgs.nixVersions.stable;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
     trusted-users = root ${username}
@@ -195,13 +195,14 @@ in
     kitty
     wget
     neovim
-    flatpak
 
     # Clipboard
     xclip
     wl-clipboard
     clipnotify
   ];
+
+  services.flatpak.enable = true;
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";

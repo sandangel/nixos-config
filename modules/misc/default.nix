@@ -73,7 +73,7 @@ in
   programs.fzf.enable = true;
 
   programs.eza.enable = true;
-  programs.eza.icons = true;
+  programs.eza.icons = "auto";
   programs.eza.git = true;
   programs.eza.extraOptions = [
     "--group-directories-first"
