@@ -17,7 +17,7 @@
       unset __fzf_dir
       . $HOME/.config/zsh/config/nix.zsh
       # There is a bug in home-manager zsh-abbr module that not sourcing the file
-      . $HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/abbr.plugin.zsh
+      . $HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/zsh-abbr.plugin.zsh
       . $HOME/.config/zsh/config/utils.zsh
 
       export PATH=$HOME/.rye/shims:$PATH
