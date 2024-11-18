@@ -1,15 +1,20 @@
 { pkgs, ... }:
+let
+  comic-code = pkgs.callPackage ../../pkgs/comic-code { };
 
+in
 {
-  home.stateVersion = "22.05";
+  # home.stateVersion = "22.05";
   home.packages = (
     with pkgs;
     [
       # Utilities
       glib
-      # gnumake
+      gnumake
       # killall
       vim
+      binutils
+      bind
 
       # Fonts
       comic-code
@@ -68,7 +73,7 @@
   programs.fzf.enable = true;
 
   programs.eza.enable = true;
-  programs.eza.icons = true;
+  programs.eza.icons = "auto";
   programs.eza.git = true;
   programs.eza.extraOptions = [
     "--group-directories-first"

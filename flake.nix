@@ -1,7 +1,12 @@
 {
   inputs = {
     # Mirroring nixpkgs unstable
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
+    ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
+    ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
 
     # Updating nix itself
     nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
@@ -34,6 +39,9 @@
       self,
       flake-parts,
       home-manager,
+      nixpkgs,
+      ghostty,
+      disko,
       # neovim,
       # devenv,
       # flox,
@@ -82,15 +90,53 @@
 
         flake.overlays.default = final: prev: {
           # neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
-          comic-code = prev.callPackage ./pkgs/comic-code { };
-          nvchad = prev.callPackage ./pkgs/nvchad { };
+          # comic-code = prev.callPackage ./pkgs/comic-code { };
+          # nvchad = prev.callPackage ./pkgs/nvchad { };
           # devenv = devenv.packages.${final.stdenv.system}.default;
           # flox = flox.packages.${final.stdenv.system}.default;
+          # ghostty = ghostty.packages.${final.stdenv.system}.ghostty;
         };
 
         flake.overlays.linux = final: prev: {
           # nixGL = nixGL.packages.${final.stdenv.system}.default;
           # ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
+        };
+
+        flake.nixosConfigurations.parallels-desktop = nixpkgs.lib.nixosSystem rec {
+          system = "aarch64-linux";
+          modules = [
+            ./machines/parallels/configuration.nix
+            disko.nixosModules.disko
+            ./machines/parallels/disko-config.nix
+            ./machines/common.nix
+            {
+              disko.devices.disk.main.device = "/dev/sdc";
+              disko.devices.disk.work.device = "/dev/sdb";
+              environment.systemPackages = [
+                ghostty.packages.${system}.ghostty
+                # nixGL.packages.${system}.default
+              ];
+            }
+            home-manager.nixosModules.home-manager
+          ];
+        };
+        flake.nixosConfigurations.vmware-fusion = nixpkgs.lib.nixosSystem rec {
+          system = "aarch64-linux";
+          modules = [
+            ./machines/vmware-fusion/configuration.nix
+            disko.nixosModules.disko
+            ./machines/vmware-fusion/disko-config.nix
+            ./machines/common.nix
+            {
+              disko.devices.disk.main.device = "/dev/nvme0n3";
+              disko.devices.disk.work.device = "/dev/nvme0n4";
+              environment.systemPackages = [
+                ghostty.packages.${system}.ghostty
+                # nixGL.packages.${system}.default
+              ];
+            }
+            home-manager.nixosModules.home-manager
+          ];
         };
 
         flake.homeConfigurations.${linux-user} = withSystem "aarch64-linux" (

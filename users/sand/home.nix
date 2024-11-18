@@ -1,14 +1,7 @@
-{ pkgs, username, ... }:
+{ pkgs, ... }:
 
 {
-  home.username = username;
-  home.homeDirectory = "/home/${username}";
-  home.packages = with pkgs; [
-    binutils
-    # glxinfo
-    # xdg-utils
-
-    bind
+  home.packages = [
     # # Fix issue with error: "cannot allocate memory in static TLS block" when LD_AUDIT is set for packages depending on jemalloc
     # # https://github.com/flox/flox/issues/1341#issuecomment-2111136929
     # (bind.overrideAttrs (oldAttrs: {
@@ -35,36 +28,36 @@
   xdg.enable = true;
 
   # To source .desktop applications installed by home-manager
-  programs.bash.enable = true;
-  targets.genericLinux.enable = true;
-
-  imports = [
-    ../../modules/cloud
-    ../../modules/direnv
-    ../../modules/firefox
-    ../../modules/git
-    ../../modules/gnome
-    ../../modules/hyprland
-    ../../modules/kitty
-    ../../modules/kubernetes
-    ../../modules/misc
-    ../../modules/nvim
-    ../../modules/zsh
-  ];
+  # programs.bash.enable = true;
+  # targets.genericLinux.enable = true;
 
   systemd.user.services = {
-    home-manager-update = {
+    flake-update = {
       Unit = {
-        Description = "Update packages managed by home-manager.";
+        Description = "Update nix flake.lock.";
       };
       Service = {
         Type = "oneshot";
         ExecStart = toString (
-          pkgs.writeShellScript "home-manager-update-sh" ''
+          pkgs.writeShellScript "flake-update-sh" ''
             set -eou pipefail
-            cd /home/${username}/.nix-config
-            /nix/var/nix/profiles/default/bin/nix flake update
-            /usr/bin/make switch
+            cd /home/sand/.nix-config
+            /run/current-system/sw/bin/nix flake update
+          ''
+        );
+      };
+    };
+    timezone-update = {
+      Unit = {
+        Description = "Update timezone on startup";
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = toString (
+          pkgs.writeShellScript "timezone-update-sh" ''
+            set -eou pipefail
+            # Set timezone based on IP, since automatic timezone on gnome is not working
+            timedatectl set-timezone "$(curl --fail https://ipapi.co/timezone)"
           ''
         );
       };
@@ -72,30 +65,45 @@
   };
 
   systemd.user.timers = {
-    home-manager-update = {
+    flake-update = {
       Unit.Description = "Timer for home-manager-update service.";
       Timer = {
-        Unit = "home-manager-update.service";
+        Unit = "flake-update.service";
         OnCalendar = "Sun *-*-* 05:00:00"; # Weekly on Sunday
-        Persistent = true;
+        Persistent = true; # Run for missing ones
+      };
+      Install.WantedBy = [ "timers.target" ];
+    };
+    timezone-update = {
+      Unit = {
+        Description = "Timer for timezone-update service";
+      };
+      Timer = {
+        OnBootSec = "1min";
+        Unit = "timezone-update.service";
+        OnCalendar = "hourly";
       };
       Install.WantedBy = [ "timers.target" ];
     };
   };
 
+  imports = [
+    ../../modules/hyprland
+    ../../modules/alacritty
+    ../../modules/cloud
+    ../../modules/direnv
+    ../../modules/firefox
+    ../../modules/ghostty
+    ../../modules/git
+    ../../modules/gnome
+    ../../modules/kitty
+    ../../modules/kubernetes
+    ../../modules/misc
+    ../../modules/nvim
+    ../../modules/zsh
+  ];
+
   home.sessionVariables = {
-    LANG = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
-    LC_CTYPE = "en_US.UTF-8";
-
-    GDK_SCALE = "2";
-    QT_QPA_PLATFORM = "wayland";
-    SDL_VIDEODRIVER = "wayland";
-    XDG_SESSION_TYPE = "wayland";
-    MOZ_ENABLE_WAYLAND = "1";
-    MOZ_USE_XINPUT2 = 1;
-    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=2";
-
     # Override MESA version since UTM QEMU some how populate the version
     # to be 2.1, which does not meet the requirement of Kitty
     # https://github.com/utmapp/UTM/issues/6454#issuecomment-2204562856

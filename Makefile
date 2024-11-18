@@ -1,5 +1,5 @@
 # Connectivity info for Linux VM
-# Paralells
+# Parallels
 # NIXADDR ?= 10.211.55.3
 # VMware
 NIXADDR ?= 172.16.129.128
@@ -28,8 +28,9 @@ NIXNAME ?= vm-aarch64
 SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 switch:
-	# nixos-rebuild switch --use-remote-sudo --impure --flake ".#$(NIXNAME)"
-	/home/$(NIXUSER)/.nix-profile/bin/home-manager switch --impure --flake ".#$(NIXUSER)" -b backup
+	nixos-rebuild switch --use-remote-sudo --impure --flake ".#parallels-desktop"
+	# nixos-rebuild switch --use-remote-sudo --impure --flake ".#vmware-fusion"
+	# /home/$(NIXUSER)/.nix-profile/bin/home-manager switch --impure --flake ".#$(NIXUSER)" -b backup
 	# rsync -av $(MAKEFILE_DIR)/users/$(NIXUSER)/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
 
 # bootstrap a brand new VM. The VM should have NixOS ISO on the CD drive

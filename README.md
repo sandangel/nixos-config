@@ -324,3 +324,4 @@ mount /dev/nvme0n2p1 /mnt
 
 btrfs filesystem resize max /mnt
 ```
+rsync -ahr --no-links --exclude=".Trash-1000" --exclude=".pnpm-store" --exclude=".devenv" --exclude="node_modules" --exclude=".venv" --exclude=".cache" --exclude=".pdm-build" --exclude=".mypy_cache" --exclude=".ruff_cache" --exclude="dist" --exclude=".pytest_cache" --exclude="target" --exclude=".terraform" ~/Work /host/Downloads/

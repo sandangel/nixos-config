@@ -5,7 +5,7 @@ let
       owner = "vinceliuice";
       repo = "Fluent-icon-theme";
       rev = "master";
-      hash = "sha256-10jmsaV67nhHdUh50CjCyZUfVL27ty18RgNNfB7p/F4=";
+      hash = "sha256-0OH87JamIPP78DlWsoFv8boQkIlQic2T9zcrdOrg8VQ=";
     };
   });
   fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: {
@@ -13,7 +13,7 @@ let
       owner = "vinceliuice";
       repo = "Fluent-gtk-theme";
       rev = "master";
-      hash = "sha256-DfL2qaHfN6AEaZIbcMb29E4MrYr/rW9QND9mHuPTwaI=";
+      hash = "sha256-McP/oVMPVupNUHpCb5hVOsDyHWhb/XXf70WfaT3vbO0=";
     };
   });
   gtk-theme = "Fluent-Dark";
@@ -25,6 +25,28 @@ in
 
   home.file.".icons".source = "${fluent-icon-theme}/share/icons";
 
+  home.sessionVariables = {
+    XDG_SESSION_TYPE = "wayland";
+
+    GDK_BACKEND = "wayland,x11";
+    GDK_SCALE = "1";
+
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_QPA_PLATFORMTHEME = "qt6ct";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+
+    SDL_VIDEODRIVER = "wayland";
+    CLUTTER_BACKEND = "wayland";
+
+    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_USE_XINPUT2 = "1";
+
+    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=1";
+  };
+  home.packages = with pkgs; [
+    gnome-tweaks
+  ];
   gtk = {
     enable = true;
 
@@ -61,7 +83,7 @@ in
     };
 
     "org/gnome/desktop/peripherals/keyboard" = {
-      delay = lib.hm.gvariant.mkUint32 150;
+      delay = lib.hm.gvariant.mkUint32 250;
       repeat-interval = lib.hm.gvariant.mkUint32 3;
     };
 
@@ -140,7 +162,7 @@ in
       switch-to-workspace-down = [ ];
       switch-to-workspace-last = [ ];
       switch-to-workspace-left = [ "<Super>b" ];
-      switch-to-workspace-right = [ "<Super>n" ];
+      switch-to-workspace-right = [ "<Super>f" ];
       switch-to-workspace-up = [ ];
       toggle-maximized = [ ];
       unmaximize = [ ];
@@ -308,7 +330,7 @@ in
       show-screenshot-ui = [ ];
       toggle-application-view = [ ];
       toggle-message-tray = [ ];
-      toggle-overview = [ "<Super>f" ];
+      toggle-overview = [ "<Super>g" ];
     };
 
     "org/gnome/system/location" = {

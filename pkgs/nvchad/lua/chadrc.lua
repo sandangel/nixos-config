@@ -14,9 +14,6 @@ local function gen_block(icon, txt, sep_l_hlgroup, iconHl_group, txt_hl_group)
 end
 
 M.ui = {
-  theme = 'onedark',
-  transparency = true,
-
   lsp = {
     semantic_tokens = true,
   },
@@ -64,13 +61,16 @@ M.ui = {
     end,
   },
 
+}
+
+M.base46 = {
+  theme = 'jabuti',
+  transparency = true,
   hl_override = {
     Comment = { italic = true, },
     ['@comment'] = { italic = true, },
   },
-}
 
-M.base46 = {
   integrations = {
     'cmp',
     'defaults',

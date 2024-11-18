@@ -43,7 +43,7 @@ local servers = {
     filetypes = vim.tbl_filter(function(ft)
       -- Not start with Helm files
       return not vim.tbl_contains({ 'helm', }, ft)
-    end, require 'lspconfig.server_configurations.yamlls'.default_config.filetypes),
+    end, require 'lspconfig.configs.yamlls'.default_config.filetypes),
     settings = {
       yaml = {
         format = { enable = true, printWidth = 120, singleQuote = true, proseWrap = 'always', },
@@ -86,13 +86,8 @@ local servers = {
   terraformls = {
     root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
   },
-  ts_ls = {
-    init_options = {
-      hostInfo = 'neovim',
-      preferences = {
-        quotePreference = 'single',
-      },
-    },
+  denols = {
+    root_dir = root_pattern('package.json'),
   },
   lua_ls = {},
 }
@@ -117,7 +112,7 @@ null_ls.setup {
   capabilities = capabilities,
   root_dir = root_pattern '.git',
   sources = {
-    require 'none-ls.code_actions.eslint_d',
+    -- require 'none-ls.code_actions.eslint_d',
 
     null_ls.builtins.diagnostics.codespell.with {
       cwd = h.cache.by_bufnr(function(params)
@@ -127,12 +122,12 @@ null_ls.setup {
     null_ls.builtins.diagnostics.actionlint,
     null_ls.builtins.diagnostics.stylelint,
     null_ls.builtins.diagnostics.yamllint,
-    require 'none-ls.diagnostics.eslint_d',
+    -- require 'none-ls.diagnostics.eslint_d',
 
-    null_ls.builtins.formatting.prettierd,
+    -- null_ls.builtins.formatting.prettierd,
     null_ls.builtins.formatting.nixfmt,
     null_ls.builtins.formatting.terraform_fmt,
-    require 'none-ls.formatting.eslint_d',
+    -- require 'none-ls.formatting.eslint_d',
     require 'none-ls.formatting.ruff',
     require 'none-ls.formatting.ruff_format',
   },
