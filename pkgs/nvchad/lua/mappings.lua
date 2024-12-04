@@ -153,11 +153,17 @@ M.fzflua = {
   },
 }
 
+M.copilot = {
+  n = {
+    ['<leader>a'] = { '<cmd>CodeCompanionChat<CR>', 'Copilot Chat', },
+  }
+}
+
 M.lspconfig = {
   n = {
     ['gw'] = { '<cmd>FzfLua lsp_document_diagnostics<CR>', 'LSP document diagnostics', },
     ['gW'] = { '<cmd>FzfLua lsp_workspace_diagnostics<cr>', 'LSP workspace diagnostics', },
-    ['gf'] = { function() vim.lsp.buf.format { async = true, } end, 'Format file', },
+    ['gf'] = { function() vim.lsp.buf.format { async = true, } end, 'LSP Format file', },
     ['gA'] = { '<cmd>FzfLua lsp_code_actions<CR>', 'LSP code action', },
     ['gd'] = { '<cmd>FzfLua lsp_finder<CR>', 'LSP Finder', },
     ['gh'] = {

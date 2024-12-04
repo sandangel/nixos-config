@@ -86,6 +86,10 @@ local servers = {
   terraformls = {
     root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
   },
+  ts_ls = {
+    root_dir = root_pattern('package.json'),
+    single_file_support = false
+  },
   denols = {
     root_dir = root_pattern('package.json'),
   },

@@ -19,6 +19,7 @@ in
       # Fonts
       comic-code
       nerdfonts
+      # nerd-fonts.jetbrains-mono
 
       # Nix
       nurl

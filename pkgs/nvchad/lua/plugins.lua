@@ -89,27 +89,15 @@ local plugins = {
     config = true,
   },
   {
-    "supermaven-inc/supermaven-nvim",
+    "olimorris/codecompanion.nvim",
     event = 'VeryLazy',
     dependencies = {
-      'hrsh7th/nvim-cmp',
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
     },
-    config = function()
-      require("supermaven-nvim").setup({
-        disable_keymaps = true,
-        disable_inline_completion = true,
-      })
-    end,
+    config = true,
   },
-  -- {
-  --   'Exafunction/codeium.nvim',
-  --   dependencies = {
-  --     'nvim-lua/plenary.nvim',
-  --     'hrsh7th/nvim-cmp',
-  --   },
-  --   event = 'VeryLazy',
-  --   config = true,
-  -- },
   {
     'zbirenbaum/copilot.lua',
     event = 'VeryLazy',

@@ -42,7 +42,7 @@ in
         docker-compose-language-service
       ]
       ++ (with nodePackages; [
-        # typescript-language-server
+        typescript-language-server
         dockerfile-language-server-nodejs
       ])
     );
