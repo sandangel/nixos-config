@@ -2,9 +2,9 @@
   inputs = {
     # Mirroring nixpkgs unstable
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
-    ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
-    ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
+    ghostty.url = "github:ghostty-org/ghostty";
+    # ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
+    # ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -62,10 +62,12 @@
             nix.settings.extra-trusted-public-keys = [
               "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
               "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+              "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
             ];
             nix.settings.extra-trusted-substituters = [
               "https://devenv.cachix.org"
               "https://cache.flox.dev"
+              "https://ghostty.cachix.org"
             ];
           }
           ./users/${user}/home.nix

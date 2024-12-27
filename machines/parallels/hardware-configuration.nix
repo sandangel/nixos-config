@@ -8,10 +8,13 @@
 
   boot.initrd.availableKernelModules = [
     "xhci_pci"
+    "usbhid"
     "sr_mod"
   ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
+  # Pin the kernel to LTS version so it will work with Parallels
+  # boot.kernelPackages = pkgs.linuxPackages_6_6;
   boot.extraModulePackages = [ ];
 
   swapDevices = [ ];

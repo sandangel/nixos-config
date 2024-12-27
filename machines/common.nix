@@ -28,11 +28,13 @@ in
       "https://hyprland.cachix.org"
       "https://devenv.cachix.org"
       "https://cache.flox.dev"
+      "https://ghostty.cachix.org"
     ];
     trusted-public-keys = [
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+      "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
     ];
   };
 
@@ -195,6 +197,9 @@ in
     kitty
     wget
     neovim
+
+    # Need for installing ruby gem sqlite3
+    pkg-config
 
     # Clipboard
     xclip
