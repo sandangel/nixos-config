@@ -155,7 +155,7 @@ M.fzflua = {
 
 M.copilot = {
   n = {
-    ['<leader>a'] = { '<cmd>CodeCompanionChat<CR>', 'Copilot Chat', },
+    ['<leader>a'] = { '<cmd>CopilotChatToggle<CR>', 'Copilot Chat', },
   }
 }
 

@@ -89,15 +89,27 @@ local plugins = {
     config = true,
   },
   {
-    "olimorris/codecompanion.nvim",
+    "CopilotC-Nvim/CopilotChat.nvim",
     event = 'VeryLazy',
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
+      { "zbirenbaum/copilot.lua" },
+      { "nvim-lua/plenary.nvim" },
     },
-    config = true,
+    build = "make tiktoken",
+    opts = {
+      model = "claude-3.5-sonnet",
+    },
   },
+  -- {
+  --   "olimorris/codecompanion.nvim",
+  --   event = 'VeryLazy',
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --     { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
+  --   },
+  --   config = true,
+  -- },
   {
     'zbirenbaum/copilot.lua',
     event = 'VeryLazy',
