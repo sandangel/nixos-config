@@ -25,7 +25,7 @@ watch() {
   sleep 1
 
   # Wayland -> X11
-  wl-paste --type text --watch bash -c "clipsync insert" &
+  wl-paste --watch bash -c "clipsync insert" &
 
   # X11 -> Wayland
   while clipnotify; do
@@ -35,7 +35,7 @@ watch() {
 
 # Kill all background processes related to clipsync
 stop() {
-  pkill -f "wl-paste --type text --watch"
+  pkill -f "wl-paste --watch"
   pkill clipnotify
   pkill -f "xclip -selection clipboard"
   pkill -f "clipsync insert"

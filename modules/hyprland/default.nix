@@ -24,8 +24,9 @@ in
     '';
   };
   imports = [
-    ./dunst
+    # ./dunst
     ./waybar
     ./wofi
+    # ./swaync
   ];
 }
