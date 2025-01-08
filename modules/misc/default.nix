@@ -1,8 +1,4 @@
 { pkgs, ... }:
-let
-  comic-code = pkgs.callPackage ../../pkgs/comic-code { };
-
-in
 {
   # home.stateVersion = "22.05";
   home.packages = (
@@ -17,8 +13,8 @@ in
       bind
 
       # Fonts
-      comic-code
-      nerdfonts
+      # comic-code
+      # nerdfonts
       # nerd-fonts.jetbrains-mono
 
       # Nix

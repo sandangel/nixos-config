@@ -36,12 +36,7 @@ local plugins = {
         config = function()
           local map = vim.keymap.set
           map('n', '<leader>ht', function() require 'dap'.toggle_breakpoint() end, { desc = 'dap toggle breakpoint', })
-          map('n', '<leader>hc', function()
-            if vim.fn.filereadable '.vscode/launch.json' then
-              require 'dap.ext.vscode'.load_launchjs()
-            end
-            require 'dap'.continue()
-          end, { desc = 'dap continue', })
+          map('n', '<leader>hc', function() require 'dap'.continue() end, { desc = 'dap continue', })
           map('n', '<leader>ho', function() require 'dap'.step_over() end, { desc = 'dap step over', })
           map('n', '<leader>hi', function() require 'dap'.step_into() end, { desc = 'dap step into', })
           map('n', '<leader>hr', function() require 'dap'.repl.open() end, { desc = 'dap repl open', })
@@ -89,16 +84,55 @@ local plugins = {
     config = true,
   },
   {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    event = 'VeryLazy',
+    "GeorgesAlkhouri/nvim-aider",
+    cmd = {
+      "AiderTerminalToggle",
+    },
+    keys = {
+      { "<leader>a/", "<cmd>AiderTerminalToggle<cr>",   desc = "Open Aider" },
+      { "<leader>as", "<cmd>AiderTerminalSend<cr>",     desc = "Send to Aider",        mode = { "n", "x" } },
+      { "<leader>ac", "<cmd>AiderQuickSendCommand<cr>", desc = "Send Command To Aider" },
+      { "<leader>ab", "<cmd>AiderQuickSendBuffer<cr>",  desc = "Send Buffer To Aider" },
+      { "<leader>a=", "<cmd>AiderQuickAddFile<cr>",     desc = "Add File to Aider" },
+      { "<leader>a-", "<cmd>AiderQuickDropFile<cr>",    desc = "Drop File from Aider" },
+    },
     dependencies = {
-      { "zbirenbaum/copilot.lua" },
-      { "nvim-lua/plenary.nvim" },
+      {
+        "folke/snacks.nvim",
+        ---@type snacks.Config
+        opts = {
+          ---@type table<string, snacks.win.Config>
+          styles = {
+            terminal = {
+              bo = {
+                filetype = "snacks_terminal",
+              },
+              wo = {},
+              keys = {
+                -- Override default keymap
+                term_normal = false,
+              },
+            }
+          },
+        },
+      },
+      "nvim-telescope/telescope.nvim",
     },
-    build = "make tiktoken",
-    opts = {
-      model = "claude-3.5-sonnet",
-    },
+    config = function()
+      require("nvim_aider").setup({
+        -- Command line arguments passed to aider
+        args = {
+          "--no-auto-commits",
+          "--pretty",
+          "--stream",
+          "--watch-files",
+        },
+        win = {
+          style = "nvim_aider",
+          position = "left",
+        },
+      })
+    end,
   },
   -- {
   --   "olimorris/codecompanion.nvim",
@@ -175,7 +209,7 @@ local plugins = {
     },
   },
   {
-    'folke/noice.nvim',
+    'folke/noice.nvim', -- codespell:ignore noice
     dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', },
     lazy = false,
     ---@type NoiceConfig

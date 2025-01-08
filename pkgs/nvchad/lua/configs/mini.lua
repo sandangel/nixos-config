@@ -6,6 +6,7 @@ local modules = {
   'trailspace',
   'surround',
   'move',
+  'misc',
 }
 
 for _, m in ipairs(modules) do
@@ -56,3 +57,5 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.b.minitrailspace_disable = true
   end,
 })
+vim.keymap.set({ 'n', 'x' }, '<leader>z', require('mini.misc').zoom,
+  { desc = "Zoom buffer", noremap = true, silent = true })

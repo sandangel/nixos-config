@@ -153,12 +153,6 @@ M.fzflua = {
   },
 }
 
-M.copilot = {
-  n = {
-    ['<leader>a'] = { '<cmd>CopilotChatToggle<CR>', 'Copilot Chat', },
-  }
-}
-
 M.lspconfig = {
   n = {
     ['gw'] = { '<cmd>FzfLua lsp_document_diagnostics<CR>', 'LSP document diagnostics', },
@@ -244,7 +238,7 @@ M.gitsigns = {
           return ']c'
         end
         vim.schedule(function()
-          require 'gitsigns'.next_hunk { preview = true, }
+          require 'gitsigns'.nav_hunk('next', { preview = true })
         end)
         return '<Ignore>'
       end,
@@ -258,7 +252,7 @@ M.gitsigns = {
           return '[c'
         end
         vim.schedule(function()
-          require 'gitsigns'.prev_hunk { preview = true, }
+          require 'gitsigns'.nav_hunk('prev', { preview = true })
         end)
         return '<Ignore>'
       end,
@@ -305,14 +299,14 @@ if vim.fn.maparg('grn', 'n') ~= '' then
   vim.keymap.del('n', 'grr')
 end
 
-for group, configs in pairs(M) do
+for _, configs in pairs(M) do
   for mode, mappings in pairs(configs) do
     for key, val in pairs(mappings) do
       if val[2] == nil then
         -- There is an empty val in M table
         goto continue
       end
-      map(mode, key, val[1], vim.tbl_deep_extend('force', val['opts'] or {}, { desc = group .. ' ' .. val[2], }))
+      map(mode, key, val[1], vim.tbl_deep_extend('force', val['opts'] or {}, { desc = val[2], }))
       ::continue::
     end
   end

@@ -10,6 +10,7 @@
 }:
 let
   username = "sand";
+  comic-code = pkgs.callPackage ../pkgs/comic-code { };
 in
 {
   boot.kernelParams = [ "video=Virtual-1:4112x2572" ];
@@ -126,7 +127,8 @@ in
   services.printing.enable = false;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  # hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -140,6 +142,10 @@ in
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
+
+  fonts.packages = [
+    comic-code
+  ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
