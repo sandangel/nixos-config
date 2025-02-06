@@ -2,7 +2,7 @@ local map = vim.keymap.set
 
 local M = {}
 
-M.general = {
+M.General = {
   x = {
     ['.'] = { '<cmd>norm.<CR>', 'Repeat', },
     ['Q'] = { "<cmd>'<,'>:normal @q<CR>", 'Replay', },
@@ -45,7 +45,7 @@ M.general = {
   },
 }
 
-M.notify = {
+M.Notify = {
   n = {
     ['<leader>nd'] = {
       function()
@@ -56,20 +56,20 @@ M.notify = {
   },
 }
 
-M.telescope = {
+M.Telescope = {
   n = {
     -- theme switcher
     ['<leader>th'] = { '<cmd>Telescope themes<CR>', 'Nvchad themes', },
   },
 }
 
-M.undotree = {
+M.UndoTree = {
   n = {
     ['<F2>'] = { '<cmd>UndotreeToggle<CR>', 'Toggle undotree', },
   },
 }
 
-M.smart_splits = {
+M.SmartSplits = {
   i = {
     ['<C-h>'] = { function() require 'smart-splits'.move_cursor_left() end, 'Window left', },
     ['<C-l>'] = { function() require 'smart-splits'.move_cursor_right() end, 'Window right', },
@@ -90,7 +90,7 @@ M.smart_splits = {
   },
 }
 
-M.noice = {
+M.Noice = { -- codespell:ignore noice
   n = {
     ['<C-f>'] = {
       function()
@@ -113,7 +113,7 @@ M.noice = {
   },
 }
 
-M.fzflua = {
+M.FzfLua = {
   n = {
     ['gL'] = { '<cmd>FzfLua loclist<CR>', 'Location list', },
     ['gq'] = { '<cmd>FzfLua quickfix<CR>', 'Quick fix', },
@@ -153,7 +153,7 @@ M.fzflua = {
   },
 }
 
-M.lspconfig = {
+M.LspConfig = {
   n = {
     ['gw'] = { '<cmd>FzfLua lsp_document_diagnostics<CR>', 'LSP document diagnostics', },
     ['gW'] = { '<cmd>FzfLua lsp_workspace_diagnostics<cr>', 'LSP workspace diagnostics', },
@@ -204,19 +204,19 @@ M.lspconfig = {
   },
 }
 
-M.nvimtree = {
+M.NvimTree = {
   n = {
     ['<C-p>'] = { '<cmd>NvimTreeToggle<CR>', 'Toggle nvimtree', },
   },
 }
 
-M.neoclip = {
+M.Neoclip = {
   n = {
     ['gy'] = { '<cmd>lua require("neoclip.fzf")()<CR>', 'Yank history', },
   },
 }
 
-M.gitsigns = {
+M.Gitsigns = {
   n = {
     ['<leader>cp'] = {
       function()
@@ -275,13 +275,13 @@ M.gitsigns = {
   },
 }
 
-M.spectre = {
+M.Spectre = {
   n = {
     ['<leader>S'] = { '<cmd>lua require("spectre").toggle()<CR>', 'Toggle Spectre', },
   },
 }
 
-M.abolish = {
+M.Abolish = {
   n = {
     ['crm'] = { '<Plug>(abolish-coerce-word)m', 'Coerce MixedCase', opts = { noremap = false, }, },
     ['crs'] = { '<Plug>(abolish-coerce-word)s', 'Coerce snake_case', opts = { noremap = false, }, },
@@ -299,14 +299,14 @@ if vim.fn.maparg('grn', 'n') ~= '' then
   vim.keymap.del('n', 'grr')
 end
 
-for _, configs in pairs(M) do
+for group, configs in pairs(M) do
   for mode, mappings in pairs(configs) do
     for key, val in pairs(mappings) do
       if val[2] == nil then
         -- There is an empty val in M table
         goto continue
       end
-      map(mode, key, val[1], vim.tbl_deep_extend('force', val['opts'] or {}, { desc = val[2], }))
+      map(mode, key, val[1], vim.tbl_deep_extend('force', val['opts'] or {}, { desc = group .. ' ' .. val[2], }))
       ::continue::
     end
   end

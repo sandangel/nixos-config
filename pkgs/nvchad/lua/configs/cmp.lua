@@ -43,14 +43,11 @@ return {
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp', },
-    { name = "supermaven" },
     { name = "copilot" },
     { name = 'luasnip', },
     { name = 'nvim_lua', },
     { name = 'path', },
-  }, {
     { name = 'buffer', },
-    { name = 'kitty', },
     { name = 'rg', },
   }),
 }

@@ -5,7 +5,7 @@ let
       owner = "vinceliuice";
       repo = "Fluent-icon-theme";
       rev = "master";
-      hash = "sha256-0OH87JamIPP78DlWsoFv8boQkIlQic2T9zcrdOrg8VQ=";
+      hash = "sha256-VrskgBQO0Tc9DDbWMXjYKLUWrFrGUV3PgsFil1mGP/Q=";
     };
   });
   fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: {
@@ -13,7 +13,7 @@ let
       owner = "vinceliuice";
       repo = "Fluent-gtk-theme";
       rev = "master";
-      hash = "sha256-McP/oVMPVupNUHpCb5hVOsDyHWhb/XXf70WfaT3vbO0=";
+      hash = "sha256-JW4ed7I1rxAlWj+hJEfWIRE7zaWvF7Ym3W3bqljwkMY=";
     };
   });
   gtk-theme = "Fluent-Dark";

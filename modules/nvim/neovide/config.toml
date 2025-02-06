@@ -1,0 +1,33 @@
+fork = true
+frame = "none"
+idle = true
+maximized = false
+mouse-cursor-icon = "arrow"
+tabs = false
+theme = "auto"
+vsync = true
+wsl = false
+
+[font]
+size = 12.0
+hinting = "full"
+edging = "antialias"
+
+[[font.normal]]
+family = "Comic Code Ligatures"
+style = "Normal"
+
+[[font.italic]]
+family = "Comic Code Ligatures"
+style = "Italic"
+
+[[font.bold]]
+family = "Comic Code Ligatures"
+style = "Normal"
+
+[[font.bold_italic]]
+family = "Comic Code Ligatures"
+style = "Italic"
+
+[[font.normal]]
+family = "Symbols Nerd Font Mono"

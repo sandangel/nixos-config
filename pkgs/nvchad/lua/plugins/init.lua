@@ -35,11 +35,11 @@ local plugins = {
         'mfussenegger/nvim-dap',
         config = function()
           local map = vim.keymap.set
-          map('n', '<leader>ht', function() require 'dap'.toggle_breakpoint() end, { desc = 'dap toggle breakpoint', })
-          map('n', '<leader>hc', function() require 'dap'.continue() end, { desc = 'dap continue', })
-          map('n', '<leader>ho', function() require 'dap'.step_over() end, { desc = 'dap step over', })
-          map('n', '<leader>hi', function() require 'dap'.step_into() end, { desc = 'dap step into', })
-          map('n', '<leader>hr', function() require 'dap'.repl.open() end, { desc = 'dap repl open', })
+          map('n', '<leader>ht', function() require 'dap'.toggle_breakpoint() end, { desc = 'Dap toggle breakpoint', })
+          map('n', '<leader>hc', function() require 'dap'.continue() end, { desc = 'Dap continue', })
+          map('n', '<leader>ho', function() require 'dap'.step_over() end, { desc = 'Dap step over', })
+          map('n', '<leader>hi', function() require 'dap'.step_into() end, { desc = 'Dap step into', })
+          map('n', '<leader>hr', function() require 'dap'.repl.open() end, { desc = 'Dap repl open', })
         end,
       },
       {
@@ -87,14 +87,19 @@ local plugins = {
     "GeorgesAlkhouri/nvim-aider",
     cmd = {
       "AiderTerminalToggle",
+      "AiderTerminalSend",
+      "AiderQuickSendCommand",
+      "AiderQuickSendBuffer",
+      "AiderTreeAddFile",
+      "AiderTreeDropFiles",
     },
     keys = {
-      { "<leader>a/", "<cmd>AiderTerminalToggle<cr>",   desc = "Open Aider" },
-      { "<leader>as", "<cmd>AiderTerminalSend<cr>",     desc = "Send to Aider",        mode = { "n", "x" } },
-      { "<leader>ac", "<cmd>AiderQuickSendCommand<cr>", desc = "Send Command To Aider" },
-      { "<leader>ab", "<cmd>AiderQuickSendBuffer<cr>",  desc = "Send Buffer To Aider" },
-      { "<leader>a=", "<cmd>AiderQuickAddFile<cr>",     desc = "Add File to Aider" },
-      { "<leader>a-", "<cmd>AiderQuickDropFile<cr>",    desc = "Drop File from Aider" },
+      { "<leader>a/", "<cmd>AiderTerminalToggle<cr>",   desc = "Aider Open" },
+      { "<leader>as", "<cmd>AiderTerminalSend<cr>",     desc = "Aider Send",                  mode = { "n", "x" } },
+      { "<leader>ac", "<cmd>AiderQuickSendCommand<cr>", desc = "Aider Send Command" },
+      { "<leader>ab", "<cmd>AiderQuickSendBuffer<cr>",  desc = "Aider Send Buffer" },
+      { "=",          "<cmd>AiderTreeAddFile<cr>",      desc = "Aider Add File in NvimTree",  ft = "NvimTree" },
+      { "-",          "<cmd>AiderTreeDropFile<cr>",     desc = "Aider Drop File in NvimTree", ft = "NvimTree" },
     },
     dependencies = {
       {
@@ -190,9 +195,9 @@ local plugins = {
     'brenton-leighton/multiple-cursors.nvim',
     config = true,
     keys = {
-      { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i', }, desc = 'cursors add cursor one line down', },
-      { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i', }, desc = 'cursors add cursor one line up', },
-      { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i', }, desc = 'cursors add or delete cursor at mouse position', },
+      { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line down', },
+      { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line up', },
+      { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i', }, desc = 'Cursors Add or delete cursor at mouse position', },
     },
   },
   {
@@ -286,7 +291,7 @@ local plugins = {
   { 'towolf/vim-helm', ft = 'helm', },
   { 'mhinz/vim-sayonara', cmd = 'Sayonara', },
   { 'nvim-tree/nvim-tree.lua', opts = require 'configs.nvim-tree', },
-  { 'NvChad/nvim-colorizer.lua', opts = { user_default_options = { css = true, css_fn = true, mode = 'virtualtext', virtualtext = '■■■', }, }, },
+  { 'catgoose/nvim-colorizer.lua', event = 'VeryLazy', opts = { user_default_options = { tailwind = true, css = true, names = false, mode = 'virtualtext', virtualtext = '■■■', }, }, },
   { 'williamboman/mason.nvim', enabled = false, },
   { 'lukas-reineke/indent-blankline.nvim', enabled = false, },
   { 'whiteinge/diffconflicts', cmd = 'DiffConflicts', },

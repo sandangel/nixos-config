@@ -39,6 +39,7 @@ in
         # rust-analyzer
         terraform-ls
         tree-sitter
+        tailwindcss-language-server
         docker-compose-language-service
       ]
       ++ (with nodePackages; [
@@ -53,6 +54,10 @@ in
     withNodeJs = true;
     withPython3 = true;
   };
+
+  imports = [
+    ./neovide
+  ];
 
   xdg.configFile."nvim" = {
     source = "${nvchad}";

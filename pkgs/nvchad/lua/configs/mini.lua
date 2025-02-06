@@ -58,4 +58,4 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 vim.keymap.set({ 'n', 'x' }, '<leader>z', require('mini.misc').zoom,
-  { desc = "Zoom buffer", noremap = true, silent = true })
+  { desc = "Mini Zoom buffer", noremap = true, silent = true })

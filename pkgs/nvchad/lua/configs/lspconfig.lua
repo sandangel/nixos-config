@@ -9,25 +9,34 @@ local capabilities = require 'nvchad.configs.lspconfig'.capabilities
 
 local group = vim.api.nvim_create_augroup('LspFormatting', {})
 
+---@param client vim.lsp.Client
+---@param bufnr integer
 local on_attach = function(client, bufnr)
-  -- setup signature popup
-  if require 'nvconfig'.ui.lsp.signature and client.server_capabilities.signatureHelpProvider then
-    require 'nvchad.lsp.signature'.setup(client, bufnr)
-  end
   if client.supports_method 'textDocument/formatting' then
     vim.api.nvim_clear_autocmds { group = group, buffer = bufnr, }
     vim.api.nvim_create_autocmd('BufWritePre', {
       group = group,
       buffer = bufnr,
       callback = function()
-        vim.lsp.buf.format { async = false, }
+        local prettier = require('null-ls.builtins.formatting.prettier')
+        local ft = vim.bo[bufnr].filetype
+        if vim.tbl_contains({ 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' }, ft) then
+          vim.cmd "EslintFixAll"
+        end
+        if vim.tbl_contains(prettier.filetypes, ft) then
+          vim.lsp.buf.format { async = false, filter = function() return client.name == 'null-ls' end }
+        else
+          vim.lsp.buf.format { async = false }
+        end
       end,
     })
   end
 end
 
 local servers = {
+  cssls = {},
   dockerls = {},
+  eslint = {},
   gopls = {},
   golangci_lint_ls = {},
   helm_ls = {},
@@ -86,14 +95,18 @@ local servers = {
   terraformls = {
     root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
   },
-  ts_ls = {
-    -- root_dir = root_pattern('package.json'),
-    -- single_file_support = false
+  ts_ls = {},
+  tailwindcss = {},
+  lua_ls = {
+    settings = {
+      Lua = {
+        runtime = {
+          version = 'LuaJIT',
+        },
+        telemetry = { enable = false },
+      },
+    },
   },
-  -- denols = {
-  --   root_dir = root_pattern('package.json'),
-  -- },
-  lua_ls = {},
 }
 
 for name, opts in pairs(servers) do
@@ -116,8 +129,6 @@ null_ls.setup {
   capabilities = capabilities,
   root_dir = root_pattern '.git',
   sources = {
-    -- require 'none-ls.code_actions.eslint_d',
-
     null_ls.builtins.diagnostics.codespell.with {
       cwd = h.cache.by_bufnr(function(params)
         return (root_pattern '.git')(params.bufname)
@@ -126,12 +137,11 @@ null_ls.setup {
     null_ls.builtins.diagnostics.actionlint,
     null_ls.builtins.diagnostics.stylelint,
     null_ls.builtins.diagnostics.yamllint,
-    -- require 'none-ls.diagnostics.eslint_d',
 
-    -- null_ls.builtins.formatting.prettierd,
+    null_ls.builtins.formatting.prettier,
     null_ls.builtins.formatting.nixfmt,
     null_ls.builtins.formatting.terraform_fmt,
-    -- require 'none-ls.formatting.eslint_d',
+
     require 'none-ls.formatting.ruff',
     require 'none-ls.formatting.ruff_format',
   },

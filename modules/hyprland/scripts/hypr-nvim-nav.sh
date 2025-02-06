@@ -13,7 +13,7 @@ case "$dir" in
         exit 1
 esac
 
-if [[ -e "$NVIM_ADDR" && "$(hyprctl activewindow -j | jq -r '.tags | index("nvim")')" == "0" ]]; then
+if [[ -e "$NVIM_ADDR" && "$(hyprctl activewindow -j | jq -r '.class')" == "neovide" ]]; then
   command nvim --server $NVIM_ADDR --remote-send "<cmd>HyprNavigate $dir<CR>" >/dev/null 2>&1 && exit 0
 fi
 

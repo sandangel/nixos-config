@@ -38,17 +38,6 @@ vim.api.nvim_create_autocmd('FileChangedShellPost', {
   command = 'echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None',
 })
 
-local session_dir = vim.env.HOME .. '/.vim/sessions'
-if vim.fn.isdirectory(session_dir) == 0 then
-  vim.fn.system { 'mkdir', '-p', session_dir, }
-end
-
-vim.api.nvim_create_autocmd('VimLeave', {
-  group = 'NeoVimUser',
-  pattern = '*',
-  command = "exec 'mks! " ..
-      vim.env.HOME .. "/.vim/sessions/'.substitute(substitute(getcwd(), $HOME.'/', '', ''), '/', '.', 'g').'.vim'",
-})
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = 'NeoVimUser',
   pattern = '*',
@@ -112,8 +101,50 @@ vim.api.nvim_create_user_command("HyprNavigate", function(opts)
   end
 end, { nargs = '?' })
 
-if vim.g.neovide then
-  vim.opt.guifont = { 'Comic Code Ligatures', 'Symbols Nerd Font', ':h11', }
-  vim.g.neovide_transparency = 0.8
-  vim.g.neovide_padding_top = 10
-end
+-- Workaround for neovide when attaching to remote server
+-- https://github.com/neovide/neovide/issues/1868
+vim.api.nvim_create_autocmd("UIEnter", {
+  group = vim.api.nvim_create_augroup("neovide", { clear = true }),
+  pattern = '*',
+  callback = function()
+    if vim.g.neovide then
+      local map = vim.keymap.set
+      map(
+        { 'i', 'c', 't' },
+        '<C-v>',
+        function() vim.api.nvim_paste(vim.fn.getreg('+'), true, -1) end,
+        { silent = true, desc = "Neovide Paste in GUI" }
+      )
+      map({ 'n', 'i', 'x' }, '<C-+>', '<cmd>lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>', {
+        silent = true,
+        desc = 'Neovide Increase scale',
+      })
+      map({ 'n', 'i', 'x' }, '<C-_>', '<cmd>lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>', {
+        silent = true,
+        desc = 'Neovide Decrease scale',
+      })
+      map({ 'n', 'i', 'x' }, '<C-)>', '<cmd>lua vim.g.neovide_scale_factor = 1<CR>', {
+        silent = true,
+        desc = 'Neovide Reset scale',
+      })
+    end
+  end
+})
+
+--Use FocusGained to make sure Neovide window is created
+vim.api.nvim_create_autocmd("FocusGained", {
+  group = "neovide",
+  pattern = '*',
+  callback = function()
+    if vim.g.neovide then
+      local workspace_id = vim.fn.system('hyprctl activeworkspace -j | jq -r ".id"')
+      local neovide_window_id = vim.fn.system('hyprctl clients -j | jq -r "first(.[] | select(.workspace.id == ' ..
+        workspace_id .. ') | select(.class == \\"neovide\\")).address"')
+      local master_window_id = vim.fn.system('hyprctl clients -j | jq -r "[.[] | select (.workspace.id == ' ..
+        workspace_id .. ')] | min_by(.at[1]) | .address"')
+      if neovide_window_id ~= master_window_id then
+        vim.cmd('silent! !hyprctl dispatch swapwindow u')
+      end
+    end
+  end
+})

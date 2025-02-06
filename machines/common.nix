@@ -91,6 +91,7 @@ in
   services.xserver.excludePackages = [ pkgs.xterm ];
 
   programs.hyprland.enable = true;
+  programs.hyprland.withUWSM = true;
   programs.hyprland.systemd.setPath.enable = true;
   xdg.portal.config = {
     common = {
