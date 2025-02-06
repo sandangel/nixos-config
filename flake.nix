@@ -83,11 +83,12 @@
         imports = [ inputs.devenv.flakeModule ];
 
         perSystem =
-          { ... }:
+          { system, ... }:
           {
             devenv.shells.default = {
               languages.nix.enable = true;
             };
+            packages.default = ghostty.packages.${system}.ghostty;
           };
 
         flake.overlays.default = final: prev: {
