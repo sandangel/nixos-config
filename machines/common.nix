@@ -224,7 +224,7 @@ in
   };
 
   hardware.graphics.enable = true;
-  hardware.graphics.extraPackages = [ pkgs.mesa.drivers ];
+  hardware.graphics.extraPackages = [ pkgs.mesa ];
 
   virtualisation.docker.enable = true;
   # Allow apps to update firmware

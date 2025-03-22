@@ -8,6 +8,7 @@
     awscli2
     ssm-session-manager-plugin
     terraform
+    opentofu
     vault
   ];
 }

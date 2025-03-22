@@ -5,7 +5,7 @@ let
       owner = "vinceliuice";
       repo = "Fluent-icon-theme";
       rev = "master";
-      hash = "sha256-VrskgBQO0Tc9DDbWMXjYKLUWrFrGUV3PgsFil1mGP/Q=";
+      hash = "sha256-nL9hk+H2ees2grBvVULvJs54FlFTXrA7o1STbDDJGhQ=";
     };
   });
   fluent-gtk-theme = pkgs.fluent-gtk-theme.overrideAttrs (o: {

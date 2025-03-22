@@ -5,8 +5,10 @@
     k9s
     # kind
     kubectl
-    # kubectx
-    # kubernetes-helm
+    kubectx
+    stern
+    kubernetes-helm
+    kustomize
     pinniped
     # skaffold
     # vcluster
