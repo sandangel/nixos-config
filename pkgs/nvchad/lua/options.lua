@@ -148,3 +148,5 @@ vim.api.nvim_create_autocmd("FocusGained", {
     end
   end
 })
+
+vim.lsp.log.set_level(vim.log.levels.OFF)

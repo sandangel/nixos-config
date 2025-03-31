@@ -126,6 +126,7 @@ local plugins = {
     config = function()
       require("nvim_aider").setup({
         -- Command line arguments passed to aider
+        aider_cmd = "AWS_PROFILE=wovey-dev-admin aider",
         args = {
           "--no-auto-commits",
           "--pretty",
@@ -149,26 +150,26 @@ local plugins = {
   --   },
   --   config = true,
   -- },
-  {
-    'zbirenbaum/copilot.lua',
-    event = 'VeryLazy',
-    dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
-    config = function()
-      require 'copilot'.setup {
-        panel = {
-          enabled = false,
-        },
-        suggestion = {
-          enabled = false,
-        },
-        filetypes = {
-          yaml = true,
-          markdown = true,
-          gitcommit = true,
-        },
-      }
-    end,
-  },
+  -- {
+  --   'zbirenbaum/copilot.lua',
+  --   event = 'VeryLazy',
+  --   dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
+  --   config = function()
+  --     require 'copilot'.setup {
+  --       panel = {
+  --         enabled = false,
+  --       },
+  --       suggestion = {
+  --         enabled = false,
+  --       },
+  --       filetypes = {
+  --         yaml = true,
+  --         markdown = true,
+  --         gitcommit = true,
+  --       },
+  --     }
+  --   end,
+  -- },
   {
     'rust-lang/rust.vim',
     ft = 'rust',
