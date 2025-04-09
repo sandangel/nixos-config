@@ -3,7 +3,6 @@
     disk = {
       main = {
         type = "disk";
-        device = "/dev/sda";
         content = {
           type = "gpt";
           partitions = {
@@ -44,7 +43,6 @@
       };
       home = {
         type = "disk";
-        device = "/dev/sdb";
         content = {
           type = "gpt";
           partitions = {
