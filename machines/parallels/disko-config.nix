@@ -7,7 +7,7 @@
           type = "gpt";
           partitions = {
             ESP = {
-              size = "1G";
+              size = "2G";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -36,7 +36,7 @@
           };
         };
       };
-      work = {
+      home = {
         type = "disk";
         content = {
           type = "gpt";
@@ -48,9 +48,9 @@
                 format = "ext4";
                 extraArgs = [
                   "-L"
-                  "work"
+                  "home"
                 ];
-                mountpoint = "/home/sand/Work";
+                mountpoint = "/home/sand";
                 mountOptions = [
                   "noatime"
                 ];
