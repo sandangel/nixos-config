@@ -113,8 +113,8 @@
             ./machines/parallels/disko-config.nix
             ./machines/common.nix
             {
-              disko.devices.disk.main.device = "/dev/sdc";
-              disko.devices.disk.work.device = "/dev/sdb";
+              disko.devices.disk.main.device = "/dev/sda";
+              disko.devices.disk.main.device = "/dev/sdb";
               environment.systemPackages = [
                 ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default

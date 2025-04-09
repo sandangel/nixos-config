@@ -50,7 +50,7 @@
                   "-L"
                   "home"
                 ];
-                mountpoint = "/home/sand";
+                mountpoint = "/home";
                 mountOptions = [
                   "noatime"
                 ];
