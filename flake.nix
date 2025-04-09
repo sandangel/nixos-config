@@ -114,7 +114,7 @@
             ./machines/common.nix
             {
               disko.devices.disk.main.device = "/dev/sda";
-              disko.devices.disk.main.device = "/dev/sdb";
+              disko.devices.disk.home.device = "/dev/sdb";
               environment.systemPackages = [
                 ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default

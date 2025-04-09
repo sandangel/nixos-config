@@ -3,6 +3,7 @@
     disk = {
       main = {
         type = "disk";
+        device = "/dev/sda";
         content = {
           type = "gpt";
           partitions = {
@@ -12,13 +13,18 @@
               content = {
                 type = "filesystem";
                 format = "vfat";
+                extraArgs = [
+                  "-n"
+                  "boot"
+                ];
                 mountpoint = "/boot";
                 mountOptions = [
                   "defaults"
+                  "umask=0077"
                 ];
               };
             };
-            ext4 = {
+            root = {
               size = "100%";
               content = {
                 type = "filesystem";
@@ -38,10 +44,11 @@
       };
       home = {
         type = "disk";
+        device = "/dev/sdb";
         content = {
           type = "gpt";
           partitions = {
-            ext4 = {
+            home = {
               size = "100%";
               content = {
                 type = "filesystem";
