@@ -150,3 +150,7 @@ vim.api.nvim_create_autocmd("FocusGained", {
 })
 
 vim.lsp.log.set_level(vim.log.levels.OFF)
+
+vim.g.neovide_opacity = 0.8
+vim.g.neovide_normal_opacity = 0.8
+vim.g.neovide_background_color = "#292A37"

@@ -132,7 +132,7 @@
             ./machines/common.nix
             {
               disko.devices.disk.main.device = "/dev/nvme0n3";
-              disko.devices.disk.work.device = "/dev/nvme0n4";
+              disko.devices.disk.home.device = "/dev/nvme0n4";
               environment.systemPackages = [
                 ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default
