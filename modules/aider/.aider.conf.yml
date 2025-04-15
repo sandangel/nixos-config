@@ -1,0 +1,15 @@
+---
+auto-commits: false
+auto-lint: false
+chat-mode: architect
+auto-accept-architect: false
+code-theme: github-dark
+openai-api-base: http://localhost:5000/openai/v1
+stream: true
+watch-files: true
+pretty: true
+model: bedrock/us.anthropic.claude-3-7-sonnet-20250219-v1:0
+editor-model: bedrock/us.anthropic.claude-3-5-haiku-20241022-v1:0
+edit-format: udiff
+git: false
+cache-prompts: true

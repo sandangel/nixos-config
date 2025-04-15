@@ -1,0 +1,13 @@
+---
+- name: aider/extra_params
+  extra_params:
+    extra_headers:
+      openai-project: '288'
+- name: bedrock/us.anthropic.claude-3-7-sonnet-20250219-v1:0
+  edit_format: diff
+  use_temperature: false
+  extra_params:
+    max_tokens: 64000
+    thinking:
+      type: enabled
+      budget_tokens: 32000
