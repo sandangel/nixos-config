@@ -34,8 +34,12 @@
       chafa
 
       # Python toolchain
-      rye
+      # rye
       # hatch
+      uv
+
+      # DB
+      beekeeper-studio
     ]
   );
 

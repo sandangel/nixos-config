@@ -150,26 +150,26 @@ local plugins = {
   --   },
   --   config = true,
   -- },
-  -- {
-  --   'zbirenbaum/copilot.lua',
-  --   event = 'VeryLazy',
-  --   dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
-  --   config = function()
-  --     require 'copilot'.setup {
-  --       panel = {
-  --         enabled = false,
-  --       },
-  --       suggestion = {
-  --         enabled = false,
-  --       },
-  --       filetypes = {
-  --         yaml = true,
-  --         markdown = true,
-  --         gitcommit = true,
-  --       },
-  --     }
-  --   end,
-  -- },
+  {
+    'zbirenbaum/copilot.lua',
+    event = 'VeryLazy',
+    dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
+    config = function()
+      require 'copilot'.setup {
+        panel = {
+          enabled = false,
+        },
+        suggestion = {
+          enabled = false,
+        },
+        filetypes = {
+          yaml = true,
+          markdown = true,
+          gitcommit = true,
+        },
+      }
+    end,
+  },
   {
     'rust-lang/rust.vim',
     ft = 'rust',

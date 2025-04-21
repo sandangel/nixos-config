@@ -113,6 +113,11 @@
             ./machines/parallels/disko-config.nix
             ./machines/common.nix
             {
+              nixpkgs.config.permittedInsecurePackages = [
+                "beekeeper-studio-5.1.5"
+              ];
+            }
+            {
               disko.devices.disk.main.device = "/dev/sda";
               disko.devices.disk.home.device = "/dev/sdb";
               environment.systemPackages = [

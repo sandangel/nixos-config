@@ -88,6 +88,7 @@
   };
 
   imports = [
+    ../../modules/aider
     ../../modules/hyprland
     ../../modules/alacritty
     ../../modules/cloud

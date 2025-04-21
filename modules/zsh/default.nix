@@ -20,9 +20,6 @@
       . $HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/zsh-abbr.plugin.zsh
       . $HOME/.config/zsh/config/utils.zsh
 
-      export PATH=$HOME/.rye/shims:$PATH
-      source <(${pkgs.rye}/bin/rye self completion)
-
       if [ -f /opt/homebrew/bin/brew ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
       fi
@@ -33,6 +30,8 @@
       if command -v uvx &> /dev/null; then
         eval "$(uvx --generate-shell-completion zsh)"
       fi
+
+      export PATH=$HOME/.local/bin:$PATH
     '';
     zsh-abbr.enable = true;
     zsh-abbr.abbreviations = {
