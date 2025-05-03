@@ -2,6 +2,12 @@
 {
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
+  programs.direnv.config = {
+    global = {
+      log_format = "-";
+      log_filter = "^$";
+    };
+  };
   programs.direnv.stdlib = ''
     : ''${XDG_CACHE_HOME:=$HOME/.cache}
     declare -A direnv_layout_dirs
