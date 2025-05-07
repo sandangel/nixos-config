@@ -126,7 +126,7 @@ local plugins = {
     config = function()
       require("nvim_aider").setup({
         -- Command line arguments passed to aider
-        aider_cmd = "AWS_PROFILE=wovey-dev-admin aider",
+        aider_cmd = "eval $(wovey-cli aws shell --profile genai-dev-admin) && aider",
         args = {
           "--no-auto-commits",
           "--pretty",

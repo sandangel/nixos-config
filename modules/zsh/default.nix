@@ -8,9 +8,7 @@
     defaultKeymap = "emacs";
     history.path = "${config.xdg.configHome}/zsh/.zsh_history";
     completionInit = "";
-    initExtra = ''
-      export DIRENV_LOG_FORMAT=
-
+    initContent = ''
       # Set fzf folder for z4h so it won't install another fzf
       __fzf_dir=${pkgs.fzf}
       . $HOME/.config/zsh/config/init.zsh
