@@ -119,6 +119,28 @@ sudo vim /etc/rpm-ostreed.conf
 # AutomaticUpdatePolicy=stage
 ```
 
+## Setup NixOS
+
+Boot from NixOS iso image, then run
+
+```sh
+nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#gh
+gh auth login
+gh clone sandangel/nixos-config ~/.nix-config 
+cd ~/.nix-config
+gh clone sandangel/artifacts
+
+cp artifacts/comic-code.tar.gz pkgs/comic-code/
+vim pkgs/comic-code/default.nix # change /home/sand to /home/nixos
+
+# Format disk
+sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount ./machines/parallels/disko-config.nix
+
+# Install NixOS
+cd /mnt
+sudo nixos-install --flake '/home/nixos/.nix-config#parallels-desktop' --impure
+```
+
 ## Setup Arch Linux
 
 ```sh
@@ -324,4 +346,9 @@ mount /dev/nvme0n2p1 /mnt
 
 btrfs filesystem resize max /mnt
 ```
+
+To sync data from VM and Host
+
+```sh
 rsync -ahr --no-links --exclude=".Trash-1000" --exclude=".pnpm-store" --exclude=".devenv" --exclude="node_modules" --exclude=".venv" --exclude=".cache" --exclude=".pdm-build" --exclude=".mypy_cache" --exclude=".ruff_cache" --exclude="dist" --exclude=".pytest_cache" --exclude="target" --exclude=".terraform" ~/Work /host/Downloads/
+```

@@ -118,8 +118,8 @@
               ];
             }
             {
-              disko.devices.disk.main.device = "/dev/sda";
-              disko.devices.disk.home.device = "/dev/sdb";
+              disko.devices.disk.primary.device = "/dev/sda";
+              disko.devices.disk.secondary.device = "/dev/sdb";
               environment.systemPackages = [
                 ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default

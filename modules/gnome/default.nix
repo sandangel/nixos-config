@@ -13,7 +13,7 @@ let
       owner = "vinceliuice";
       repo = "Fluent-gtk-theme";
       rev = "master";
-      hash = "sha256-dgzKTU+eHSWC7qocUfp4KFDlJHGIaiaACQDEvoc4W7Y=";
+      hash = "sha256-AaFj9lG9lWg0a0ksJ0ufoUpsunR3uDhcdb7oSrvAmPI=";
     };
   });
   gtk-theme = "Fluent-Dark";

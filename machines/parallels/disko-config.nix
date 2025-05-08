@@ -1,8 +1,9 @@
 {
   disko.devices = {
     disk = {
-      main = {
+      primary = {
         type = "disk";
+        device = "/dev/sda";
         content = {
           type = "gpt";
           partitions = {
@@ -41,8 +42,9 @@
           };
         };
       };
-      home = {
+      secondary = {
         type = "disk";
+        device = "/dev/sdb";
         content = {
           type = "gpt";
           partitions = {
