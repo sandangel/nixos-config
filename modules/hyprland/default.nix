@@ -19,7 +19,7 @@ in
   wayland.windowManager.hyprland.systemd.enable = true;
   wayland.windowManager.hyprland.systemd.variables = [ "--all" ];
   programs.zsh = {
-    initExtra = ''
+    initContent = ''
       . $HOME/.nix-config/modules/hyprland/hyprland.zsh
     '';
   };

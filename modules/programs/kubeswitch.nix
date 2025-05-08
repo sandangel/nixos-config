@@ -40,12 +40,12 @@ in
     lib.mkIf cfg.enable {
       home.packages = [ cfg.package ];
 
-      programs.bash.initExtra = ''
+      programs.bash.initContent = ''
         source ${shell_files}/share/${cfg.command}_init.bash
         source ${shell_files}/share/${cfg.command}_completion.bash
       '';
 
-      programs.zsh.initExtra = ''
+      programs.zsh.initContent = ''
         autoload -U +X compinit && compinit
 
         source ${shell_files}/share/${cfg.command}_init.zsh
