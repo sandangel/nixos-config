@@ -40,7 +40,7 @@ in
     lib.mkIf cfg.enable {
       home.packages = [ cfg.package ];
 
-      programs.bash.initContent = ''
+      programs.bash.initExtra = ''
         source ${shell_files}/share/${cfg.command}_init.bash
         source ${shell_files}/share/${cfg.command}_completion.bash
       '';
