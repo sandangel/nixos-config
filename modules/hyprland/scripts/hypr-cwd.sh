@@ -7,7 +7,7 @@ if [[ "$pid" != "null" ]]; then
 fi
 
 # change to if the cmdline not including ghostty
-if [[ "$cmdline" != *"ghostty"* ]]; then
+if [[ "$cmdline" != *"alacritty"* ]]; then
   dir=$(readlink /proc/"$pid"/cwd || echo "$HOME")
 else
   ppid=$(pgrep --newest --parent "$pid")

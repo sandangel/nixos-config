@@ -19,7 +19,7 @@
       allow_images=true
       image_size=28
       gtk_dark=true
-      term=ghostty
+      term=alacritty
     '';
 
     "wofi/style.css".text = builtins.readFile ./style.css;
