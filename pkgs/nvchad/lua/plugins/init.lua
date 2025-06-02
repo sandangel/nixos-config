@@ -86,20 +86,16 @@ local plugins = {
   {
     "GeorgesAlkhouri/nvim-aider",
     cmd = {
-      "AiderTerminalToggle",
-      "AiderTerminalSend",
-      "AiderQuickSendCommand",
-      "AiderQuickSendBuffer",
+      "Aider",
       "AiderTreeAddFile",
-      "AiderTreeDropFiles",
+      "AiderTreeDropFile",
     },
     keys = {
-      { "<leader>a/", "<cmd>AiderTerminalToggle<cr>",   desc = "Aider Open" },
-      { "<leader>as", "<cmd>AiderTerminalSend<cr>",     desc = "Aider Send",                  mode = { "n", "x" } },
-      { "<leader>ac", "<cmd>AiderQuickSendCommand<cr>", desc = "Aider Send Command" },
-      { "<leader>ab", "<cmd>AiderQuickSendBuffer<cr>",  desc = "Aider Send Buffer" },
-      { "=",          "<cmd>AiderTreeAddFile<cr>",      desc = "Aider Add File in NvimTree",  ft = "NvimTree" },
-      { "-",          "<cmd>AiderTreeDropFile<cr>",     desc = "Aider Drop File in NvimTree", ft = "NvimTree" },
+      { "<leader>a/", "<cmd>Aider toggle<cr>",      desc = "Aider Open" },
+      { "<leader>as", "<cmd>Aider send<cr>",        desc = "Aider Send",                  mode = { "n", "x" } },
+      { "<leader>ab", "<cmd>Aider buffer<cr>",      desc = "Aider Send Buffer" },
+      { "=",          "<cmd>AiderTreeAddFile<cr>",  desc = "Aider Add File in NvimTree",  ft = "NvimTree" },
+      { "-",          "<cmd>AiderTreeDropFile<cr>", desc = "Aider Drop File in NvimTree", ft = "NvimTree" },
     },
     dependencies = {
       {
@@ -109,6 +105,7 @@ local plugins = {
           ---@type table<string, snacks.win.Config>
           styles = {
             terminal = {
+              relative = "editor",
               bo = {
                 filetype = "snacks_terminal",
               },
@@ -126,19 +123,56 @@ local plugins = {
     config = function()
       require("nvim_aider").setup({
         -- Command line arguments passed to aider
-        aider_cmd = "eval $(wovey-cli aws shell --profile genai-dev-admin) && aider",
-        args = {
-          "--no-auto-commits",
-          "--pretty",
-          "--stream",
-          "--watch-files",
-        },
+        aider_cmd = "AWS_PROFILE=genai-dev-admin aider",
         win = {
           style = "nvim_aider",
           position = "left",
         },
       })
     end,
+  },
+  {
+    "coder/claudecode.nvim",
+    dependencies = {
+      "folke/snacks.nvim", -- Optional dependency for enhanced terminal
+    },
+    opts = {
+      -- Configuration for claudecode main
+      terminal_cmd = "claude",
+
+      -- Configuration for the interactive terminal:
+      terminal = {
+        split_side = "left",
+        split_width_percentage = 0.4,
+        provider = "snacks",
+        show_native_term_exit_tip = true,
+      },
+    },
+    config = true,
+    keys = {
+      { "<leader>ac", "<cmd>ClaudeCode<cr>",     mode = { "n", "x" }, desc = "Toggle Claude Terminal" },
+      { "<leader>ak", "<cmd>ClaudeCodeSend<cr>", mode = { "x" },      desc = "Send to Claude Code" },
+    },
+  },
+  {
+    'stevearc/conform.nvim',
+    ---@type conform.setupOpts
+    opts = {
+      formatters_by_ft = {
+        -- Use the "*" filetype to run formatters on all filetypes.
+        python = { "ruff_format", "ruff_fix", "ruff_organize_imports", lsp_format = "fallback" },
+        typescriptreact = { "prettier", lsp_format = "fallback" },
+        ["*"] = { "trim_whitespace" },
+      },
+      format_on_save = {
+        -- These options will be passed to conform.format()
+        timeout_ms = 500,
+        lsp_format = "prefer",
+      },
+      default_format_opts = {
+        lsp_format = "prefer",
+      }
+    },
   },
   -- {
   --   "olimorris/codecompanion.nvim",

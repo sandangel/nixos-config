@@ -44,6 +44,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   command = 'silent! lua vim.highlight.on_yank({ higroup="IncSearch", timeout=700 })',
 })
 
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = 'NeoVimUser',
+  pattern = '*',
+  callback = function()
+    if vim.fn.filereadable(vim.fn.expand('%')) == 1 then
+      vim.cmd('checktime')
+    end
+  end,
+})
+
 local enable_providers = {
   'python3_provider',
   'node_provider',
