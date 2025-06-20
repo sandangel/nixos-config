@@ -122,7 +122,7 @@ vim.api.nvim_create_autocmd("UIEnter", {
       map(
         { 'i', 'c', 't' },
         '<C-v>',
-        function() vim.api.nvim_paste(vim.fn.getreg('+'), true, -1) end,
+        function() vim.api.nvim_paste(vim.fn.getreg('*'), true, -1) end,
         { silent = true, desc = "Neovide Paste in GUI" }
       )
       map({ 'n', 'i', 'x' }, '<C-+>', '<cmd>lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>', {

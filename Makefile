@@ -29,7 +29,7 @@ SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o Strict
 
 switch:
 	rsync -av $(MAKEFILE_DIR)/modules/karabiner/mbp_m1_woven_planet/* /media/psf/Home/.config/karabiner
-	nixos-rebuild switch --use-remote-sudo --impure --flake ".#parallels-desktop"
+	nixos-rebuild switch --sudo --impure --flake ".#parallels-desktop"
 	# nix store gc
 	# nix store optimise
 	# nixos-rebuild switch --use-remote-sudo --impure --flake ".#vmware-fusion"
