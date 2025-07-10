@@ -13,7 +13,7 @@ in
         codespell
         corepack
         nixfmt-rfc-style
-        nodejs
+        # nodejs
         nvchad
         stylelint
         tflint
@@ -39,7 +39,7 @@ in
         # rust-analyzer
         terraform-ls
         tree-sitter
-        tailwindcss-language-server
+        # tailwindcss-language-server
         docker-compose-language-service
       ]
       ++ (with nodePackages; [

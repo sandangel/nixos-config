@@ -14,7 +14,7 @@
     # vcluster
   ];
 
-  imports = [ ../programs/kubeswitch.nix ];
+  # imports = [ ../programs/kubeswitch.nix ];
 
   programs.kubeswitch.enable = true;
 
