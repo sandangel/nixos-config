@@ -73,6 +73,8 @@
   programs.zoxide.enable = true;
   programs.fzf.enable = true;
 
+  programs.vscode.enable = true;
+
   programs.eza.enable = true;
   programs.eza.icons = "auto";
   programs.eza.git = true;
