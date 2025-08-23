@@ -37,10 +37,12 @@ M.General = {
   i = {
     ['<A-left>'] = { '<C-left>', 'Move one word left', },
     ['<A-right>'] = { '<C-right>', 'Move one word right', },
+    ['<C-v>'] = { '<cmd>norm! "+p<CR>', 'Paste from clipboard', },
   },
   t = {
     ['<A-left>'] = { '<C-left>', 'Move one word left', },
     ['<A-right>'] = { '<C-right>', 'Move one word right', },
+    ['<C-v>'] = { vim.api.nvim_replace_termcodes('<C-\\><C-n>', true, true, true) .. '"+pi', 'Paste from clipboard', },
     ['<Esc>'] = { vim.api.nvim_replace_termcodes('<C-\\><C-n>', true, true, true), 'Escape terminal mode', },
   },
 }
