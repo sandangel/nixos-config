@@ -293,6 +293,7 @@ sudo su -c "printf 'LABEL=WORK $HOME/Work btrfs defaults,subvol=/@work,compress=
 ```sh
 xcode-select --install
 defaults write -g KeyRepeat -float 0.7 && defaults write -g InitialKeyRepeat -int 10
+defaults write -g ApplePressAndHoldEnabled -bool false
 ```
 
 Then install Raycast, Shottr, Firefox, Karabiner. Will need to restart after finished.
