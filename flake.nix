@@ -2,13 +2,13 @@
   inputs = {
     # Mirroring nixpkgs unstable
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    ghostty.url = "github:ghostty-org/ghostty";
-    ghostty.inputs.nixpkgs.follows = "nixpkgs";
+    # ghostty.url = "github:ghostty-org/ghostty";
+    # ghostty.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
     # Updating nix itself
-    nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
+    # nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
 
     # For running GUI apps
     # nixGL.url = "github:nix-community/nixGL";
@@ -39,7 +39,7 @@
       flake-parts,
       home-manager,
       nixpkgs,
-      ghostty,
+      # ghostty,
       disko,
       # neovim,
       # devenv,
@@ -50,27 +50,26 @@
       ...
     }:
     let
-
       linux-user = "sand";
       mac-user = "san.nguyen";
       modules =
         { user }:
         [
-          {
-            nix.settings.extra-trusted-users = [ user ];
-            nix.settings.extra-trusted-public-keys = [
-              "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-              "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
-              "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
-            ];
-            nix.settings.extra-trusted-substituters = [
-              "https://devenv.cachix.org"
-              "https://cache.flox.dev"
-              "https://ghostty.cachix.org"
-            ];
-          }
+          # {
+          #   nix.settings.extra-trusted-users = [ "sand" ];
+          #   nix.settings.extra-trusted-public-keys = [
+          #     "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+          #     "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+          #     "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
+          #   ];
+          #   nix.settings.extra-trusted-substituters = [
+          #     "https://devenv.cachix.org"
+          #     "https://cache.flox.dev"
+          #     "https://ghostty.cachix.org"
+          #   ];
+          # }
           ./users/${user}/home.nix
-          inputs.nix.homeManagerModules.default
+          # inputs.nix.homeManagerModules.default
         ];
     in
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -87,7 +86,7 @@
             devenv.shells.default = {
               languages.nix.enable = true;
             };
-            packages.default = ghostty.packages.${system}.ghostty;
+            # packages.default = ghostty.packages.${system}.ghostty;
           };
 
         flake.overlays.default = final: prev: {
@@ -96,7 +95,7 @@
           # nvchad = prev.callPackage ./pkgs/nvchad { };
           # devenv = devenv.packages.${final.stdenv.system}.default;
           # flox = flox.packages.${final.stdenv.system}.default;
-          ghostty = ghostty.packages.${final.stdenv.system}.ghostty;
+          # ghostty = ghostty.packages.${final.stdenv.system}.ghostty;
         };
 
         flake.overlays.linux = final: prev: {
@@ -120,7 +119,7 @@
               disko.devices.disk.primary.device = "/dev/sda";
               disko.devices.disk.secondary.device = "/dev/sdb";
               environment.systemPackages = [
-                ghostty.packages.${system}.ghostty
+                # ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default
               ];
             }
@@ -138,7 +137,7 @@
               disko.devices.disk.main.device = "/dev/nvme0n3";
               disko.devices.disk.home.device = "/dev/nvme0n4";
               environment.systemPackages = [
-                ghostty.packages.${system}.ghostty
+                # ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default
               ];
             }

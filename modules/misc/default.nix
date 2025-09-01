@@ -5,12 +5,12 @@
     with pkgs;
     [
       # Utilities
-      glib
-      gnumake
+      # glib
+      # gnumake
       # killall
-      vim
-      binutils
-      bind
+      # vim
+      # binutils
+      # bind
 
       # Fonts
       # comic-code
@@ -31,7 +31,7 @@
       # gcc
 
       # Image viewer
-      chafa
+      # chafa
 
       # Python toolchain
       # rye
@@ -39,7 +39,7 @@
       uv
 
       # DB
-      beekeeper-studio
+      # beekeeper-studio
     ]
   );
 
