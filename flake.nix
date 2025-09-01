@@ -3,8 +3,7 @@
     # Mirroring nixpkgs unstable
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     ghostty.url = "github:ghostty-org/ghostty";
-    ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
-    ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
+    ghostty.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 

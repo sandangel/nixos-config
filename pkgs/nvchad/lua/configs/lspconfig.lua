@@ -35,9 +35,9 @@ local on_attach = function(client, bufnr)
 end
 
 local servers = {
-  cssls = {},
+  -- cssls = {},
   dockerls = {},
-  eslint = {},
+  -- eslint = {},
   gopls = {},
   golangci_lint_ls = {},
   helm_ls = {},
@@ -96,8 +96,17 @@ local servers = {
   terraformls = {
     root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
   },
-  ts_ls = {},
-  tailwindcss = {},
+  ty = {
+    settings = {
+      ty = {
+        disableLanguageServices = true,
+        diagnosticMode = 'workspace',
+      },
+    },
+  },
+  vtsls = {},
+  -- ts_ls = {},
+  -- tailwindcss = {},
   lua_ls = {
     settings = {
       Lua = {
@@ -127,7 +136,11 @@ for name, opts in pairs(servers) do
   opts.on_attach = on_attach
   opts.capabilities = capabilities
 
-  lspconfig[name].setup(opts)
+  if next(opts) ~= nil then
+    vim.lsp.config(name, opts)
+  end
+
+  vim.lsp.enable(name)
 end
 
 -- local null_ls = require 'null-ls'
