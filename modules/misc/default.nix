@@ -42,21 +42,23 @@
       bun
 
       # Tools
-      (television.overrideAttrs (final: prev: rec {
-        version = "0.13.3";
-        src = fetchFromGitHub {
-          owner = "alexpasmantier";
-          repo = "television";
-          tag = version;
-          hash = "sha256-5keGAP6/C1kWjD+Wo+v6rFUll5y+uKGDFn3wN14IUuc=";
-        };
-        cargoDeps = prev.cargoDeps.overrideAttrs (oldAttrs: {
-          vendorStaging = oldAttrs.vendorStaging.overrideAttrs {
-            inherit (final) src;
-            outputHash = "sha256-kb2v4uVQy7m3JVnazbtPjgYyal0mBu97X1ivg4L7wxg=";
+      (television.overrideAttrs (
+        final: prev: rec {
+          version = "0.13.3";
+          src = fetchFromGitHub {
+            owner = "alexpasmantier";
+            repo = "television";
+            tag = version;
+            hash = "sha256-5keGAP6/C1kWjD+Wo+v6rFUll5y+uKGDFn3wN14IUuc=";
           };
-        });
-      }))
+          cargoDeps = prev.cargoDeps.overrideAttrs (oldAttrs: {
+            vendorStaging = oldAttrs.vendorStaging.overrideAttrs {
+              inherit (final) src;
+              outputHash = "sha256-kb2v4uVQy7m3JVnazbtPjgYyal0mBu97X1ivg4L7wxg=";
+            };
+          });
+        }
+      ))
 
       # DB
       # beekeeper-studio
