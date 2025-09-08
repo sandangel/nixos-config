@@ -33,6 +33,7 @@ in
         #   '';
         # }))
         nixd
+        nil
         # vscode-langservers-extracted
         # yaml-language-server
         # gopls
