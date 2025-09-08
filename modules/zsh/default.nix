@@ -29,7 +29,7 @@
         eval "$(uvx --generate-shell-completion zsh)"
       fi
 
-      export PATH=$HOME/.local/bin:$HOME/.cache/.bun/bin:$PATH
+      export PATH=$PATH:$HOME/.local/bin:$HOME/.bun/bin:$HOME/.nix-profile/bin
     '';
     zsh-abbr.enable = true;
     zsh-abbr.abbreviations = {

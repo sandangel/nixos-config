@@ -1,0 +1,45 @@
+// Project tasks configuration. See https://zed.dev/docs/tasks for documentation.
+// Use shell sh to optimize for perf https://alexpasmantier.github.io/television/docs/Users/showcase
+[
+  {
+    "label": "Search in Files",
+    "command": "zed \"$(tv text)\"",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": true,
+    "hide": "always",
+    "shell": {
+      "with_arguments": {
+        "program": "sh",
+        "args": ["--noediting", "--norc", "--noprofile"]
+      }
+    }
+  },
+  {
+    "label": "Search Files",
+    "command": "zed",
+    "args": ["\"$(tv files)\""],
+    "use_new_terminal": true,
+    "allow_concurrent_runs": true,
+    "hide": "always",
+    "shell": {
+      "with_arguments": {
+        "program": "sh",
+        "args": ["--noediting", "--norc", "--noprofile"]
+      }
+    }
+  },
+  {
+    "label": "Search Symbol",
+    "command": "zed",
+    "args": ["\"$(tv text --input ${ZED_SYMBOL})\""],
+    "use_new_terminal": true,
+    "allow_concurrent_runs": true,
+    "hide": "always",
+    "shell": {
+      "with_arguments": {
+        "program": "sh",
+        "args": ["--noediting", "--norc", "--noprofile"]
+      }
+    }
+  }
+]

@@ -1,0 +1,65 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "bindings": {
+      "Ω": "workspace::ToggleZoom", // alt-z
+      "†": "workspace::ToggleBottomDock", // alt-t
+      "ctrl-shift-enter": "workspace::NewTerminal",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight"
+    }
+  },
+  {
+    "context": "VimControl || !Editor && !Terminal",
+    "bindings": {
+      "space q": "pane::CloseActiveItem"
+    }
+  },
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "bindings": {
+      "d": "vim::Subword",
+      "b": "vim::MiniBrackets"
+    }
+  },
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "y": ["workspace::SendKeystrokes", "y ` ]"], // Yank and put cursor at the end of selection
+      "v": ["workspace::SendKeystrokes", "g _"], // Select to the end of line
+      "p": ["workspace::SendKeystrokes", "\" _ d P"] // Paste no Yank
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "alt-k": "editor::MoveLineUp",
+      "alt-j": "editor::MoveLineDown",
+      "g j": ["workspace::SendKeystrokes", "ctrl-w w"],
+      "space =": "pane::SplitVertical",
+      "space -": "pane::SplitHorizontal",
+      "space w": "workspace::SaveAll",
+      "space d": [
+        "task::Spawn",
+        { "task_name": "Search Symbol", "reveal_target": "center" }
+      ],
+      "space j": [
+        "task::Spawn",
+        { "task_name": "Search Files", "reveal_target": "center" }
+      ],
+      "space f": [
+        "task::Spawn",
+        { "task_name": "Search in Files", "reveal_target": "center" }
+      ],
+      "space l": "buffer_search::Deploy"
+    }
+  }
+]

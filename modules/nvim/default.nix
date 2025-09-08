@@ -7,22 +7,22 @@ in
     with pkgs;
     (
       [
-        actionlint
-        bun
-        deno
-        codespell
-        corepack
-        nixfmt-rfc-style
+        # actionlint
+        # bun
+        # deno
+        # codespell
+        # corepack
+        # nixfmt-rfc-style
         # nodejs
         nvchad
-        stylelint
-        tflint
+        # stylelint
+        # tflint
         # tfsec
-        trash-cli
+        # trash-cli
         # yamlfmt
-        yamllint
+        # yamllint
         # helm-ls
-        lua-language-server
+        # lua-language-server
         # prettierd
         # https://github.com/mantoni/eslint_d.js/issues/287
         # eslint_d support eslint 9 with flat config
@@ -33,18 +33,18 @@ in
         #   '';
         # }))
         nixd
-        vscode-langservers-extracted
-        yaml-language-server
+        # vscode-langservers-extracted
+        # yaml-language-server
         # gopls
         # rust-analyzer
-        terraform-ls
-        tree-sitter
+        # terraform-ls
+        # tree-sitter
         # tailwindcss-language-server
-        docker-compose-language-service
+        # docker-compose-language-service
       ]
       ++ (with nodePackages; [
-        typescript-language-server
-        dockerfile-language-server-nodejs
+        # typescript-language-server
+        # dockerfile-language-server-nodejs
       ])
     );
 

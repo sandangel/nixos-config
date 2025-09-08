@@ -1,8 +1,5 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    neovide
-  ];
-  xdg.configFile."neovide".source = ./.;
-  xdg.configFile."neovide".recursive = true;
+  programs.neovide.enable = true;
+  programs.neovide.settings = (builtins.fromTOML (builtins.readFile ./config.toml));
 }

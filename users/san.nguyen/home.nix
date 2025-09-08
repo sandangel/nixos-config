@@ -13,9 +13,6 @@ in
     # Apple Silicon monitoring tool
     # asitop
 
-    # Apple native container tool
-    container
-
     # Fonts
     comic-code
   ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
@@ -25,8 +22,12 @@ in
     ../../modules/git
     # ../../modules/kitty
     ../../modules/misc
-    # ../../modules/nvim
+    ../../modules/nvim
     ../../modules/zsh
+    ../../modules/kubernetes
+    ../../modules/cloud
+    ../../modules/ghostty
+    ../../modules/zed
   ];
 
   fonts.fontconfig.enable = true;

@@ -1,3 +1,4 @@
+neovim-bin = "/Users/sand/.nix-profile/bin/nvim"
 fork = true
 frame = "none"
 idle = true

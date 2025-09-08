@@ -26,6 +26,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     # Do not follow nixpkgs so it can be built reliably
     # neovim.url = "github:nix-community/neovim-nightly-overlay";
 
