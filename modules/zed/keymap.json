@@ -7,20 +7,20 @@
 // from the command palette.
 [
   {
+    "context": "Terminal",
     "bindings": {
-      "Ω": "workspace::ToggleZoom", // alt-z
-      "†": "workspace::ToggleBottomDock", // alt-t
-      "ctrl-shift-enter": "workspace::NewTerminal",
-      "ctrl-h": "workspace::ActivatePaneLeft",
-      "ctrl-j": "workspace::ActivatePaneDown",
-      "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-l": "workspace::ActivatePaneRight"
+      "ctrl-shift-enter": "pane::SplitRight"
     }
   },
   {
-    "context": "VimControl || !Editor && !Terminal",
     "bindings": {
-      "space q": "pane::CloseActiveItem"
+      "Ω": "workspace::ToggleZoom", // alt-z
+      "†": "workspace::ToggleBottomDock", // alt-t
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-p": "workspace::ToggleRightDock"
     }
   },
   {
@@ -44,6 +44,9 @@
       "alt-k": "editor::MoveLineUp",
       "alt-j": "editor::MoveLineDown",
       "g j": ["workspace::SendKeystrokes", "ctrl-w w"],
+      "space c p": "editor::ToggleSelectedDiffHunks",
+      "space c r": "git::Restore",
+      "space q": "pane::CloseActiveItem",
       "space =": "pane::SplitVertical",
       "space -": "pane::SplitHorizontal",
       "space w": "workspace::SaveAll",
