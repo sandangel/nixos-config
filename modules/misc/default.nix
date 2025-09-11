@@ -40,7 +40,6 @@
 
       # Web Dev
       bun
-      redisinsight
 
       # Tools
       (television.overrideAttrs (
