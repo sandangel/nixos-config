@@ -29,9 +29,23 @@
     }
   },
   {
-    "label": "Search Symbol",
+    "label": "Search Selected Text",
     "command": "zed",
-    "args": ["\"$(tv text --input ${ZED_SYMBOL})\""],
+    "args": ["\"$(tv text --input ${ZED_SELECTED_TEXT})\""],
+    "use_new_terminal": true,
+    "allow_concurrent_runs": true,
+    "hide": "always",
+    "shell": {
+      "with_arguments": {
+        "program": "sh",
+        "args": ["--noediting", "--norc", "--noprofile"]
+      }
+    }
+  },
+  {
+    "label": "Search Git Diff",
+    "command": "zed",
+    "args": ["\"$(tv git-diff)\""],
     "use_new_terminal": true,
     "allow_concurrent_runs": true,
     "hide": "always",

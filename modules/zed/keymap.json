@@ -9,7 +9,7 @@
   {
     "context": "Terminal",
     "bindings": {
-      "ctrl-shift-enter": "pane::SplitRight"
+      "ctrl-shift-enter": "workspace::NewTerminal"
     }
   },
   {
@@ -31,18 +31,38 @@
     }
   },
   {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "g r n": null,
+      "g r r": null,
+      "g r i": null,
+      "g r a": null
+    }
+  },
+  {
+    "context": "vim_mode == visual || vim_mode == normal",
+    "bindings": {
+      "alt-k": "editor::MoveLineUp",
+      "alt-j": "editor::MoveLineDown"
+    }
+  },
+  {
     "context": "vim_mode == visual",
     "bindings": {
       "y": ["workspace::SendKeystrokes", "y ` ]"], // Yank and put cursor at the end of selection
       "v": ["workspace::SendKeystrokes", "g _"], // Select to the end of line
-      "p": ["workspace::SendKeystrokes", "\" _ d P"] // Paste no Yank
+      "p": ["workspace::SendKeystrokes", "\" _ d P"], // Paste no Yank
+      "space d": [
+        "task::Spawn",
+        { "task_name": "Search Selected Text", "reveal_target": "center" }
+      ]
     }
   },
   {
     "context": "vim_mode == normal",
     "bindings": {
-      "alt-k": "editor::MoveLineUp",
-      "alt-j": "editor::MoveLineDown",
+      "g r": "editor::Rename",
+      "g l": "editor::ToggleInlineDiagnostics",
       "g j": ["workspace::SendKeystrokes", "ctrl-w w"],
       "space c p": "editor::ToggleSelectedDiffHunks",
       "space c r": "git::Restore",
@@ -50,9 +70,9 @@
       "space =": "pane::SplitVertical",
       "space -": "pane::SplitHorizontal",
       "space w": "workspace::SaveAll",
-      "space d": [
+      "space g": [
         "task::Spawn",
-        { "task_name": "Search Symbol", "reveal_target": "center" }
+        { "task_name": "Search Git Diff", "reveal_target": "center" }
       ],
       "space j": [
         "task::Spawn",
