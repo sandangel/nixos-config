@@ -2,8 +2,8 @@
   inputs = {
     # Mirroring nixpkgs unstable
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    ghostty.url = "github:ghostty-org/ghostty";
-    ghostty.inputs.nixpkgs.follows = "nixpkgs";
+    # ghostty.url = "github:ghostty-org/ghostty";
+    # ghostty.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -39,7 +39,7 @@
       flake-parts,
       home-manager,
       nixpkgs,
-      ghostty,
+      # ghostty,
       disko,
       # neovim,
       # devenv,
@@ -82,12 +82,12 @@
         imports = [ inputs.devenv.flakeModule ];
 
         perSystem =
-          { system, ... }:
+          { ... }:
           {
             devenv.shells.default = {
               languages.nix.enable = true;
             };
-            packages.default = ghostty.packages.${system}.ghostty;
+            # packages.default = ghostty.packages.${system}.ghostty;
           };
 
         flake.overlays.default = final: prev: {
@@ -96,7 +96,7 @@
           # nvchad = prev.callPackage ./pkgs/nvchad { };
           # devenv = devenv.packages.${final.stdenv.system}.default;
           # flox = flox.packages.${final.stdenv.system}.default;
-          ghostty = ghostty.packages.${final.stdenv.system}.ghostty;
+          # ghostty = ghostty.packages.${final.stdenv.system}.ghostty;
         };
 
         flake.overlays.linux = final: prev: {
@@ -104,7 +104,7 @@
           # ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
         };
 
-        flake.nixosConfigurations.parallels-desktop = nixpkgs.lib.nixosSystem rec {
+        flake.nixosConfigurations.parallels-desktop = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
             ./machines/parallels/configuration.nix
@@ -113,21 +113,21 @@
             ./machines/common.nix
             {
               nixpkgs.config.permittedInsecurePackages = [
-                "beekeeper-studio-5.2.12"
+                "beekeeper-studio-5.3.4"
               ];
             }
             {
               disko.devices.disk.primary.device = "/dev/sda";
               disko.devices.disk.secondary.device = "/dev/sdb";
               environment.systemPackages = [
-                ghostty.packages.${system}.ghostty
+                # ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default
               ];
             }
             home-manager.nixosModules.home-manager
           ];
         };
-        flake.nixosConfigurations.vmware-fusion = nixpkgs.lib.nixosSystem rec {
+        flake.nixosConfigurations.vmware-fusion = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
             ./machines/vmware-fusion/configuration.nix
@@ -138,7 +138,7 @@
               disko.devices.disk.main.device = "/dev/nvme0n3";
               disko.devices.disk.home.device = "/dev/nvme0n4";
               environment.systemPackages = [
-                ghostty.packages.${system}.ghostty
+                # ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default
               ];
             }
