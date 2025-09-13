@@ -13,7 +13,7 @@ in
         codespell
         corepack
         nixfmt-rfc-style
-        # nodejs
+        nodejs
         nvchad
         stylelint
         tflint
@@ -21,7 +21,7 @@ in
         trash-cli
         # yamlfmt
         yamllint
-        # helm-ls
+        helm-ls
         lua-language-server
         # prettierd
         # https://github.com/mantoni/eslint_d.js/issues/287
@@ -35,16 +35,17 @@ in
         nixd
         vscode-langservers-extracted
         yaml-language-server
+        vtsls
         # gopls
         # rust-analyzer
         terraform-ls
         tree-sitter
-        # tailwindcss-language-server
+        tailwindcss-language-server
         docker-compose-language-service
       ]
       ++ (with nodePackages; [
-        typescript-language-server
-        dockerfile-language-server-nodejs
+        # typescript-language-server
+        dockerfile-language-server
       ])
     );
 

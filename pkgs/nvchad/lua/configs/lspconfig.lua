@@ -106,7 +106,7 @@ local servers = {
   },
   vtsls = {},
   -- ts_ls = {},
-  -- tailwindcss = {},
+  tailwindcss = {},
   lua_ls = {
     settings = {
       Lua = {

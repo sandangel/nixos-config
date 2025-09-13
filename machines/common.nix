@@ -103,17 +103,6 @@ in
       "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
     };
   };
-  systemd.user.services = {
-    prlcc = {
-      wantedBy = lib.mkForce [ ];
-    };
-    prldnd = {
-      wantedBy = lib.mkForce [ ];
-    };
-    prlsga = {
-      wantedBy = lib.mkForce [ ];
-    };
-  };
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.login.enableGnomeKeyring = true;
@@ -146,7 +135,8 @@ in
 
   fonts.packages = [
     comic-code
-  ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+  ]
+  ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
