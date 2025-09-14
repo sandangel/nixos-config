@@ -131,29 +131,35 @@ local plugins = {
       })
     end,
   },
-  -- {
-  --   "coder/claudecode.nvim",
-  --   dependencies = {
-  --     "folke/snacks.nvim", -- Optional dependency for enhanced terminal
-  --   },
-  --   opts = {
-  --     -- Configuration for claudecode main
-  --     terminal_cmd = "claude",
-  --
-  --     -- Configuration for the interactive terminal:
-  --     terminal = {
-  --       split_side = "left",
-  --       split_width_percentage = 0.4,
-  --       provider = "snacks",
-  --       show_native_term_exit_tip = true,
-  --     },
-  --   },
-  --   config = true,
-  --   keys = {
-  --     { "<leader>ac", "<cmd>ClaudeCode<cr>",     mode = { "n", "x" }, desc = "Toggle Claude Terminal" },
-  --     { "<leader>ak", "<cmd>ClaudeCodeSend<cr>", mode = { "x" },      desc = "Send to Claude Code" },
-  --   },
-  -- },
+  {
+    "coder/claudecode.nvim",
+    dependencies = {
+      "folke/snacks.nvim", -- Optional dependency for enhanced terminal
+    },
+    opts = {
+      -- Configuration for claudecode main
+      terminal_cmd = "claude --resume",
+      terminal = {
+        provider = "external",
+        provider_opts = {
+          external_terminal_cmd = "alacritty --working-directory %s -e %s",
+        },
+      },
+
+      -- Configuration for the interactive terminal:
+      -- terminal = {
+      --   split_side = "left",
+      --   split_width_percentage = 0.4,
+      --   provider = "snacks",
+      --   show_native_term_exit_tip = true,
+      -- },
+    },
+    config = true,
+    keys = {
+      { "<leader>ac", "<cmd>ClaudeCode<cr>",     mode = { "n", "x" }, desc = "Toggle Claude Terminal" },
+      { "<leader>ak", "<cmd>ClaudeCodeSend<cr>", mode = { "x" },      desc = "Send to Claude Code" },
+    },
+  },
   {
     'stevearc/conform.nvim',
     ---@type conform.setupOpts
@@ -176,33 +182,41 @@ local plugins = {
   },
   {
     "olimorris/codecompanion.nvim",
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
     },
     opts = {
-      strategies = {
+      display = {
         chat = {
-          adapter = "gemini_cli",
-        }
-      },
-      adapters = {
-        acp = {
-          gemini_cli = function()
-            return require("codecompanion.adapters").extend("gemini_cli", {
-              env = {
-                GOOGLE_CLOUD_PROJECT = "wp-dev-wovey-yev1",
-                GOOGLE_CLOUD_LOCATION = "us-central1",
-                GOOGLE_GENAI_USE_VERTEXAI = "true",
-              },
-            })
-          end,
+          window = {
+            position = 'left',
+            width = 0.4,
+          },
         },
       },
-    },
-    keys = {
-      { "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "x" }, desc = "Toggle Code Companion Chat" },
+      chat = {
+        strategies = {
+          chat = {
+            adapter = "gemini_cli",
+          }
+        },
+        adapters = {
+          acp = {
+            gemini_cli = function()
+              return require("codecompanion.adapters").extend("gemini_cli", {
+                env = {
+                  GOOGLE_CLOUD_PROJECT = "wp-dev-wovey-yev1",
+                  GOOGLE_CLOUD_LOCATION = "us-central1",
+                  GOOGLE_GENAI_USE_VERTEXAI = "true",
+                },
+              })
+            end,
+          },
+        },
+      },
     },
   },
   {

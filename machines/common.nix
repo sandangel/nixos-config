@@ -104,6 +104,15 @@ in
     };
   };
 
+  systemd.user.services = {
+    prlcc = {
+      serviceConfig = {
+        RestartSec = "1";
+        Restart = "always";
+      };
+    };
+  };
+
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.login.enableGnomeKeyring = true;
 
