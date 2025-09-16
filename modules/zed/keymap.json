@@ -40,6 +40,12 @@
     }
   },
   {
+    "context": "VimControl || !Editor && !Terminal",
+    "bindings": {
+      "space q": "pane::CloseActiveItem"
+    }
+  },
+  {
     "context": "vim_mode == visual || vim_mode == normal",
     "bindings": {
       "alt-k": "editor::MoveLineUp",
@@ -66,7 +72,6 @@
       "g j": ["workspace::SendKeystrokes", "ctrl-w w"],
       "space c p": "editor::ToggleSelectedDiffHunks",
       "space c r": "git::Restore",
-      "space q": "pane::CloseActiveItem",
       "space =": "pane::SplitVertical",
       "space -": "pane::SplitHorizontal",
       "space w": "workspace::SaveAll",
