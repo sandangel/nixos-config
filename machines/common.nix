@@ -90,19 +90,34 @@ in
   services.desktopManager.gnome.enable = true;
   services.xserver.excludePackages = [ pkgs.xterm ];
 
-  programs.hyprland.enable = true;
-  programs.hyprland.withUWSM = true;
-  programs.hyprland.systemd.setPath.enable = true;
-  xdg.portal.config = {
-    common = {
-      default = [
-        "xdph"
-        "gtk"
-      ];
-      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-      "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
-    };
-  };
+  services.gnome.core-apps.enable = false;
+  services.gnome.core-developer-tools.enable = false;
+  services.gnome.games.enable = false;
+  environment.gnome.excludePackages = with pkgs; [
+    gnome-tour
+    gnome-user-docs
+  ];
+
+  programs.niri.enable = true;
+  programs.niri.package = pkgs.niri-unstable;
+
+  programs.hyprland.enable = false;
+  programs.hyprland.withUWSM = false;
+  programs.hyprland.systemd.setPath.enable = false;
+  # For Hyprland
+  # xdg.portal.config = {
+  #   common = {
+  #     default = [
+  #       "xdph"
+  #       "gtk"
+  #     ];
+  #     "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+  #     "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
+  #   };
+  # };
+
+  # services.desktopManager.cosmic.enable = true;
+  # services.desktopManager.cosmic.xwayland.enable = true;
 
   systemd.user.services = {
     prlcc = {
@@ -200,7 +215,7 @@ in
     # Development
     alacritty
     git
-    kitty
+    # kitty
     wget
     neovim
 

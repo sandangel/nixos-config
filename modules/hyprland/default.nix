@@ -1,7 +1,4 @@
 { pkgs, ... }:
-let
-  clipsync = pkgs.writeShellScriptBin "clipsync" (builtins.readFile ./scripts/hypr-clipsync.sh);
-in
 {
   home.packages = with pkgs; [
     hyprpaper
@@ -9,7 +6,6 @@ in
     lxqt.lxqt-policykit
     clipse
     socat
-    clipsync
     libnotify
   ];
   xdg.configFile."hypr/hyprpaper.conf".source = ./hyprpaper.conf;
@@ -20,13 +16,16 @@ in
   wayland.windowManager.hyprland.systemd.variables = [ "--all" ];
   programs.zsh = {
     initContent = ''
-      . $HOME/.nix-config/modules/hyprland/hyprland.zsh
+      if [[ -n $HYPRLAND_INSTANCE_SIGNATURE ]]; then
+        . $HOME/.nix-config/modules/hyprland/hyprland.zsh
+      fi
     '';
   };
+  programs.clipsync.enable = true;
   imports = [
     # ./dunst
-    ./waybar
-    ./wofi
+    ../waybar
+    ../wofi
     # ./swaync
   ];
 }

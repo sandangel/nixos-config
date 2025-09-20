@@ -111,6 +111,17 @@ vim.api.nvim_create_user_command("HyprNavigate", function(opts)
   end
 end, { nargs = '?' })
 
+vim.api.nvim_create_user_command("NiriNavigate", function(opts)
+  local direction = opts.args
+  local mappings = { ['column-left'] = 'h', ['window-down'] = 'j', ['window-up'] = 'k', ['column-right'] = 'l' }
+  local flag = mappings[direction]
+  if vim.fn.winnr() == vim.fn.winnr(flag) then
+    vim.fn.jobstart({ 'niri', 'msg', 'action', 'focus-' .. direction })
+  else
+    vim.cmd('wincmd ' .. flag)
+  end
+end, { nargs = '?' })
+
 -- Workaround for neovide when attaching to remote server
 -- https://github.com/neovide/neovide/issues/1868
 vim.api.nvim_create_autocmd("UIEnter", {
@@ -135,26 +146,26 @@ vim.api.nvim_create_autocmd("UIEnter", {
   end
 })
 
---Use FocusGained to make sure Neovide window is created
+-- Use FocusGained to make sure Neovide window is created
 vim.api.nvim_create_autocmd("FocusGained", {
   group = "neovide",
   pattern = '*',
   callback = function()
     if vim.g.neovide then
-      local workspace_id = vim.fn.system('hyprctl activeworkspace -j | jq -r ".id"')
-      local neovide_window_id = vim.fn.system('hyprctl clients -j | jq -r "first(.[] | select(.workspace.id == ' ..
-        workspace_id .. ') | select(.class == \\"neovide\\")).address"')
-      local master_window_id = vim.fn.system('hyprctl clients -j | jq -r "[.[] | select (.workspace.id == ' ..
-        workspace_id .. ')] | min_by(.at[1]) | .address"')
-      if neovide_window_id ~= master_window_id then
-        vim.cmd('silent! !hyprctl dispatch swapwindow u')
-      end
+      vim.cmd('silent! !niri msg action move-column-to-first')
+      -- local workspace_id = vim.fn.system('hyprctl activeworkspace -j | jq -r ".id"')
+      -- local neovide_window_id = vim.fn.system('hyprctl clients -j | jq -r "first(.[] | select(.workspace.id == ' ..
+      --   workspace_id .. ') | select(.class == \\"neovide\\")).address"')
+      -- local master_window_id = vim.fn.system('hyprctl clients -j | jq -r "[.[] | select (.workspace.id == ' ..
+      --   workspace_id .. ')] | min_by(.at[1]) | .address"')
+      -- if neovide_window_id ~= master_window_id then
+      --   vim.cmd('silent! !hyprctl dispatch swapwindow u')
+      -- end
     end
   end
 })
 
 vim.lsp.log.set_level(vim.log.levels.OFF)
 
-vim.g.neovide_opacity = 0.8
-vim.g.neovide_normal_opacity = 0.8
-vim.g.neovide_background_color = "#292A37"
+vim.g.neovide_opacity = 0.9
+vim.g.neovide_normal_opacity = 0.9

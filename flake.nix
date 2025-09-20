@@ -2,13 +2,26 @@
   inputs = {
     # Mirroring nixpkgs unstable
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
     # ghostty.url = "github:ghostty-org/ghostty";
     # ghostty.inputs.nixpkgs.follows = "nixpkgs";
+
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
     # Updating nix itself
     nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
+
+    niri.url = "github:sodiboo/niri-flake";
+    niri.inputs.nixpkgs.follows = "nixpkgs";
+
+    dankshell.url = "github:AvengeMedia/DankMaterialShell";
+    dankshell.inputs.nixpkgs.follows = "nixpkgs";
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # For running GUI apps
     # nixGL.url = "github:nix-community/nixGL";
@@ -40,6 +53,9 @@
       home-manager,
       nixpkgs,
       # ghostty,
+      stylix,
+      dankshell,
+      niri,
       disko,
       # neovim,
       # devenv,
@@ -109,12 +125,37 @@
           modules = [
             ./machines/parallels/configuration.nix
             disko.nixosModules.disko
+            stylix.nixosModules.stylix
+            niri.nixosModules.niri
             ./machines/parallels/disko-config.nix
             ./machines/common.nix
             {
+              nixpkgs.overlays = [
+                self.overlays.default
+                self.overlays.linux
+                # fenix.overlays.default
+                niri.overlays.niri
+              ];
               nixpkgs.config.permittedInsecurePackages = [
                 "beekeeper-studio-5.3.4"
               ];
+            }
+            (
+              { pkgs, ... }:
+              {
+                stylix.enable = true;
+                stylix.image = ./images/wall.png;
+                stylix.polarity = "dark";
+                stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark.yaml";
+                stylix.autoEnable = false;
+              }
+            )
+            {
+              home-manager.users.${linux-user} = {
+                imports = [
+                  dankshell.homeModules.dankMaterialShell
+                ];
+              };
             }
             {
               disko.devices.disk.primary.device = "/dev/sda";
@@ -132,6 +173,7 @@
           modules = [
             ./machines/vmware-fusion/configuration.nix
             disko.nixosModules.disko
+            stylix.nixosModules.stylix
             ./machines/vmware-fusion/disko-config.nix
             ./machines/common.nix
             {

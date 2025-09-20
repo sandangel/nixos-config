@@ -25,8 +25,19 @@ in
 
   home.file.".icons".source = "${fluent-icon-theme}/share/icons";
 
+  # Also symlink to .local/share for better compatibility
+  home.file.".local/share/themes".source = "${fluent-gtk-theme}/share/themes";
+  home.file.".local/share/icons".source = "${fluent-icon-theme}/share/icons";
+
+  # Qt theme configuration
+  home.file.".config/qt6ct/qt6ct.conf".source = ./qt6ct.conf;
+  home.file.".config/qt5ct/qt5ct.conf".source = ./qt5ct.conf;
+
   home.sessionVariables = {
     XDG_SESSION_TYPE = "wayland";
+
+    # GTK theme settings
+    GTK_THEME = gtk-theme;
 
     GDK_BACKEND = "wayland,x11";
     GDK_SCALE = "1";
@@ -35,6 +46,10 @@ in
     QT_QPA_PLATFORM = "wayland;xcb";
     QT_QPA_PLATFORMTHEME = "qt6ct";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+
+    # Ensure icon themes are found
+    XCURSOR_PATH = "$HOME/.icons:$XCURSOR_PATH";
+    XCURSOR_THEME = "Fluent-dark-cursors";
 
     SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
@@ -46,6 +61,10 @@ in
   };
   home.packages = with pkgs; [
     gnome-tweaks
+    qt6ct
+    libsForQt5.qt5ct
+    adwaita-qt
+    adwaita-qt6
   ];
   gtk = {
     enable = true;
@@ -60,12 +79,22 @@ in
       package = fluent-gtk-theme;
     };
 
+    gtk2.extraConfig = ''
+      gtk-theme-name="${gtk-theme}"
+      gtk-icon-theme-name="${icon-theme}"
+      gtk-application-prefer-dark-theme=1
+    '';
+
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
+      gtk-theme-name = gtk-theme;
+      gtk-icon-theme-name = icon-theme;
     };
 
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
+      gtk-theme-name = gtk-theme;
+      gtk-icon-theme-name = icon-theme;
     };
   };
 
@@ -80,6 +109,8 @@ in
       clock-show-weekday = true;
       color-scheme = "prefer-dark";
       enable-hot-corners = false;
+      icon-theme = icon-theme;
+      gtk-theme = gtk-theme;
     };
 
     "org/gnome/desktop/peripherals/keyboard" = {
@@ -88,7 +119,7 @@ in
     };
 
     "org/gnome/desktop/peripherals/mouse" = {
-      natural-scroll = false;
+      natural-scroll = true;
       speed = 1.0;
     };
 

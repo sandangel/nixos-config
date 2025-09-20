@@ -88,8 +88,9 @@
   };
 
   imports = [
+    ../../programs/clipsync
     ../../modules/aider
-    ../../modules/hyprland
+    # ../../modules/hyprland
     ../../modules/alacritty
     ../../modules/cloud
     ../../modules/direnv
@@ -97,7 +98,7 @@
     ../../modules/ghostty
     ../../modules/git
     ../../modules/gnome
-    ../../modules/kitty
+    ../../modules/niri
     ../../modules/kubernetes
     ../../modules/misc
     ../../modules/nvim
