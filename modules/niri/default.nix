@@ -265,6 +265,10 @@
           "Mod+F".action.focus-column-right = { };
           "Mod+B".action.focus-column-left = { };
 
+          "Alt+9".action.focus-column = 9;
+          "Alt+8".action.focus-column = 8;
+          "Alt+7".action.focus-column = 7;
+          "Alt+6".action.focus-column = 6;
           "Alt+5".action.focus-column = 5;
           "Alt+4".action.focus-column = 4;
           "Alt+3".action.focus-column = 3;
