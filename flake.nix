@@ -2,15 +2,15 @@
   inputs = {
     # Mirroring nixpkgs unstable
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
     # ghostty.url = "github:ghostty-org/ghostty";
     # ghostty.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Updating nix itself
-    nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
 
     niri.url = "github:sodiboo/niri-flake";
     niri.inputs.nixpkgs.follows = "nixpkgs";
@@ -52,6 +52,7 @@
       flake-parts,
       home-manager,
       nixpkgs,
+      determinate,
       # ghostty,
       stylix,
       dankshell,
@@ -86,7 +87,6 @@
             ];
           }
           ./users/${user}/home.nix
-          inputs.nix.homeManagerModules.default
         ];
     in
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -127,6 +127,7 @@
             disko.nixosModules.disko
             stylix.nixosModules.stylix
             niri.nixosModules.niri
+            determinate.nixosModules.default
             ./machines/parallels/disko-config.nix
             ./machines/common.nix
             {
@@ -153,7 +154,8 @@
             {
               home-manager.users.${linux-user} = {
                 imports = [
-                  dankshell.homeModules.dankMaterialShell
+                  dankshell.homeModules.dankMaterialShell.default
+                  dankshell.homeModules.dankMaterialShell.niri
                 ];
               };
             }

@@ -14,17 +14,12 @@ let
 in
 {
   boot.kernelParams = [ "video=Virtual-1:4112x2572" ];
-  nix.package = pkgs.nixVersions.stable;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-    trusted-users = root ${username}
-  '';
   nix.nixPath = [
     "nixpkgs=flake:nixpkgs"
     "nixos-config=/etc/nixos/configuration.nix"
   ];
   nix.settings = {
-    auto-optimise-store = true;
+    eval-cores = 2;
     substituters = [
       "https://hyprland.cachix.org"
       "https://devenv.cachix.org"
@@ -166,6 +161,7 @@ in
   # services.xserver.libinput.enable = true;
 
   programs.zsh.enable = true;
+  programs.bash.enable = true;
   programs.nix-ld.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

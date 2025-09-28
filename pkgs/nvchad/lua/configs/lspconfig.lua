@@ -1,7 +1,6 @@
 dofile(vim.g.base46_cache .. 'lsp')
 require 'nvchad.lsp'
 
-local lspconfig = require 'lspconfig'
 local root_pattern = require 'lspconfig.util'.root_pattern
 
 local on_init = require 'nvchad.configs.lspconfig'.on_init
@@ -12,7 +11,7 @@ local group = vim.api.nvim_create_augroup('LspFormatting', {})
 ---@param client vim.lsp.Client
 ---@param bufnr integer
 local on_attach = function(client, bufnr)
-  if client.supports_method 'textDocument/formatting' then
+  if client:supports_method 'textDocument/formatting' then
     vim.api.nvim_clear_autocmds { group = group, buffer = bufnr, }
     vim.api.nvim_create_autocmd('BufWritePre', {
       group = group,
@@ -43,12 +42,8 @@ local servers = {
   helm_ls = {},
   nixd = {},
   rust_analyzer = {},
-  ruff = {
-    root_dir = root_pattern '.git',
-  },
-  pyright = {
-    root_dir = root_pattern '.git',
-  },
+  ruff = {},
+  pyright = {},
   yamlls = {
     filetypes = vim.tbl_filter(function(ft)
       -- Not start with Helm files
@@ -90,12 +85,8 @@ local servers = {
       },
     },
   },
-  tflint = {
-    root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
-  },
-  terraformls = {
-    root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
-  },
+  tflint = {},
+  terraformls = {},
   ty = {
     settings = {
       ty = {

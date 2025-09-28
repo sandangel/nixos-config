@@ -9,11 +9,7 @@
 
   programs.dankMaterialShell = {
     enable = true;
-    enableKeybinds = false;
     enableSystemd = true;
-    enableSpawn = false;
-    enableVPN = false;
-    enableNightMode = false;
     enableBrightnessControl = false;
   };
 
@@ -34,7 +30,12 @@
         };
 
         mouse = {
-          # natural-scroll = true;
+          accel-speed = 1.0;
+          accel-profile = "adaptive";
+          scroll-factor = {
+            vertical = 1.0;
+            horizontal = 1.0;
+          };
         };
 
         # Focus windows and outputs automatically when moving the mouse into them
@@ -222,6 +223,10 @@
         }
       ];
 
+      overview = {
+        zoom = 1.0;
+      };
+
       # Key bindings
       binds =
         with config.lib.niri.actions;
@@ -230,7 +235,7 @@
         in
         {
           # Terminal and app launcher
-          "Alt+W".action.spawn-sh = "niri msg action focus-workspace-down && alacritty";
+          "Alt+W".action.spawn-sh = "niri msg action focus-workspace -- 255 && alacritty";
           "Alt+T".action.spawn-sh = "~/.nix-config/modules/niri/scripts/niri-toggle-term.sh";
           "Mod+G" = {
             action = dms-ipc "spotlight" "toggle";
@@ -243,7 +248,7 @@
           "Ctrl+Shift+Return".action.spawn-sh = "alacritty -e ~/.nix-config/modules/niri/scripts/niri-cwd.sh";
 
           # Overview
-          "Mod+O" = {
+          "Alt+O" = {
             action.toggle-overview = { };
             repeat = false;
           };
@@ -262,8 +267,8 @@
           "Ctrl+Shift+K".action.move-window-up-or-to-workspace-up = { };
           "Ctrl+Shift+J".action.move-window-down-or-to-workspace-down = { };
 
-          "Mod+F".action.focus-column-right = { };
-          "Mod+B".action.focus-column-left = { };
+          "Mod+F".action.focus-workspace-down = { };
+          "Mod+B".action.focus-workspace-up = { };
 
           "Alt+9".action.focus-column = 9;
           "Alt+8".action.focus-column = 8;
@@ -311,7 +316,7 @@
           "Shift+Down".action.move-window-down = { };
 
           "Alt+Z".action.maximize-column = { };
-          "Alt+D".action.move-column-to-workspace-down = { };
+          "Alt+D".action.move-window-to-workspace = 255;
 
           # Width adjustments
           "Mod+Minus".action.set-column-width = "-10%";
