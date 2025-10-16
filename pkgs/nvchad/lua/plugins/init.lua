@@ -83,54 +83,34 @@ local plugins = {
     cmd = { 'GithubPreviewToggle', },
     config = true,
   },
-  {
-    "GeorgesAlkhouri/nvim-aider",
-    cmd = {
-      "Aider",
-      "AiderTreeAddFile",
-      "AiderTreeDropFile",
-    },
-    keys = {
-      { "<leader>a/", "<cmd>Aider toggle<cr>",      desc = "Aider Open" },
-      { "<leader>as", "<cmd>Aider send<cr>",        desc = "Aider Send",                  mode = { "n", "x" } },
-      { "<leader>ab", "<cmd>Aider buffer<cr>",      desc = "Aider Send Buffer" },
-      { "=",          "<cmd>AiderTreeAddFile<cr>",  desc = "Aider Add File in NvimTree",  ft = "NvimTree" },
-      { "-",          "<cmd>AiderTreeDropFile<cr>", desc = "Aider Drop File in NvimTree", ft = "NvimTree" },
-    },
-    dependencies = {
-      {
-        "folke/snacks.nvim",
-        ---@type snacks.Config
-        opts = {
-          ---@type table<string, snacks.win.Config>
-          styles = {
-            terminal = {
-              relative = "editor",
-              bo = {
-                filetype = "snacks_terminal",
-              },
-              wo = {},
-              keys = {
-                -- Override default keymap
-                term_normal = false,
-              },
-            }
-          },
-        },
-      },
-      "nvim-telescope/telescope.nvim",
-    },
-    config = function()
-      require("nvim_aider").setup({
-        -- Command line arguments passed to aider
-        aider_cmd = "AWS_PROFILE=genai-dev-admin aider",
-        win = {
-          style = "nvim_aider",
-          position = "left",
-        },
-      })
-    end,
-  },
+  -- {
+  --   "GeorgesAlkhouri/nvim-aider",
+  --   cmd = {
+  --     "Aider",
+  --     "AiderTreeAddFile",
+  --     "AiderTreeDropFile",
+  --   },
+  --   keys = {
+  --     { "<leader>a/", "<cmd>Aider toggle<cr>",      desc = "Aider Open" },
+  --     { "<leader>as", "<cmd>Aider send<cr>",        desc = "Aider Send",                  mode = { "n", "x" } },
+  --     { "<leader>ab", "<cmd>Aider buffer<cr>",      desc = "Aider Send Buffer" },
+  --     { "=",          "<cmd>AiderTreeAddFile<cr>",  desc = "Aider Add File in NvimTree",  ft = "NvimTree" },
+  --     { "-",          "<cmd>AiderTreeDropFile<cr>", desc = "Aider Drop File in NvimTree", ft = "NvimTree" },
+  --   },
+  --   dependencies = {
+  --     "nvim-telescope/telescope.nvim",
+  --   },
+  --   config = function()
+  --     require("nvim_aider").setup({
+  --       -- Command line arguments passed to aider
+  --       aider_cmd = "AWS_PROFILE=genai-dev-admin aider",
+  --       win = {
+  --         style = "nvim_aider",
+  --         position = "left",
+  --       },
+  --     })
+  --   end,
+  -- },
   {
     "coder/claudecode.nvim",
     dependencies = {

@@ -28,6 +28,7 @@
     # nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv";
+    devenv.inputs.nixpkgs.follows = "nixpkgs";
 
     # Fix static linking issues
     # flox.url = "github:flox/flox";
@@ -74,6 +75,11 @@
         { user }:
         [
           {
+
+            nix.settings.auto-optimise-store = true;
+            nix.gc.automatic = true;
+            nix.gc.dates = "daily";
+            nix.gc.options = "--delete-older-than +5";
             nix.settings.extra-trusted-users = [ user ];
             nix.settings.extra-trusted-public-keys = [
               "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
@@ -101,7 +107,7 @@
           { ... }:
           {
             devenv.shells.default = {
-              languages.nix.enable = true;
+              # languages.nix.enable = true;
             };
             # packages.default = ghostty.packages.${system}.ghostty;
           };

@@ -60,7 +60,7 @@
 
         # Default width of new windows
         default-column-width = {
-          proportion = 0.5;
+          proportion = 0.66667;
         };
 
         # Disable focus ring
@@ -97,6 +97,7 @@
 
       spawn-at-startup = [
         { argv = [ "alacritty" ]; }
+        { argv = [ "prlcp" ]; }
       ];
 
       # Hotkey overlay
@@ -192,14 +193,6 @@
             }
           ];
           default-column-width = { };
-        }
-        {
-          matches = [
-            {
-              app-id = "neovide";
-            }
-          ];
-          open-maximized = true;
         }
         # Open Firefox picture-in-picture as floating
         {

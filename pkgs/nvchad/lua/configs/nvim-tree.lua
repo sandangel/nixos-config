@@ -36,7 +36,7 @@ return vim.tbl_deep_extend('force', require 'nvchad.configs.nvimtree', {
   end,
   view = {
     width = {}, -- Adaptive size
-    side = 'right',
+    side = 'left',
   },
   trash = {
     cmd = 'trash',

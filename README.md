@@ -126,7 +126,7 @@ Boot from NixOS iso image, then run
 ```sh
 nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#gh
 gh auth login
-gh clone sandangel/nixos-config ~/.nix-config 
+gh clone sandangel/nixos-config ~/.nix-config
 cd ~/.nix-config
 gh clone sandangel/artifacts
 

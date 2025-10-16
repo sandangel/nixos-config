@@ -19,6 +19,7 @@ in
         tflint
         # tfsec
         trash-cli
+        scooter
         # yamlfmt
         yamllint
         helm-ls

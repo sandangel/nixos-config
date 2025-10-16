@@ -1,6 +1,5 @@
 vim.o.breakindent = true
 vim.o.clipboard = ''
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.o.linebreak = true
 vim.o.list = true
 vim.o.scrolloff = 5
@@ -13,7 +12,9 @@ vim.o.signcolumn = 'yes:2'
 vim.o.swapfile = false
 vim.o.virtualedit = 'all'
 vim.o.writebackup = false
-vim.wo.foldenable = false
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.o.foldlevelstart = 99
+vim.wo.foldenable = true
 vim.wo.foldmethod = 'expr'
 
 vim.opt.dictionary:append '/usr/share/dict/words'

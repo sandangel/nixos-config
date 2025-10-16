@@ -3,14 +3,14 @@
 {
   home.packages = with pkgs; [
     k9s
-    # kind
+    kind
     kubectl
     kubectx
     stern
     kubernetes-helm
     kustomize
     pinniped
-    # skaffold
+    skaffold
     # vcluster
   ];
 

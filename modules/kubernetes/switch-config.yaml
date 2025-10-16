@@ -13,3 +13,8 @@ kubeconfigStores:
     showPrefix: false
     paths:
       - ~/.kube/mtfuji/
+  - kind: filesystem
+    kubeconfigName: 'abctl.kubeconfig'
+    showPrefix: false
+    paths:
+      - ~/.airbyte/abctl/abctl.kubeconfig

@@ -11,6 +11,7 @@
       vim
       binutils
       bind
+      yq
 
       # Fonts
       # comic-code
