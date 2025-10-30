@@ -2,7 +2,7 @@
 decorations = "None"
 opacity = 0.95
 padding = { x = 10, y = 10 }
-startup_mode = "Maximized"
+# startup_mode = "Maximized"
 
 [scrolling]
 history = 100000

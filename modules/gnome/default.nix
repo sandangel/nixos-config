@@ -61,7 +61,7 @@ in
   };
   home.packages = with pkgs; [
     gnome-tweaks
-    qt6ct
+    qt6Packages.qt6ct
     libsForQt5.qt5ct
     adwaita-qt
     adwaita-qt6

@@ -1,8 +1,21 @@
 { ... }:
 {
+  programs.delta = {
+    enable = true;
+    options = {
+      decorations = {
+        commit-decoration-style = "bold yellow box ul";
+        file-decoration-style = "none";
+        file-style = "bold yellow ul";
+      };
+      features = "side-by-side decorations";
+      whitespace-error-style = "22 reverse";
+      navigate = true;
+    };
+  };
   programs.git = {
     enable = true;
-    extraConfig = {
+    settings = {
       github.user = "sandangel";
       push.default = "tracking";
       pull.ff = "only";
@@ -17,9 +30,9 @@
         reflog = "delta";
         show = "delta";
       };
+      user.name = "San Nguyen";
+      user.email = "vinhsannguyen91@gmail.com";
     };
-    userName = "San Nguyen";
-    userEmail = "vinhsannguyen91@gmail.com";
     includes = [
       {
         condition = "gitdir:~/Work/Woven/**";
@@ -30,18 +43,5 @@
       }
     ];
     lfs.enable = true;
-    delta = {
-      enable = true;
-      options = {
-        decorations = {
-          commit-decoration-style = "bold yellow box ul";
-          file-decoration-style = "none";
-          file-style = "bold yellow ul";
-        };
-        features = "side-by-side decorations";
-        whitespace-error-style = "22 reverse";
-        navigate = true;
-      };
-    };
   };
 }

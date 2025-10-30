@@ -204,7 +204,7 @@ in
     umount
     vim
     xdg-utils
-    glxinfo
+    mesa-demos
     gnumake
     gcc
 
