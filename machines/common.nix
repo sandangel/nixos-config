@@ -21,16 +21,16 @@ in
   nix.settings = {
     eval-cores = 2;
     substituters = [
-      "https://hyprland.cachix.org"
-      "https://devenv.cachix.org"
-      "https://cache.flox.dev"
-      "https://ghostty.cachix.org"
+      # "https://hyprland.cachix.org"
+      # "https://devenv.cachix.org"
+      # "https://cache.flox.dev"
+      # "https://ghostty.cachix.org"
     ];
     trusted-public-keys = [
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-      "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
-      "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
+      # "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      # "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+      # "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+      # "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
     ];
   };
 
@@ -77,11 +77,22 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  services = {
+    # GTK theme config
+    dbus = {
+      enable = true;
+      packages = [ pkgs.dconf ];
+    };
+  };
+
+  # Disable Orca screen reader
+  services.orca.enable = false;
 
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
+  # Gnome config
+  services.udev.packages = [ pkgs.gnome-settings-daemon ];
+
   services.desktopManager.gnome.enable = true;
   services.xserver.excludePackages = [ pkgs.xterm ];
 
@@ -93,8 +104,37 @@ in
     gnome-user-docs
   ];
 
-  programs.niri.enable = true;
-  programs.niri.package = pkgs.niri-unstable;
+  programs = {
+    dconf.enable = true;
+    niri = {
+      enable = true;
+      package = pkgs.niri-unstable;
+    };
+  };
+
+  xdg.portal = {
+    enable = true;
+    config = {
+      common = {
+        default = [
+          "gtk"
+          "gnome"
+        ];
+      };
+      niri = {
+        default = [
+          "gtk"
+          "gnome"
+        ];
+      };
+    };
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+    ];
+    xdgOpenUsePortal = true;
+  };
 
   programs.hyprland.enable = false;
   programs.hyprland.withUWSM = false;
@@ -132,33 +172,35 @@ in
     variant = "";
   };
 
-  # Enable CUPS to print documents.
   services.printing.enable = false;
+  security.rtkit.enable = true;
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings = {
+      PasswordAuthentication = true;
+      AllowUsers = [ "sand" ];
+      UseDns = true;
+      X11Forwarding = false;
+      PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+    };
+  };
 
   # Enable sound with pipewire.
-  # hardware.pulseaudio.enable = false;
   services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    # Prerequisite for screensharing
+    wireplumber.enable = true;
   };
 
   fonts.packages = [
     comic-code
   ]
   ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   programs.zsh.enable = true;
   programs.bash.enable = true;
@@ -192,6 +234,9 @@ in
 
   # Install firefox.
   programs.firefox.enable = true;
+  programs.firefox.package = (
+    pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
+  );
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -222,21 +267,69 @@ in
     xclip
     wl-clipboard
     clipnotify
+
+    # Niri
+    wayland-utils
+    nautilus
+    chromium
+    xwayland-satellite
   ];
 
-  services.flatpak.enable = true;
+  services.flatpak = {
+    enable = true;
+    update.onActivation = true;
+    packages = [ ];
+  };
+
+  networking.firewall.allowedTCPPorts = [
+    22 # Port for SSH Tunnel
+    8002 # ADK Web
+    3000 # Livekit frontend
+    7880 # Livekit RTC server
+    5187 # UI
+    8000 # Backend
+    3005 # Backend with OAuth2
+  ];
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     LIBSEAT_BACKEND = "logind";
     SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
     EDITOR = "${pkgs.neovim}/bin/nvim";
+    SHELL = "${pkgs.zsh}/bin/zsh";
+    XDG_CURRENT_DESKTOP = "niri";
+    XDG_SESSION_DESKTOP = "Wayland";
+    XDG_SESSION_TYPE = "wayland";
+    GDK_BACKEND = "wayland,x11";
+    QT_QPA_PLATFORM = "wayland;xcb";
+
+    # GTK theme settings
+    GTK_THEME = "Fluent-Dark";
+
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    QT_QPA_PLATFORMTHEME = "qt6ct";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+
+    # Ensure icon themes are found
+    XCURSOR_THEME = "Fluent-dark-cursors";
+
+    MOZ_ENABLE_WAYLAND = "1";
+
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+
+    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=1";
   };
 
   hardware.graphics.enable = true;
   hardware.graphics.extraPackages = [ pkgs.mesa ];
 
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+    };
+  };
   # Allow apps to update firmware
   services.fwupd.enable = true;
 

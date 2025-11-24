@@ -1,15 +1,9 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 
 {
-  # Add xwayland-satellite package
-  home.packages = with pkgs; [
-    xwayland-satellite
-    nautilus
-  ];
-
   programs.dankMaterialShell = {
     enable = true;
-    enableSystemd = true;
+    systemd.enable = true;
     enableBrightnessControl = false;
   };
 

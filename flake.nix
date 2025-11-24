@@ -6,6 +6,8 @@
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
     # ghostty.url = "github:ghostty-org/ghostty";
     # ghostty.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -59,6 +61,7 @@
       dankshell,
       niri,
       disko,
+      nix-flatpak,
       # neovim,
       # devenv,
       # flox,
@@ -71,15 +74,18 @@
 
       linux-user = "sand";
       mac-user = "san.nguyen";
+      nix-options = {
+        nix.registry.nixpkgs.flake = nixpkgs;
+        nix.settings.auto-optimise-store = true;
+        nix.settings.warn-dirty = false;
+        nix.gc.automatic = true;
+        nix.gc.dates = "daily";
+        nix.gc.options = "--delete-older-than +5";
+      };
       modules =
         { user }:
         [
           {
-
-            nix.settings.auto-optimise-store = true;
-            nix.gc.automatic = true;
-            nix.gc.dates = "daily";
-            nix.gc.options = "--delete-older-than +5";
             nix.settings.extra-trusted-users = [ user ];
             nix.settings.extra-trusted-public-keys = [
               "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
@@ -134,6 +140,8 @@
             stylix.nixosModules.stylix
             niri.nixosModules.niri
             determinate.nixosModules.default
+            nix-flatpak.nixosModules.nix-flatpak
+            nix-options
             ./machines/parallels/disko-config.nix
             ./machines/common.nix
             {

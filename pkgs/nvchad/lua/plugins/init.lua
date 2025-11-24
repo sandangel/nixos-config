@@ -83,6 +83,22 @@ local plugins = {
     cmd = { 'GithubPreviewToggle', },
     config = true,
   },
+  {
+    'Juksuu/worktrees.nvim',
+    cmd = {
+      'GitWorktreeCreate',
+      'GitWorktreeSwitch',
+      'GitWorktreeCreateExisting',
+      'GitWorktreeRemove',
+    },
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      require("worktrees").setup()
+      require("telescope").load_extension("worktrees")
+    end,
+  },
   -- {
   --   "GeorgesAlkhouri/nvim-aider",
   --   cmd = {

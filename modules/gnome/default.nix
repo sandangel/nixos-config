@@ -33,32 +33,6 @@ in
   home.file.".config/qt6ct/qt6ct.conf".source = ./qt6ct.conf;
   home.file.".config/qt5ct/qt5ct.conf".source = ./qt5ct.conf;
 
-  home.sessionVariables = {
-    XDG_SESSION_TYPE = "wayland";
-
-    # GTK theme settings
-    GTK_THEME = gtk-theme;
-
-    GDK_BACKEND = "wayland,x11";
-    GDK_SCALE = "1";
-
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_QPA_PLATFORM = "wayland;xcb";
-    QT_QPA_PLATFORMTHEME = "qt6ct";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-
-    # Ensure icon themes are found
-    XCURSOR_PATH = "$HOME/.icons:$XCURSOR_PATH";
-    XCURSOR_THEME = "Fluent-dark-cursors";
-
-    SDL_VIDEODRIVER = "wayland";
-    CLUTTER_BACKEND = "wayland";
-
-    MOZ_ENABLE_WAYLAND = "1";
-    MOZ_USE_XINPUT2 = "1";
-
-    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=1";
-  };
   home.packages = with pkgs; [
     gnome-tweaks
     qt6Packages.qt6ct
