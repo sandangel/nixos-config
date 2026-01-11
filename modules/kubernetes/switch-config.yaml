@@ -4,17 +4,7 @@ version: v1alpha1
 showPreview: false
 kubeconfigStores:
   - kind: filesystem
-    kubeconfigName: 'prod'
+    kubeconfigName: 'config'
     showPrefix: false
     paths:
-      - ~/.kube/mtfuji/
-  - kind: filesystem
-    kubeconfigName: 'non-prod'
-    showPrefix: false
-    paths:
-      - ~/.kube/mtfuji/
-  - kind: filesystem
-    kubeconfigName: 'abctl.kubeconfig'
-    showPrefix: false
-    paths:
-      - ~/.airbyte/abctl/abctl.kubeconfig
+      - ~/.kube/config

@@ -11,7 +11,7 @@ in
         bun
         deno
         codespell
-        corepack
+        # corepack
         nixfmt-rfc-style
         nodejs
         nvchad

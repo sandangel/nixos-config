@@ -17,9 +17,6 @@
     niri.url = "github:sodiboo/niri-flake";
     niri.inputs.nixpkgs.follows = "nixpkgs";
 
-    dankshell.url = "github:AvengeMedia/DankMaterialShell";
-    dankshell.inputs.nixpkgs.follows = "nixpkgs";
-
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -58,7 +55,6 @@
       determinate,
       # ghostty,
       stylix,
-      dankshell,
       niri,
       disko,
       nix-flatpak,
@@ -152,7 +148,7 @@
                 niri.overlays.niri
               ];
               nixpkgs.config.permittedInsecurePackages = [
-                "beekeeper-studio-5.3.4"
+                "beekeeper-studio-5.5.3"
               ];
             }
             (
@@ -165,14 +161,6 @@
                 stylix.autoEnable = false;
               }
             )
-            {
-              home-manager.users.${linux-user} = {
-                imports = [
-                  dankshell.homeModules.dankMaterialShell.default
-                  dankshell.homeModules.dankMaterialShell.niri
-                ];
-              };
-            }
             {
               disko.devices.disk.primary.device = "/dev/sda";
               disko.devices.disk.secondary.device = "/dev/sdb";

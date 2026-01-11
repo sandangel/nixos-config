@@ -1,12 +1,6 @@
 { config, ... }:
 
 {
-  programs.dankMaterialShell = {
-    enable = true;
-    systemd.enable = true;
-    enableBrightnessControl = false;
-  };
-
   programs.niri = {
     settings = {
       # Enable xwayland-satellite integration

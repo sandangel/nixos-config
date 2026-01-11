@@ -1,7 +1,7 @@
 dofile(vim.g.base46_cache .. 'lsp')
 require 'nvchad.lsp'
 
-local root_pattern = require 'lspconfig.util'.root_pattern
+-- local root_pattern = require 'lspconfig.util'.root_pattern
 
 local on_init = require 'nvchad.configs.lspconfig'.on_init
 local capabilities = require 'nvchad.configs.lspconfig'.capabilities
@@ -36,14 +36,15 @@ end
 local servers = {
   -- cssls = {},
   dockerls = {},
-  -- eslint = {},
+  eslint = {},
+  basedpyright = {},
   gopls = {},
   golangci_lint_ls = {},
   helm_ls = {},
   nixd = {},
   rust_analyzer = {},
   ruff = {},
-  pyright = {},
+  -- pyright = {},
   yamlls = {
     filetypes = vim.tbl_filter(function(ft)
       -- Not start with Helm files
@@ -90,7 +91,6 @@ local servers = {
   ty = {
     settings = {
       ty = {
-        disableLanguageServices = true,
         diagnosticMode = 'workspace',
       },
     },
