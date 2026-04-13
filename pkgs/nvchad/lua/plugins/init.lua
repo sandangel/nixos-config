@@ -83,79 +83,22 @@ local plugins = {
     cmd = { 'GithubPreviewToggle', },
     config = true,
   },
-  {
-    'Juksuu/worktrees.nvim',
-    cmd = {
-      'GitWorktreeCreate',
-      'GitWorktreeSwitch',
-      'GitWorktreeCreateExisting',
-      'GitWorktreeRemove',
-    },
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
-    config = function()
-      require("worktrees").setup()
-      require("telescope").load_extension("worktrees")
-    end,
-  },
   -- {
-  --   "GeorgesAlkhouri/nvim-aider",
+  --   'Juksuu/worktrees.nvim',
   --   cmd = {
-  --     "Aider",
-  --     "AiderTreeAddFile",
-  --     "AiderTreeDropFile",
-  --   },
-  --   keys = {
-  --     { "<leader>a/", "<cmd>Aider toggle<cr>",      desc = "Aider Open" },
-  --     { "<leader>as", "<cmd>Aider send<cr>",        desc = "Aider Send",                  mode = { "n", "x" } },
-  --     { "<leader>ab", "<cmd>Aider buffer<cr>",      desc = "Aider Send Buffer" },
-  --     { "=",          "<cmd>AiderTreeAddFile<cr>",  desc = "Aider Add File in NvimTree",  ft = "NvimTree" },
-  --     { "-",          "<cmd>AiderTreeDropFile<cr>", desc = "Aider Drop File in NvimTree", ft = "NvimTree" },
+  --     'GitWorktreeCreate',
+  --     'GitWorktreeSwitch',
+  --     'GitWorktreeCreateExisting',
+  --     'GitWorktreeRemove',
   --   },
   --   dependencies = {
   --     "nvim-telescope/telescope.nvim",
   --   },
   --   config = function()
-  --     require("nvim_aider").setup({
-  --       -- Command line arguments passed to aider
-  --       aider_cmd = "AWS_PROFILE=genai-dev-admin aider",
-  --       win = {
-  --         style = "nvim_aider",
-  --         position = "left",
-  --       },
-  --     })
+  --     require("worktrees").setup()
+  --     require("telescope").load_extension("worktrees")
   --   end,
   -- },
-  {
-    "coder/claudecode.nvim",
-    dependencies = {
-      "folke/snacks.nvim", -- Optional dependency for enhanced terminal
-    },
-    opts = {
-      -- Configuration for claudecode main
-      terminal_cmd = "claude --resume",
-      terminal = {
-        provider = "external",
-        provider_opts = {
-          external_terminal_cmd = "alacritty --working-directory %s -e %s",
-        },
-      },
-
-      -- Configuration for the interactive terminal:
-      -- terminal = {
-      --   split_side = "left",
-      --   split_width_percentage = 0.4,
-      --   provider = "snacks",
-      --   show_native_term_exit_tip = true,
-      -- },
-    },
-    config = true,
-    keys = {
-      { "<leader>ac", "<cmd>ClaudeCode<cr>",     mode = { "n", "x" }, desc = "Toggle Claude Terminal" },
-      { "<leader>ak", "<cmd>ClaudeCodeSend<cr>", mode = { "x" },      desc = "Send to Claude Code" },
-    },
-  },
   {
     'stevearc/conform.nvim',
     ---@type conform.setupOpts
@@ -174,45 +117,6 @@ local plugins = {
       default_format_opts = {
         lsp_format = "prefer",
       }
-    },
-  },
-  {
-    "olimorris/codecompanion.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
-    },
-    opts = {
-      display = {
-        chat = {
-          window = {
-            position = 'left',
-            width = 0.4,
-          },
-        },
-      },
-      chat = {
-        strategies = {
-          chat = {
-            adapter = "gemini_cli",
-          }
-        },
-        adapters = {
-          acp = {
-            gemini_cli = function()
-              return require("codecompanion.adapters").extend("gemini_cli", {
-                env = {
-                  GOOGLE_CLOUD_PROJECT = "wp-dev-wovey-yev1",
-                  GOOGLE_CLOUD_LOCATION = "us-central1",
-                  GOOGLE_GENAI_USE_VERTEXAI = "true",
-                },
-              })
-            end,
-          },
-        },
-      },
     },
   },
   {
@@ -257,15 +161,15 @@ local plugins = {
       continuous_sync = true,
     },
   },
-  {
-    'brenton-leighton/multiple-cursors.nvim',
-    config = true,
-    keys = {
-      { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line down', },
-      { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line up', },
-      { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i', }, desc = 'Cursors Add or delete cursor at mouse position', },
-    },
-  },
+  -- {
+  --   'brenton-leighton/multiple-cursors.nvim',
+  --   config = true,
+  --   keys = {
+  --     { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line down', },
+  --     { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line up', },
+  --     { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i', }, desc = 'Cursors Add or delete cursor at mouse position', },
+  --   },
+  -- },
   {
     'rcarriga/nvim-notify',
     opts = {
@@ -279,26 +183,26 @@ local plugins = {
       end,
     },
   },
-  {
-    'folke/noice.nvim', -- codespell:ignore noice
-    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', },
-    lazy = false,
-    ---@type NoiceConfig
-    opts = {
-      lsp = {
-        progress = { enabled = false, },
-        signature = { enabled = false, silent = true, },
-        hover = { enabled = false, silent = true, },
-      },
-      presets = {
-        command_palette = true, -- position the cmdline and popupmenu together
-      },
-    },
-    config = function(_, opts)
-      dofile(vim.g.base46_cache .. 'notify')
-      require 'noice'.setup(opts)
-    end,
-  },
+  -- {
+  --   'folke/noice.nvim', -- codespell:ignore noice
+  --   dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', },
+  --   lazy = false,
+  --   ---@type NoiceConfig
+  --   opts = {
+  --     lsp = {
+  --       progress = { enabled = false, },
+  --       signature = { enabled = false, silent = true, },
+  --       hover = { enabled = false, silent = true, },
+  --     },
+  --     presets = {
+  --       command_palette = true, -- position the cmdline and popupmenu together
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     dofile(vim.g.base46_cache .. 'notify')
+  --     require 'noice'.setup(opts)
+  --   end,
+  -- },
   {
     'windwp/nvim-autopairs',
     config = function(_, opts)

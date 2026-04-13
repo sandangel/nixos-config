@@ -229,7 +229,7 @@ in
       imports = [
         ../users/${username}/home.nix
       ];
-      home.stateVersion = "24.05";
+      home.stateVersion = "26.05";
     };
 
   # Install firefox.
@@ -307,7 +307,8 @@ in
     GTK_THEME = "Fluent-Dark";
 
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_QPA_PLATFORMTHEME = "qt6ct";
+    QT_QPA_PLATFORMTHEME = "gtk3";
+    QS_ICON_THEME = "Fluent-dark";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
 
     # Ensure icon themes are found
@@ -353,11 +354,15 @@ in
 
     # Core features
     enableSystemMonitoring = true; # System monitoring widgets (dgop)
-    enableClipboard = true; # Clipboard history manager
     enableVPN = true; # VPN management widget
     enableDynamicTheming = true; # Wallpaper-based theming (matugen)
     enableAudioWavelength = true; # Audio visualizer (cava)
     enableCalendarEvents = true; # Calendar integration (khal)
+  };
+
+  programs.dsearch = {
+    enable = true;
+    systemd.enable = true;
   };
 
   # List services that you want to enable:
@@ -377,5 +382,5 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "26.05"; # Did you read the comment?
 }

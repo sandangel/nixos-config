@@ -37,14 +37,14 @@ local servers = {
   -- cssls = {},
   dockerls = {},
   eslint = {},
-  basedpyright = {},
+  -- basedpyright = {},
   gopls = {},
   golangci_lint_ls = {},
   helm_ls = {},
   nixd = {},
   rust_analyzer = {},
   ruff = {},
-  -- pyright = {},
+  pyright = {},
   yamlls = {
     filetypes = vim.tbl_filter(function(ft)
       -- Not start with Helm files

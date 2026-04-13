@@ -14,6 +14,7 @@
     };
   };
   programs.git = {
+    signing.format = null;
     enable = true;
     settings = {
       github.user = "sandangel";

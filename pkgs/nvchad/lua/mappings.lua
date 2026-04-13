@@ -170,7 +170,7 @@ M.LspConfig = {
     },
     ['gr'] = {
       function()
-        require 'nvchad.lsp.renamer' ()
+        vim.lsp.buf.rename()
       end,
       'LSP rename',
     },

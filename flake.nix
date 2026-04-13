@@ -8,6 +8,11 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/quickshell/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # ghostty.url = "github:ghostty-org/ghostty";
     # ghostty.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -53,6 +58,7 @@
       home-manager,
       nixpkgs,
       determinate,
+      quickshell,
       # ghostty,
       stylix,
       niri,
@@ -140,6 +146,15 @@
             nix-options
             ./machines/parallels/disko-config.nix
             ./machines/common.nix
+            (
+              { pkgs, ... }:
+              {
+
+                programs.dms-shell.quickshell.package =
+                  quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
+
+              }
+            )
             {
               nixpkgs.overlays = [
                 self.overlays.default
@@ -148,7 +163,7 @@
                 niri.overlays.niri
               ];
               nixpkgs.config.permittedInsecurePackages = [
-                "beekeeper-studio-5.5.3"
+                "beekeeper-studio-5.5.7"
               ];
             }
             (

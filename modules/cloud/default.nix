@@ -6,7 +6,7 @@
     # azure-cli
     google-cloud-sdk
     awscli2
-    ssm-session-manager-plugin
+    # ssm-session-manager-plugin
     terraform
     opentofu
     vault
