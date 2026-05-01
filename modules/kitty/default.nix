@@ -4,7 +4,7 @@ lib.mkMerge [
     xdg.configFile."kitty".source = ./.;
     xdg.configFile."kitty".recursive = true;
     programs.zsh = {
-      initExtra = ''
+      initContent = ''
         . $HOME/.config/kitty/kitty.zsh
       '';
     };

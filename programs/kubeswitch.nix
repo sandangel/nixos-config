@@ -45,7 +45,7 @@ in
         source ${shell_files}/share/${cfg.command}_completion.bash
       '';
 
-      programs.zsh.initExtra = ''
+      programs.zsh.initContent = ''
         autoload -U +X compinit && compinit
 
         source ${shell_files}/share/${cfg.command}_init.zsh

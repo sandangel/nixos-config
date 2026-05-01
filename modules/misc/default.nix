@@ -11,6 +11,7 @@
       vim
       binutils
       bind
+      yq
 
       # Fonts
       # comic-code
@@ -34,8 +35,12 @@
       chafa
 
       # Python toolchain
-      rye
+      # rye
       # hatch
+      uv
+
+      # DB
+      beekeeper-studio
     ]
   );
 
@@ -68,6 +73,8 @@
 
   programs.zoxide.enable = true;
   programs.fzf.enable = true;
+
+  programs.vscode.enable = true;
 
   programs.eza.enable = true;
   programs.eza.icons = "auto";

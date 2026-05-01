@@ -3,14 +3,12 @@
   programs.zsh = {
     enable = true;
     envExtra = builtins.readFile ./zshenv;
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     enableCompletion = true;
     defaultKeymap = "emacs";
     history.path = "${config.xdg.configHome}/zsh/.zsh_history";
     completionInit = "";
     initContent = ''
-      export DIRENV_LOG_FORMAT=
-
       # Set fzf folder for z4h so it won't install another fzf
       __fzf_dir=${pkgs.fzf}
       . $HOME/.config/zsh/config/init.zsh
@@ -19,9 +17,6 @@
       # There is a bug in home-manager zsh-abbr module that not sourcing the file
       . $HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/zsh-abbr.plugin.zsh
       . $HOME/.config/zsh/config/utils.zsh
-
-      export PATH=$HOME/.rye/shims:$PATH
-      source <(${pkgs.rye}/bin/rye self completion)
 
       if [ -f /opt/homebrew/bin/brew ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -33,6 +28,8 @@
       if command -v uvx &> /dev/null; then
         eval "$(uvx --generate-shell-completion zsh)"
       fi
+
+      export PATH=$PATH:$HOME/.local/bin:$HOME/.cache/.bun/bin
     '';
     zsh-abbr.enable = true;
     zsh-abbr.abbreviations = {
@@ -54,6 +51,9 @@
       gd = "git diff";
       gl = "git pull";
       gp = "git push";
+      gwtl = "git worktree list";
+      gwta = "git worktree add";
+      gwtr = "git worktree remove";
 
       gs = "git status";
       rm = "trash";

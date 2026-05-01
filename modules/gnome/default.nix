@@ -13,7 +13,7 @@ let
       owner = "vinceliuice";
       repo = "Fluent-gtk-theme";
       rev = "master";
-      hash = "sha256-JW4ed7I1rxAlWj+hJEfWIRE7zaWvF7Ym3W3bqljwkMY=";
+      hash = "sha256-AaFj9lG9lWg0a0ksJ0ufoUpsunR3uDhcdb7oSrvAmPI=";
     };
   });
   gtk-theme = "Fluent-Dark";
@@ -25,27 +25,20 @@ in
 
   home.file.".icons".source = "${fluent-icon-theme}/share/icons";
 
-  home.sessionVariables = {
-    XDG_SESSION_TYPE = "wayland";
+  # Also symlink to .local/share for better compatibility
+  home.file.".local/share/themes".source = "${fluent-gtk-theme}/share/themes";
+  home.file.".local/share/icons".source = "${fluent-icon-theme}/share/icons";
 
-    GDK_BACKEND = "wayland,x11";
-    GDK_SCALE = "1";
+  # Qt theme configuration
+  home.file.".config/qt6ct/qt6ct.conf".source = ./qt6ct.conf;
+  home.file.".config/qt5ct/qt5ct.conf".source = ./qt5ct.conf;
 
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_QPA_PLATFORM = "wayland;xcb";
-    QT_QPA_PLATFORMTHEME = "qt6ct";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-
-    SDL_VIDEODRIVER = "wayland";
-    CLUTTER_BACKEND = "wayland";
-
-    MOZ_ENABLE_WAYLAND = "1";
-    MOZ_USE_XINPUT2 = "1";
-
-    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=1";
-  };
   home.packages = with pkgs; [
     gnome-tweaks
+    qt6Packages.qt6ct
+    libsForQt5.qt5ct
+    adwaita-qt
+    adwaita-qt6
   ];
   gtk = {
     enable = true;
@@ -60,12 +53,22 @@ in
       package = fluent-gtk-theme;
     };
 
+    gtk2.extraConfig = ''
+      gtk-theme-name="${gtk-theme}"
+      gtk-icon-theme-name="${icon-theme}"
+      gtk-application-prefer-dark-theme=1
+    '';
+
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
+      gtk-theme-name = gtk-theme;
+      gtk-icon-theme-name = icon-theme;
     };
-
+    gtk4.theme = null;
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
+      gtk-theme-name = gtk-theme;
+      gtk-icon-theme-name = icon-theme;
     };
   };
 
@@ -80,6 +83,8 @@ in
       clock-show-weekday = true;
       color-scheme = "prefer-dark";
       enable-hot-corners = false;
+      icon-theme = icon-theme;
+      gtk-theme = gtk-theme;
     };
 
     "org/gnome/desktop/peripherals/keyboard" = {
@@ -88,7 +93,7 @@ in
     };
 
     "org/gnome/desktop/peripherals/mouse" = {
-      natural-scroll = false;
+      natural-scroll = true;
       speed = 1.0;
     };
 

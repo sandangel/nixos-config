@@ -47,21 +47,21 @@
         );
       };
     };
-    timezone-update = {
-      Unit = {
-        Description = "Update timezone on startup";
-      };
-      Service = {
-        Type = "oneshot";
-        ExecStart = toString (
-          pkgs.writeShellScript "timezone-update-sh" ''
-            set -eou pipefail
-            # Set timezone based on IP, since automatic timezone on gnome is not working
-            timedatectl set-timezone "$(curl --fail https://ipapi.co/timezone)"
-          ''
-        );
-      };
-    };
+    # timezone-update = {
+    #   Unit = {
+    #     Description = "Update timezone on startup";
+    #   };
+    #   Service = {
+    #     Type = "oneshot";
+    #     ExecStart = toString (
+    #       pkgs.writeShellScript "timezone-update-sh" ''
+    #         set -eou pipefail
+    #         # Set timezone based on IP, since automatic timezone on gnome is not working
+    #         timedatectl set-timezone "$(curl --fail https://ipapi.co/timezone)"
+    #       ''
+    #     );
+    #   };
+    # };
   };
 
   systemd.user.timers = {
@@ -74,21 +74,23 @@
       };
       Install.WantedBy = [ "timers.target" ];
     };
-    timezone-update = {
-      Unit = {
-        Description = "Timer for timezone-update service";
-      };
-      Timer = {
-        OnBootSec = "1min";
-        Unit = "timezone-update.service";
-        OnCalendar = "hourly";
-      };
-      Install.WantedBy = [ "timers.target" ];
-    };
+    # timezone-update = {
+    #   Unit = {
+    #     Description = "Timer for timezone-update service";
+    #   };
+    #   Timer = {
+    #     OnBootSec = "1min";
+    #     Unit = "timezone-update.service";
+    #     OnCalendar = "hourly";
+    #   };
+    #   Install.WantedBy = [ "timers.target" ];
+    # };
   };
 
   imports = [
-    ../../modules/hyprland
+    ../../programs/clipsync
+    ../../modules/aider
+    # ../../modules/hyprland
     ../../modules/alacritty
     ../../modules/cloud
     ../../modules/direnv
@@ -96,7 +98,7 @@
     ../../modules/ghostty
     ../../modules/git
     ../../modules/gnome
-    ../../modules/kitty
+    ../../modules/niri
     ../../modules/kubernetes
     ../../modules/misc
     ../../modules/nvim

@@ -83,93 +83,62 @@ local plugins = {
     cmd = { 'GithubPreviewToggle', },
     config = true,
   },
-  {
-    "GeorgesAlkhouri/nvim-aider",
-    cmd = {
-      "AiderTerminalToggle",
-      "AiderTerminalSend",
-      "AiderQuickSendCommand",
-      "AiderQuickSendBuffer",
-      "AiderTreeAddFile",
-      "AiderTreeDropFiles",
-    },
-    keys = {
-      { "<leader>a/", "<cmd>AiderTerminalToggle<cr>",   desc = "Aider Open" },
-      { "<leader>as", "<cmd>AiderTerminalSend<cr>",     desc = "Aider Send",                  mode = { "n", "x" } },
-      { "<leader>ac", "<cmd>AiderQuickSendCommand<cr>", desc = "Aider Send Command" },
-      { "<leader>ab", "<cmd>AiderQuickSendBuffer<cr>",  desc = "Aider Send Buffer" },
-      { "=",          "<cmd>AiderTreeAddFile<cr>",      desc = "Aider Add File in NvimTree",  ft = "NvimTree" },
-      { "-",          "<cmd>AiderTreeDropFile<cr>",     desc = "Aider Drop File in NvimTree", ft = "NvimTree" },
-    },
-    dependencies = {
-      {
-        "folke/snacks.nvim",
-        ---@type snacks.Config
-        opts = {
-          ---@type table<string, snacks.win.Config>
-          styles = {
-            terminal = {
-              bo = {
-                filetype = "snacks_terminal",
-              },
-              wo = {},
-              keys = {
-                -- Override default keymap
-                term_normal = false,
-              },
-            }
-          },
-        },
-      },
-      "nvim-telescope/telescope.nvim",
-    },
-    config = function()
-      require("nvim_aider").setup({
-        -- Command line arguments passed to aider
-        aider_cmd = "AWS_PROFILE=wovey-dev-admin aider",
-        args = {
-          "--no-auto-commits",
-          "--pretty",
-          "--stream",
-          "--watch-files",
-        },
-        win = {
-          style = "nvim_aider",
-          position = "left",
-        },
-      })
-    end,
-  },
   -- {
-  --   "olimorris/codecompanion.nvim",
-  --   event = 'VeryLazy',
-  --   dependencies = {
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-treesitter/nvim-treesitter",
-  --     { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
+  --   'Juksuu/worktrees.nvim',
+  --   cmd = {
+  --     'GitWorktreeCreate',
+  --     'GitWorktreeSwitch',
+  --     'GitWorktreeCreateExisting',
+  --     'GitWorktreeRemove',
   --   },
-  --   config = true,
-  -- },
-  -- {
-  --   'zbirenbaum/copilot.lua',
-  --   event = 'VeryLazy',
-  --   dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
+  --   dependencies = {
+  --     "nvim-telescope/telescope.nvim",
+  --   },
   --   config = function()
-  --     require 'copilot'.setup {
-  --       panel = {
-  --         enabled = false,
-  --       },
-  --       suggestion = {
-  --         enabled = false,
-  --       },
-  --       filetypes = {
-  --         yaml = true,
-  --         markdown = true,
-  --         gitcommit = true,
-  --       },
-  --     }
+  --     require("worktrees").setup()
+  --     require("telescope").load_extension("worktrees")
   --   end,
   -- },
+  {
+    'stevearc/conform.nvim',
+    ---@type conform.setupOpts
+    opts = {
+      formatters_by_ft = {
+        -- Use the "*" filetype to run formatters on all filetypes.
+        python = { "ruff_format", "ruff_fix", "ruff_organize_imports", lsp_format = "fallback" },
+        typescriptreact = { "prettier", lsp_format = "fallback" },
+        ["*"] = { "trim_whitespace" },
+      },
+      format_on_save = {
+        -- These options will be passed to conform.format()
+        timeout_ms = 500,
+        lsp_format = "prefer",
+      },
+      default_format_opts = {
+        lsp_format = "prefer",
+      }
+    },
+  },
+  {
+    'zbirenbaum/copilot.lua',
+    event = 'VeryLazy',
+    dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
+    config = function()
+      require 'copilot'.setup {
+        panel = {
+          enabled = false,
+        },
+        suggestion = {
+          enabled = false,
+        },
+        filetypes = {
+          yaml = true,
+          markdown = true,
+          gitcommit = true,
+        },
+      }
+    end,
+  },
   {
     'rust-lang/rust.vim',
     ft = 'rust',
@@ -192,15 +161,15 @@ local plugins = {
       continuous_sync = true,
     },
   },
-  {
-    'brenton-leighton/multiple-cursors.nvim',
-    config = true,
-    keys = {
-      { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line down', },
-      { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line up', },
-      { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i', }, desc = 'Cursors Add or delete cursor at mouse position', },
-    },
-  },
+  -- {
+  --   'brenton-leighton/multiple-cursors.nvim',
+  --   config = true,
+  --   keys = {
+  --     { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line down', },
+  --     { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line up', },
+  --     { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i', }, desc = 'Cursors Add or delete cursor at mouse position', },
+  --   },
+  -- },
   {
     'rcarriga/nvim-notify',
     opts = {
@@ -214,26 +183,26 @@ local plugins = {
       end,
     },
   },
-  {
-    'folke/noice.nvim', -- codespell:ignore noice
-    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', },
-    lazy = false,
-    ---@type NoiceConfig
-    opts = {
-      lsp = {
-        progress = { enabled = false, },
-        signature = { enabled = false, silent = true, },
-        hover = { enabled = false, silent = true, },
-      },
-      presets = {
-        command_palette = true, -- position the cmdline and popupmenu together
-      },
-    },
-    config = function(_, opts)
-      dofile(vim.g.base46_cache .. 'notify')
-      require 'noice'.setup(opts)
-    end,
-  },
+  -- {
+  --   'folke/noice.nvim', -- codespell:ignore noice
+  --   dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', },
+  --   lazy = false,
+  --   ---@type NoiceConfig
+  --   opts = {
+  --     lsp = {
+  --       progress = { enabled = false, },
+  --       signature = { enabled = false, silent = true, },
+  --       hover = { enabled = false, silent = true, },
+  --     },
+  --     presets = {
+  --       command_palette = true, -- position the cmdline and popupmenu together
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     dofile(vim.g.base46_cache .. 'notify')
+  --     require 'noice'.setup(opts)
+  --   end,
+  -- },
   {
     'windwp/nvim-autopairs',
     config = function(_, opts)

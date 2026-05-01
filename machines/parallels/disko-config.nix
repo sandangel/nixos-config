@@ -1,24 +1,30 @@
 {
   disko.devices = {
     disk = {
-      main = {
+      primary = {
         type = "disk";
+        device = "/dev/sda";
         content = {
           type = "gpt";
           partitions = {
             ESP = {
-              size = "1G";
+              size = "2G";
               type = "EF00";
               content = {
                 type = "filesystem";
                 format = "vfat";
+                extraArgs = [
+                  "-n"
+                  "boot"
+                ];
                 mountpoint = "/boot";
                 mountOptions = [
                   "defaults"
+                  "umask=0077"
                 ];
               };
             };
-            ext4 = {
+            root = {
               size = "100%";
               content = {
                 type = "filesystem";
@@ -36,21 +42,22 @@
           };
         };
       };
-      work = {
+      secondary = {
         type = "disk";
+        device = "/dev/sdb";
         content = {
           type = "gpt";
           partitions = {
-            ext4 = {
+            home = {
               size = "100%";
               content = {
                 type = "filesystem";
                 format = "ext4";
                 extraArgs = [
                   "-L"
-                  "work"
+                  "home"
                 ];
-                mountpoint = "/home/sand/Work";
+                mountpoint = "/home";
                 mountOptions = [
                   "noatime"
                 ];

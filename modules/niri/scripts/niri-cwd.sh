@@ -1,6 +1,6 @@
 #!/bin/sh
 
-pid=$(hyprctl activewindow -j | jq '.pid')
+pid=$(niri msg -j focused-window | jq -r '.pid')
 cmdline=""
 if [[ "$pid" != "null" ]]; then
   cmdline=$(cat /proc/${pid}/cmdline | xargs -0 echo)

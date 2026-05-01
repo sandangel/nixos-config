@@ -8,7 +8,9 @@ active_win_id=$(hyprctl activewindow -j | jq -r '.address')
 
 if [[ "$active_win_id" == "$nvim_win_id" ]]; then
   if [[ $win_count -eq 1 ]]; then
-    hyprctl dispatch -- exec "ghostty -e ~/.nix-config/modules/hyprland/scripts/hypr-cwd.sh"
+    pid=$(hyprctl activewindow -j | jq '.pid')
+    dir=$(readlink /proc/"$pid"/cwd || echo "$HOME")
+    hyprctl dispatch -- exec "alacritty --working-directory $dir"
   else
     if [[ "$is_zoomed" == "true" ]]; then
       hyprctl dispatch fullscreen 1

@@ -1,8 +1,7 @@
 dofile(vim.g.base46_cache .. 'lsp')
 require 'nvchad.lsp'
 
-local lspconfig = require 'lspconfig'
-local root_pattern = require 'lspconfig.util'.root_pattern
+-- local root_pattern = require 'lspconfig.util'.root_pattern
 
 local on_init = require 'nvchad.configs.lspconfig'.on_init
 local capabilities = require 'nvchad.configs.lspconfig'.capabilities
@@ -12,42 +11,40 @@ local group = vim.api.nvim_create_augroup('LspFormatting', {})
 ---@param client vim.lsp.Client
 ---@param bufnr integer
 local on_attach = function(client, bufnr)
-  if client.supports_method 'textDocument/formatting' then
+  if client:supports_method 'textDocument/formatting' then
     vim.api.nvim_clear_autocmds { group = group, buffer = bufnr, }
     vim.api.nvim_create_autocmd('BufWritePre', {
       group = group,
       buffer = bufnr,
       callback = function()
-        local prettier = require('null-ls.builtins.formatting.prettier')
-        local ft = vim.bo[bufnr].filetype
-        if vim.tbl_contains({ 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' }, ft) then
-          vim.cmd "EslintFixAll"
-        end
-        if vim.tbl_contains(prettier.filetypes, ft) then
-          vim.lsp.buf.format { async = false, filter = function() return client.name == 'null-ls' end }
-        else
-          vim.lsp.buf.format { async = false }
-        end
+        require("conform").format({ bufnr = bufnr })
+        --  local prettier = require('null-ls.builtins.formatting.prettier')
+        --  local ft = vim.bo[bufnr].filetype
+        --  if vim.tbl_contains({ 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' }, ft) then
+        --    vim.cmd "EslintFixAll"
+        --  end
+        --  if vim.tbl_contains(prettier.filetypes, ft) then
+        --    vim.lsp.buf.format { async = false, filter = function() return client.name == 'null-ls' end }
+        --  else
+        --    vim.lsp.buf.format { async = false }
+        --  end
       end,
     })
   end
 end
 
 local servers = {
-  cssls = {},
+  -- cssls = {},
   dockerls = {},
   eslint = {},
+  -- basedpyright = {},
   gopls = {},
   golangci_lint_ls = {},
   helm_ls = {},
   nixd = {},
   rust_analyzer = {},
-  ruff = {
-    root_dir = root_pattern '.git',
-  },
-  pyright = {
-    root_dir = root_pattern '.git',
-  },
+  ruff = {},
+  pyright = {},
   yamlls = {
     filetypes = vim.tbl_filter(function(ft)
       -- Not start with Helm files
@@ -55,7 +52,7 @@ local servers = {
     end, require 'lspconfig.configs.yamlls'.default_config.filetypes),
     settings = {
       yaml = {
-        format = { enable = true, printWidth = 120, singleQuote = true, proseWrap = 'always', },
+        format = { enable = true },
         keyOrdering = false,
         hover = true,
         completion = true,
@@ -89,19 +86,35 @@ local servers = {
       },
     },
   },
-  tflint = {
-    root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
+  tflint = {},
+  terraformls = {},
+  ty = {
+    settings = {
+      ty = {
+        diagnosticMode = 'workspace',
+      },
+    },
   },
-  terraformls = {
-    root_dir = root_pattern('.git', '.terraform', 'main.tf', '.terraform.lock.hcl'),
-  },
-  ts_ls = {},
+  vtsls = {},
+  -- ts_ls = {},
   tailwindcss = {},
   lua_ls = {
     settings = {
       Lua = {
         runtime = {
           version = 'LuaJIT',
+        },
+        workspace = {
+          checkThirdParty = false,
+          library = {
+            vim.fn.expand "$VIMRUNTIME/lua",
+            vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types",
+            vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
+            vim.fn.stdpath "data" .. "/lazy/noice.nvim/lua/noice/types",
+            vim.fn.stdpath "data" .. "/lazy/snacks.nvim/lua/snacks",
+            vim.fn.stdpath "data" .. "/lazy/conform.nvim/lua/conform",
+            "${3rd}/luv/library",
+          }
         },
         telemetry = { enable = false },
       },
@@ -114,35 +127,39 @@ for name, opts in pairs(servers) do
   opts.on_attach = on_attach
   opts.capabilities = capabilities
 
-  lspconfig[name].setup(opts)
+  if next(opts) ~= nil then
+    vim.lsp.config(name, opts)
+  end
+
+  vim.lsp.enable(name)
 end
 
-local null_ls = require 'null-ls'
-local h = require 'null-ls.helpers'
+-- local null_ls = require 'null-ls'
+-- local h = require 'null-ls.helpers'
 
 -- Need to set root_dir to `.git` for pyproject because there might be
 -- multiple pyproject files in a python monorepo. So by default we only
 -- check the pyproject at root to avoid config duplication.
 
-null_ls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  root_dir = root_pattern '.git',
-  sources = {
-    null_ls.builtins.diagnostics.codespell.with {
-      cwd = h.cache.by_bufnr(function(params)
-        return (root_pattern '.git')(params.bufname)
-      end),
-    },
-    null_ls.builtins.diagnostics.actionlint,
-    null_ls.builtins.diagnostics.stylelint,
-    null_ls.builtins.diagnostics.yamllint,
-
-    null_ls.builtins.formatting.prettier,
-    null_ls.builtins.formatting.nixfmt,
-    null_ls.builtins.formatting.terraform_fmt,
-
-    require 'none-ls.formatting.ruff',
-    require 'none-ls.formatting.ruff_format',
-  },
-}
+-- null_ls.setup {
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   root_dir = root_pattern '.git',
+--   sources = {
+--     null_ls.builtins.diagnostics.codespell.with {
+--       cwd = h.cache.by_bufnr(function(params)
+--         return (root_pattern '.git')(params.bufname)
+--       end),
+--     },
+--     null_ls.builtins.diagnostics.actionlint,
+--     null_ls.builtins.diagnostics.stylelint,
+--     null_ls.builtins.diagnostics.yamllint,
+--
+--     null_ls.builtins.formatting.prettier,
+--     null_ls.builtins.formatting.nixfmt,
+--     null_ls.builtins.formatting.terraform_fmt,
+--
+--     require 'none-ls.formatting.ruff',
+--     require 'none-ls.formatting.ruff_format',
+--   },
+-- }

@@ -14,28 +14,23 @@ let
 in
 {
   boot.kernelParams = [ "video=Virtual-1:4112x2572" ];
-  nix.package = pkgs.nixVersions.stable;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-    trusted-users = root ${username}
-  '';
   nix.nixPath = [
     "nixpkgs=flake:nixpkgs"
     "nixos-config=/etc/nixos/configuration.nix"
   ];
   nix.settings = {
-    auto-optimise-store = true;
+    eval-cores = 2;
     substituters = [
-      "https://hyprland.cachix.org"
-      "https://devenv.cachix.org"
-      "https://cache.flox.dev"
-      "https://ghostty.cachix.org"
+      # "https://hyprland.cachix.org"
+      # "https://devenv.cachix.org"
+      # "https://cache.flox.dev"
+      # "https://ghostty.cachix.org"
     ];
     trusted-public-keys = [
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-      "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
-      "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
+      # "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      # "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+      # "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+      # "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
     ];
   };
 
@@ -82,36 +77,89 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.excludePackages = [ pkgs.xterm ];
-
-  programs.hyprland.enable = true;
-  programs.hyprland.withUWSM = true;
-  programs.hyprland.systemd.setPath.enable = true;
-  xdg.portal.config = {
-    common = {
-      default = [
-        "xdph"
-        "gtk"
-      ];
-      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-      "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
+  services = {
+    # GTK theme config
+    dbus = {
+      enable = true;
+      packages = [ pkgs.dconf ];
     };
   };
+
+  # Disable Orca screen reader
+  services.orca.enable = false;
+
+  # Enable the GNOME Desktop Environment.
+  services.displayManager.gdm.enable = true;
+  # Gnome config
+  services.udev.packages = [ pkgs.gnome-settings-daemon ];
+
+  services.desktopManager.gnome.enable = true;
+  services.xserver.excludePackages = [ pkgs.xterm ];
+
+  services.gnome.core-apps.enable = false;
+  services.gnome.core-developer-tools.enable = false;
+  services.gnome.games.enable = false;
+  environment.gnome.excludePackages = with pkgs; [
+    gnome-tour
+    gnome-user-docs
+  ];
+
+  programs = {
+    dconf.enable = true;
+    niri = {
+      enable = true;
+      package = pkgs.niri-unstable;
+    };
+  };
+
+  xdg.portal = {
+    enable = true;
+    config = {
+      common = {
+        default = [
+          "gtk"
+          "gnome"
+        ];
+      };
+      niri = {
+        default = [
+          "gtk"
+          "gnome"
+        ];
+      };
+    };
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+    ];
+    xdgOpenUsePortal = true;
+  };
+
+  programs.hyprland.enable = false;
+  programs.hyprland.withUWSM = false;
+  programs.hyprland.systemd.setPath.enable = false;
+  # For Hyprland
+  # xdg.portal.config = {
+  #   common = {
+  #     default = [
+  #       "xdph"
+  #       "gtk"
+  #     ];
+  #     "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+  #     "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
+  #   };
+  # };
+
+  # services.desktopManager.cosmic.enable = true;
+  # services.desktopManager.cosmic.xwayland.enable = true;
+
   systemd.user.services = {
     prlcc = {
-      wantedBy = lib.mkForce [ ];
-    };
-    prldnd = {
-      wantedBy = lib.mkForce [ ];
-    };
-    prlsga = {
-      wantedBy = lib.mkForce [ ];
+      serviceConfig = {
+        RestartSec = "1";
+        Restart = "always";
+      };
     };
   };
 
@@ -124,34 +172,38 @@ in
     variant = "";
   };
 
-  # Enable CUPS to print documents.
   services.printing.enable = false;
+  security.rtkit.enable = true;
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings = {
+      PasswordAuthentication = true;
+      AllowUsers = [ "sand" ];
+      UseDns = true;
+      X11Forwarding = false;
+      PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+    };
+  };
 
   # Enable sound with pipewire.
-  # hardware.pulseaudio.enable = false;
   services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    # Prerequisite for screensharing
+    wireplumber.enable = true;
   };
 
   fonts.packages = [
     comic-code
-  ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  ]
+  ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   programs.zsh.enable = true;
+  programs.bash.enable = true;
   programs.nix-ld.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -177,11 +229,11 @@ in
       imports = [
         ../users/${username}/home.nix
       ];
-      home.stateVersion = "24.05";
+      home.stateVersion = "26.05";
     };
 
   # Install firefox.
-  programs.firefox.enable = true;
+  # programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -194,14 +246,14 @@ in
     umount
     vim
     xdg-utils
-    glxinfo
+    mesa-demos
     gnumake
     gcc
 
     # Development
     alacritty
     git
-    kitty
+    # kitty
     wget
     neovim
 
@@ -212,23 +264,84 @@ in
     xclip
     wl-clipboard
     clipnotify
+
+    # Niri
+    wayland-utils
+    nautilus
+    chromium
+    xwayland-satellite
   ];
 
-  services.flatpak.enable = true;
+  services.flatpak = {
+    enable = true;
+    update.onActivation = true;
+    packages = [ ];
+  };
+
+  networking.firewall.allowedTCPPorts = [
+    22 # Port for SSH Tunnel
+    8002 # ADK Web
+    3000 # Livekit frontend
+    7880 # Livekit RTC server
+    5187 # UI
+    8000 # Backend
+    3005 # Backend with OAuth2
+  ];
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     LIBSEAT_BACKEND = "logind";
     SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
     EDITOR = "${pkgs.neovim}/bin/nvim";
+    SHELL = "${pkgs.zsh}/bin/zsh";
+    XDG_CURRENT_DESKTOP = "niri";
+    XDG_SESSION_DESKTOP = "Wayland";
+    XDG_SESSION_TYPE = "wayland";
+    GDK_BACKEND = "wayland,x11";
+    QT_QPA_PLATFORM = "wayland;xcb";
+
+    # GTK theme settings
+    GTK_THEME = "Fluent-Dark";
+
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    QT_QPA_PLATFORMTHEME = "gtk3";
+    QS_ICON_THEME = "Fluent-dark";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+
+    # Ensure icon themes are found
+    XCURSOR_THEME = "Fluent-dark-cursors";
+
+    MOZ_ENABLE_WAYLAND = "1";
+
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+
+    CHROMIUM_USER_FLAGS = "--force-device-scale-factor=1";
   };
 
   hardware.graphics.enable = true;
   hardware.graphics.extraPackages = [ pkgs.mesa ];
 
-  virtualisation.docker.enable = true;
+  virtualisation.containerd.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    extraOptions = " --containerd /run/containerd/containerd.sock";
+    daemon = {
+      settings = {
+        live-restore = true;
+        features = {
+          containerd-snapshotter = true;
+        };
+      };
+    };
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+    };
+  };
   # Allow apps to update firmware
   services.fwupd.enable = true;
+  # Allow /bin/bash for claude-code plugin scripts
+  services.envfs.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -236,6 +349,27 @@ in
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+  };
+
+  programs.dms-shell = {
+    enable = true;
+
+    systemd = {
+      enable = true; # Systemd service for auto-start
+      restartIfChanged = true; # Auto-restart dms.service when dms-shell changes
+    };
+
+    # Core features
+    enableSystemMonitoring = true; # System monitoring widgets (dgop)
+    enableVPN = true; # VPN management widget
+    enableDynamicTheming = true; # Wallpaper-based theming (matugen)
+    enableAudioWavelength = true; # Audio visualizer (cava)
+    enableCalendarEvents = true; # Calendar integration (khal)
+  };
+
+  programs.dsearch = {
+    enable = true;
+    systemd.enable = true;
   };
 
   # List services that you want to enable:
@@ -255,5 +389,5 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "26.05"; # Did you read the comment?
 }

@@ -3,18 +3,18 @@
 {
   home.packages = with pkgs; [
     k9s
-    # kind
+    kind
     kubectl
     kubectx
     stern
     kubernetes-helm
     kustomize
     pinniped
-    # skaffold
+    skaffold
     # vcluster
   ];
 
-  imports = [ ../programs/kubeswitch.nix ];
+  # imports = [ ../programs/kubeswitch.nix ];
 
   programs.kubeswitch.enable = true;
 

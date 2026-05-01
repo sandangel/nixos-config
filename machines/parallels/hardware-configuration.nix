@@ -28,5 +28,6 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
   hardware.parallels.enable = true;
+  services.timesyncd.enable = lib.mkForce true; # Disable time sync from Mac
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "prl-tools" ];
 }

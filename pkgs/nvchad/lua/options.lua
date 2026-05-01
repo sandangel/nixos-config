@@ -1,6 +1,5 @@
 vim.o.breakindent = true
 vim.o.clipboard = ''
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.o.linebreak = true
 vim.o.list = true
 vim.o.scrolloff = 5
@@ -13,7 +12,9 @@ vim.o.signcolumn = 'yes:2'
 vim.o.swapfile = false
 vim.o.virtualedit = 'all'
 vim.o.writebackup = false
-vim.wo.foldenable = false
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.o.foldlevelstart = 99
+vim.wo.foldenable = true
 vim.wo.foldmethod = 'expr'
 
 vim.opt.dictionary:append '/usr/share/dict/words'
@@ -42,6 +43,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = 'NeoVimUser',
   pattern = '*',
   command = 'silent! lua vim.highlight.on_yank({ higroup="IncSearch", timeout=700 })',
+})
+
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = 'NeoVimUser',
+  pattern = '*',
+  callback = function()
+    if vim.fn.filereadable(vim.fn.expand('%')) == 1 then
+      vim.cmd('checktime')
+    end
+  end,
 })
 
 local enable_providers = {
@@ -101,6 +112,17 @@ vim.api.nvim_create_user_command("HyprNavigate", function(opts)
   end
 end, { nargs = '?' })
 
+vim.api.nvim_create_user_command("NiriNavigate", function(opts)
+  local direction = opts.args
+  local mappings = { ['column-left'] = 'h', ['window-down'] = 'j', ['window-up'] = 'k', ['column-right'] = 'l' }
+  local flag = mappings[direction]
+  if vim.fn.winnr() == vim.fn.winnr(flag) then
+    vim.fn.jobstart({ 'niri', 'msg', 'action', 'focus-' .. direction })
+  else
+    vim.cmd('wincmd ' .. flag)
+  end
+end, { nargs = '?' })
+
 -- Workaround for neovide when attaching to remote server
 -- https://github.com/neovide/neovide/issues/1868
 vim.api.nvim_create_autocmd("UIEnter", {
@@ -109,12 +131,6 @@ vim.api.nvim_create_autocmd("UIEnter", {
   callback = function()
     if vim.g.neovide then
       local map = vim.keymap.set
-      map(
-        { 'i', 'c', 't' },
-        '<C-v>',
-        function() vim.api.nvim_paste(vim.fn.getreg('+'), true, -1) end,
-        { silent = true, desc = "Neovide Paste in GUI" }
-      )
       map({ 'n', 'i', 'x' }, '<C-+>', '<cmd>lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>', {
         silent = true,
         desc = 'Neovide Increase scale',
@@ -131,22 +147,26 @@ vim.api.nvim_create_autocmd("UIEnter", {
   end
 })
 
---Use FocusGained to make sure Neovide window is created
+-- Use FocusGained to make sure Neovide window is created
 vim.api.nvim_create_autocmd("FocusGained", {
   group = "neovide",
   pattern = '*',
   callback = function()
     if vim.g.neovide then
-      local workspace_id = vim.fn.system('hyprctl activeworkspace -j | jq -r ".id"')
-      local neovide_window_id = vim.fn.system('hyprctl clients -j | jq -r "first(.[] | select(.workspace.id == ' ..
-        workspace_id .. ') | select(.class == \\"neovide\\")).address"')
-      local master_window_id = vim.fn.system('hyprctl clients -j | jq -r "[.[] | select (.workspace.id == ' ..
-        workspace_id .. ')] | min_by(.at[1]) | .address"')
-      if neovide_window_id ~= master_window_id then
-        vim.cmd('silent! !hyprctl dispatch swapwindow u')
-      end
+      vim.cmd('silent! !niri msg action move-column-to-first')
+      -- local workspace_id = vim.fn.system('hyprctl activeworkspace -j | jq -r ".id"')
+      -- local neovide_window_id = vim.fn.system('hyprctl clients -j | jq -r "first(.[] | select(.workspace.id == ' ..
+      --   workspace_id .. ') | select(.class == \\"neovide\\")).address"')
+      -- local master_window_id = vim.fn.system('hyprctl clients -j | jq -r "[.[] | select (.workspace.id == ' ..
+      --   workspace_id .. ')] | min_by(.at[1]) | .address"')
+      -- if neovide_window_id ~= master_window_id then
+      --   vim.cmd('silent! !hyprctl dispatch swapwindow u')
+      -- end
     end
   end
 })
 
 vim.lsp.log.set_level(vim.log.levels.OFF)
+
+vim.g.neovide_opacity = 0.9
+vim.g.neovide_normal_opacity = 0.9

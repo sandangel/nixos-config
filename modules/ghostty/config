@@ -57,6 +57,7 @@ macos-option-as-alt = right
 shell-integration = zsh
 shell-integration-features = sudo,cursor,title
 scrollback-limit = 1_000_000_000
+window-inherit-working-directory = true
 
 keybind = clear
 keybind = ctrl+v=paste_from_clipboard

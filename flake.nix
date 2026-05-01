@@ -2,20 +2,37 @@
   inputs = {
     # Mirroring nixpkgs unstable
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    ghostty.url = "github:ghostty-org/ghostty";
-    # ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
-    # ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/quickshell/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # ghostty.url = "github:ghostty-org/ghostty";
+    # ghostty.inputs.nixpkgs.follows = "nixpkgs";
+
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Updating nix itself
-    nix.url = "https://flakehub.com/f/DeterminateSystems/nix/2.0";
+    niri.url = "github:sodiboo/niri-flake";
+    niri.inputs.nixpkgs.follows = "nixpkgs";
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # For running GUI apps
     # nixGL.url = "github:nix-community/nixGL";
     # nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv";
+    devenv.inputs.nixpkgs.follows = "nixpkgs";
 
     # Fix static linking issues
     # flox.url = "github:flox/flox";
@@ -40,8 +57,13 @@
       flake-parts,
       home-manager,
       nixpkgs,
-      ghostty,
+      determinate,
+      quickshell,
+      # ghostty,
+      stylix,
+      niri,
       disko,
+      nix-flatpak,
       # neovim,
       # devenv,
       # flox,
@@ -54,6 +76,14 @@
 
       linux-user = "sand";
       mac-user = "san.nguyen";
+      nix-options = {
+        nix.registry.nixpkgs.flake = nixpkgs;
+        nix.settings.auto-optimise-store = true;
+        nix.settings.warn-dirty = false;
+        nix.gc.automatic = true;
+        nix.gc.dates = "daily";
+        nix.gc.options = "--delete-older-than +5";
+      };
       modules =
         { user }:
         [
@@ -71,7 +101,6 @@
             ];
           }
           ./users/${user}/home.nix
-          inputs.nix.homeManagerModules.default
         ];
     in
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -83,12 +112,12 @@
         imports = [ inputs.devenv.flakeModule ];
 
         perSystem =
-          { system, ... }:
+          { ... }:
           {
             devenv.shells.default = {
-              languages.nix.enable = true;
+              # languages.nix.enable = true;
             };
-            packages.default = ghostty.packages.${system}.ghostty;
+            # packages.default = ghostty.packages.${system}.ghostty;
           };
 
         flake.overlays.default = final: prev: {
@@ -105,36 +134,72 @@
           # ld-floxlib = ld-floxlib.packages.${final.stdenv.system}.ld-floxlib;
         };
 
-        flake.nixosConfigurations.parallels-desktop = nixpkgs.lib.nixosSystem rec {
+        flake.nixosConfigurations.parallels-desktop = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
             ./machines/parallels/configuration.nix
             disko.nixosModules.disko
+            stylix.nixosModules.stylix
+            niri.nixosModules.niri
+            determinate.nixosModules.default
+            nix-flatpak.nixosModules.nix-flatpak
+            nix-options
             ./machines/parallels/disko-config.nix
             ./machines/common.nix
+            (
+              { pkgs, ... }:
+              {
+
+                programs.dms-shell.quickshell.package =
+                  quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
+
+              }
+            )
             {
-              disko.devices.disk.main.device = "/dev/sdc";
-              disko.devices.disk.work.device = "/dev/sdb";
+              nixpkgs.overlays = [
+                self.overlays.default
+                self.overlays.linux
+                # fenix.overlays.default
+                niri.overlays.niri
+              ];
+              nixpkgs.config.permittedInsecurePackages = [
+                "beekeeper-studio-5.5.7"
+              ];
+            }
+            (
+              { pkgs, ... }:
+              {
+                stylix.enable = true;
+                stylix.image = ./images/wall.png;
+                stylix.polarity = "dark";
+                stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark.yaml";
+                stylix.autoEnable = false;
+              }
+            )
+            {
+              disko.devices.disk.primary.device = "/dev/sda";
+              disko.devices.disk.secondary.device = "/dev/sdb";
               environment.systemPackages = [
-                ghostty.packages.${system}.ghostty
+                # ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default
               ];
             }
             home-manager.nixosModules.home-manager
           ];
         };
-        flake.nixosConfigurations.vmware-fusion = nixpkgs.lib.nixosSystem rec {
+        flake.nixosConfigurations.vmware-fusion = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
             ./machines/vmware-fusion/configuration.nix
             disko.nixosModules.disko
+            stylix.nixosModules.stylix
             ./machines/vmware-fusion/disko-config.nix
             ./machines/common.nix
             {
               disko.devices.disk.main.device = "/dev/nvme0n3";
-              disko.devices.disk.work.device = "/dev/nvme0n4";
+              disko.devices.disk.home.device = "/dev/nvme0n4";
               environment.systemPackages = [
-                ghostty.packages.${system}.ghostty
+                # ghostty.packages.${system}.ghostty
                 # nixGL.packages.${system}.default
               ];
             }
