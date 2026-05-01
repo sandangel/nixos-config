@@ -3,10 +3,9 @@ let
   nvchad = pkgs.callPackage ../../pkgs/nvchad { };
 in
 {
-  home.packages = with pkgs; ([
+  home.packages = with pkgs; [
     actionlint
     bun
-    deno
     codespell
     # corepack
     nixfmt
@@ -41,7 +40,7 @@ in
     tailwindcss-language-server
     docker-compose-language-service
     dockerfile-language-server
-  ]);
+  ];
 
   programs.neovim = {
     enable = true;

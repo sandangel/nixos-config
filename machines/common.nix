@@ -233,10 +233,7 @@ in
     };
 
   # Install firefox.
-  programs.firefox.enable = true;
-  programs.firefox.package = (
-    pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
-  );
+  # programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -324,8 +321,18 @@ in
   hardware.graphics.enable = true;
   hardware.graphics.extraPackages = [ pkgs.mesa ];
 
+  virtualisation.containerd.enable = true;
   virtualisation.docker = {
     enable = true;
+    extraOptions = " --containerd /run/containerd/containerd.sock";
+    daemon = {
+      settings = {
+        live-restore = true;
+        features = {
+          containerd-snapshotter = true;
+        };
+      };
+    };
     autoPrune = {
       enable = true;
       dates = "weekly";

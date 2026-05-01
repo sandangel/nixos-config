@@ -51,6 +51,9 @@
       gd = "git diff";
       gl = "git pull";
       gp = "git push";
+      gwtl = "git worktree list";
+      gwta = "git worktree add";
+      gwtr = "git worktree remove";
 
       gs = "git status";
       rm = "trash";
