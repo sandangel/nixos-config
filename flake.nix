@@ -8,8 +8,8 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
-    quickshell = {
-      url = "git+https://git.outfoxxed.me/quickshell/quickshell";
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -58,7 +58,7 @@
       home-manager,
       nixpkgs,
       determinate,
-      quickshell,
+      dms,
       # ghostty,
       stylix,
       niri,
@@ -136,6 +136,7 @@
 
         flake.nixosConfigurations.parallels-desktop = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             ./machines/parallels/configuration.nix
             disko.nixosModules.disko
@@ -146,15 +147,7 @@
             nix-options
             ./machines/parallels/disko-config.nix
             ./machines/common.nix
-            (
-              { pkgs, ... }:
-              {
-
-                programs.dms-shell.quickshell.package =
-                  quickshell.packages.${pkgs.stdenv.hostPlatform.system}.quickshell;
-
-              }
-            )
+            dms.nixosModules.dank-material-shell
             {
               nixpkgs.overlays = [
                 self.overlays.default

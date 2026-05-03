@@ -1,6 +1,64 @@
-{ config, ... }:
+{ config, inputs, ... }:
 
 {
+  imports = [
+    inputs.dms.homeModules.dank-material-shell
+    inputs.dms.homeModules.niri
+  ];
+  # programs.dank-material-shell = {
+  #   enable = true;
+  #
+  #   systemd = {
+  #     enable = true; # Systemd service for auto-start
+  #     restartIfChanged = true; # Auto-restart dms.service when dms-shell changes
+  #   };
+  #
+  #   # Core features
+  #   enableSystemMonitoring = true; # System monitoring widgets (dgop)
+  #   enableVPN = true; # VPN management widget
+  #   enableDynamicTheming = true; # Wallpaper-based theming (matugen)
+  #   enableAudioWavelength = true; # Audio visualizer (cava)
+  #   enableCalendarEvents = true; # Calendar integration (khal)
+  # };
+  programs.dank-material-shell = {
+    enable = true;
+    niri = {
+      enableKeybinds = false; # Sets static preset keybinds
+      enableSpawn = true; # Auto-start DMS with niri, if enabled
+    };
+
+    # Core features
+    enableSystemMonitoring = true; # System monitoring widgets (dgop)
+    enableVPN = true; # VPN management widget
+    enableDynamicTheming = true; # Wallpaper-based theming (matugen)
+    enableAudioWavelength = true; # Audio visualizer (cava)
+    enableCalendarEvents = true; # Calendar integration (khal)
+    enableClipboardPaste = true;
+
+    settings = {
+      theme = "dark";
+      currentThemeCategory = "auto";
+      blurEnabled = true;
+      blurredWallpaperLayer = true;
+      blurWallpaperOnOverview = true;
+    };
+
+    session = {
+      isLightMode = false;
+      wallpaperPath = "/home/sand/.nix-config/images/wall.png";
+    };
+
+    clipboardSettings = {
+      maxHistory = 100;
+      maxEntrySize = 5242880;
+      autoClearDays = 1;
+      clearAtStartup = true;
+      disabled = false;
+      disableHistory = false;
+      disablePersist = true;
+    };
+  };
+
   programs.niri = {
     settings = {
       # Enable xwayland-satellite integration
