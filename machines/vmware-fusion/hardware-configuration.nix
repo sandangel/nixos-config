@@ -9,17 +9,21 @@
 {
   imports = [ ];
 
-  boot.initrd.availableKernelModules = [
-    "uhci_hcd"
-    "ahci"
-    "xhci_pci"
-    "nvme"
-    "usbhid"
-    "sr_mod"
-  ];
-  boot.initrd.kernelModules = [ "vmwgfx" ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    initrd = {
+      availableKernelModules = [
+        "uhci_hcd"
+        "ahci"
+        "xhci_pci"
+        "nvme"
+        "usbhid"
+        "sr_mod"
+      ];
+      kernelModules = [ "vmwgfx" ];
+    };
+    kernelModules = [ ];
+    extraModulePackages = [ ];
+  };
 
   swapDevices = [ ];
 
@@ -27,9 +31,11 @@
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  networking.hostId = "4127fee0";
-  networking.interfaces.ens160.useDHCP = lib.mkDefault true;
+  networking = {
+    useDHCP = lib.mkDefault true;
+    hostId = "4127fee0";
+    interfaces.ens160.useDHCP = lib.mkDefault true;
+  };
 
   # Share our host filesystem
   fileSystems."/host" = {

@@ -5,26 +5,24 @@
     inputs.dms.homeModules.dank-material-shell
     inputs.dms.homeModules.niri
   ];
-  # programs.dank-material-shell = {
-  #   enable = true;
-  #
-  #   systemd = {
-  #     enable = true; # Systemd service for auto-start
-  #     restartIfChanged = true; # Auto-restart dms.service when dms-shell changes
-  #   };
-  #
-  #   # Core features
-  #   enableSystemMonitoring = true; # System monitoring widgets (dgop)
-  #   enableVPN = true; # VPN management widget
-  #   enableDynamicTheming = true; # Wallpaper-based theming (matugen)
-  #   enableAudioWavelength = true; # Audio visualizer (cava)
-  #   enableCalendarEvents = true; # Calendar integration (khal)
-  # };
-  programs.dank-material-shell = {
+
+  programs = {
+  dank-material-shell = {
     enable = true;
     niri = {
       enableKeybinds = false; # Sets static preset keybinds
       enableSpawn = true; # Auto-start DMS with niri, if enabled
+      includes.filesToInclude = [
+        "alttab"
+        "binds"
+        "blur"
+        "colors"
+        "cursor"
+        "layout"
+        "outputs"
+        "windowrules"
+        "wpblur"
+      ];
     };
 
     # Core features
@@ -37,10 +35,34 @@
 
     settings = {
       theme = "dark";
-      currentThemeCategory = "auto";
+      currentThemeCategory = "custom";
+      currentThemeName = "custom";
+      customThemeFile = "/home/sand/.nix-config/modules/niri/onedark-theme.json";
+      matugenTemplateNeovim = false;
       blurEnabled = true;
       blurredWallpaperLayer = true;
       blurWallpaperOnOverview = true;
+      popupTransparency = 0.7;
+      barConfigs = [
+        {
+          id = "default";
+          name = "Main Bar";
+          enabled = true;
+          position = 0;
+          screenPreferences = [ "all" ];
+          showOnLastDisplay = true;
+          leftWidgets = [ "launcherButton" "workspaceSwitcher" "focusedWindow" ];
+          centerWidgets = [ "music" "clock" "weather" ];
+          rightWidgets = [ "systemTray" "clipboard" "cpuUsage" "memUsage" "notificationButton" "battery" "controlCenterButton" ];
+          spacing = 4;
+          innerPadding = 4;
+          bottomGap = 0;
+          transparency = 0.6;
+          widgetTransparency = 1.0;
+          squareCorners = false;
+          noBackground = false;
+        }
+      ];
     };
 
     session = {
@@ -59,7 +81,7 @@
     };
   };
 
-  programs.niri = {
+  niri = {
     settings = {
       # Enable xwayland-satellite integration
       xwayland-satellite.enable = true;
@@ -112,23 +134,7 @@
         # Disable focus ring
         focus-ring.enable = false;
 
-        # Border configuration
-        border = with config.lib.stylix.colors.withHashtag; {
-          # https://github.com/tinted-theming/schemes/blob/spec-0.11/base16/onedark.yaml
-          enable = true;
-          width = 2;
-          active.gradient = {
-            from = base08;
-            to = base0D;
-            angle = 45;
-            in' = "oklch longer hue";
-          };
-          inactive.gradient = {
-            from = base0D;
-            to = base0E;
-            angle = 45;
-          };
-        };
+        border.enable = true;
 
         struts = { };
 
@@ -249,6 +255,14 @@
             }
           ];
           open-floating = true;
+        }
+        # draw-border-with-background false lets blur show through transparent windows
+        {
+          matches = [
+            { app-id = "Alacritty"; }
+            { app-id = "neovide"; }
+          ];
+          draw-border-with-background = false;
         }
         # Default window rule for all windows
         {
@@ -371,13 +385,22 @@
     };
   };
 
-  programs.zsh = {
-    initContent = ''
-      if [[ -n $NIRI_SOCKET ]]; then
-        . $HOME/.nix-config/modules/niri/niri.zsh
-      fi
-    '';
+  zsh.initContent = ''
+    if [[ -n $NIRI_SOCKET ]]; then
+      . $HOME/.nix-config/modules/niri/niri.zsh
+    fi
+  '';
+
+  clipsync.enable = true;
   };
 
-  programs.clipsync.enable = true;
+  xdg.configFile."niri/dms/blur.kdl".text = ''
+    window-rule {
+        match app-id="^Alacritty$"
+        match app-id="^neovide$"
+        background-effect {
+            blur true
+        }
+    }
+  '';
 }

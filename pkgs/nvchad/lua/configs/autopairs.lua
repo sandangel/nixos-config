@@ -2,10 +2,6 @@ local npairs = require 'nvim-autopairs'
 local Rule = require 'nvim-autopairs.rule'
 local conds = require 'nvim-autopairs.conds'
 
--- setup cmp for autopairs
-local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
-require 'cmp'.event:on('confirm_done', cmp_autopairs.on_confirm_done())
-
 local brackets = { { '(', ')', }, { '[', ']', }, { '{', '}', }, }
 
 npairs.add_rules {

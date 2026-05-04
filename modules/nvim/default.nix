@@ -1,6 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 let
   nvchad = pkgs.callPackage ../../pkgs/nvchad { };
+  rustToolchain = inputs.fenix.packages.${pkgs.system}.default.toolchain;
 in
 {
   home.packages = with pkgs; [
@@ -14,6 +15,7 @@ in
     stylelint
     tflint
     # tfsec
+    rustToolchain
     trash-cli
     scooter
     # yamlfmt
@@ -30,6 +32,7 @@ in
     #   '';
     # }))
     nixd
+    statix
     vscode-langservers-extracted
     yaml-language-server
     vtsls
@@ -41,6 +44,7 @@ in
     docker-compose-language-service
     dockerfile-language-server
   ];
+  programs.fd.enable = true;
 
   programs.neovim = {
     enable = true;
@@ -55,5 +59,6 @@ in
 
   xdg.configFile."nvim" = {
     source = "${nvchad}";
+    recursive = true;
   };
 }

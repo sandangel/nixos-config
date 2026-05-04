@@ -66,7 +66,11 @@
       ce = "gh copilot explain";
     };
   };
-  xdg.configFile."zsh/config".source = ./.;
-  xdg.configFile."zsh/config".recursive = true;
-  xdg.configFile."zsh/.p10k.zsh".source = ./p10k.zsh;
+  xdg.configFile = {
+    "zsh/config" = {
+      source = ./.;
+      recursive = true;
+    };
+    "zsh/.p10k.zsh".source = ./p10k.zsh;
+  };
 }

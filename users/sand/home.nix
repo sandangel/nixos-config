@@ -89,7 +89,6 @@
 
   imports = [
     ../../programs/clipsync
-    ../../modules/aider
     # ../../modules/hyprland
     ../../modules/alacritty
     ../../modules/cloud

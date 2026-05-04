@@ -21,17 +21,16 @@ let
   picture-uri = "file:///home/sand/.nix-config/images/wall.png";
 in
 {
-  home.file.".themes".source = "${fluent-gtk-theme}/share/themes";
-
-  home.file.".icons".source = "${fluent-icon-theme}/share/icons";
-
-  # Also symlink to .local/share for better compatibility
-  home.file.".local/share/themes".source = "${fluent-gtk-theme}/share/themes";
-  home.file.".local/share/icons".source = "${fluent-icon-theme}/share/icons";
-
-  # Qt theme configuration
-  home.file.".config/qt6ct/qt6ct.conf".source = ./qt6ct.conf;
-  home.file.".config/qt5ct/qt5ct.conf".source = ./qt5ct.conf;
+  home.file = {
+    ".themes".source = "${fluent-gtk-theme}/share/themes";
+    ".icons".source = "${fluent-icon-theme}/share/icons";
+    # Also symlink to .local/share for better compatibility
+    ".local/share/themes".source = "${fluent-gtk-theme}/share/themes";
+    ".local/share/icons".source = "${fluent-icon-theme}/share/icons";
+    # Qt theme configuration
+    ".config/qt6ct/qt6ct.conf".source = ./qt6ct.conf;
+    ".config/qt5ct/qt5ct.conf".source = ./qt5ct.conf;
+  };
 
   home.packages = with pkgs; [
     gnome-tweaks
@@ -83,8 +82,8 @@ in
       clock-show-weekday = true;
       color-scheme = "prefer-dark";
       enable-hot-corners = false;
-      icon-theme = icon-theme;
-      gtk-theme = gtk-theme;
+      inherit icon-theme;
+      inherit gtk-theme;
     };
 
     "org/gnome/desktop/peripherals/keyboard" = {
@@ -108,14 +107,14 @@ in
     "org/gnome/desktop/background" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = picture-uri;
+      inherit picture-uri;
       picture-uri-dark = picture-uri;
     };
 
     "org/gnome/desktop/screensaver" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = picture-uri;
+      inherit picture-uri;
     };
 
     "org/gnome/desktop/datetime" = {

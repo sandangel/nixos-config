@@ -1,8 +1,7 @@
 { pkgs, ... }:
 {
   # home.stateVersion = "22.05";
-  home.packages = (
-    with pkgs;
+  home.packages = with pkgs;
     [
       # Utilities
       glib
@@ -41,8 +40,7 @@
 
       # DB
       beekeeper-studio
-    ]
-  );
+    ];
 
   home.sessionVariables = rec {
     FZF_BIND_OPTS = "--bind page-up:preview-up,page-down:preview-down,?:toggle-preview";
@@ -56,53 +54,53 @@
 
   fonts.fontconfig.enable = true;
 
-  programs.ripgrep.enable = true;
-  programs.ripgrep.arguments = [
-    "--follow"
-    "--smart-case"
-    "--hidden"
-    "--glob=!.git/*"
-    "--glob=!node_modules/*"
-    "--glob=!*.lock"
-    "--glob=!*-lock.json"
-    "--glob=!*.min.{js,css}"
-    "--glob=!*.lock.hcl"
-    "--glob=!__snapshots__"
-    "--glob=!dist"
-  ];
-
-  programs.zoxide.enable = true;
-  programs.fzf.enable = true;
-
-  programs.vscode.enable = true;
-
-  programs.eza.enable = true;
-  programs.eza.icons = "auto";
-  programs.eza.git = true;
-  programs.eza.extraOptions = [
-    "--group-directories-first"
-    "--header"
-  ];
-
-  programs.bat = {
-    enable = true;
-    config = {
-      pager = "less -FR";
-      theme = "TwoDark";
-      style = "numbers,changes";
-      color = "always";
+  programs = {
+    ripgrep = {
+      enable = true;
+      arguments = [
+        "--follow"
+        "--smart-case"
+        "--hidden"
+        "--glob=!.git/*"
+        "--glob=!node_modules/*"
+        "--glob=!*.lock"
+        "--glob=!*-lock.json"
+        "--glob=!*.min.{js,css}"
+        "--glob=!*.lock.hcl"
+        "--glob=!__snapshots__"
+        "--glob=!dist"
+      ];
     };
+    zoxide.enable = true;
+    fzf.enable = true;
+    vscode.enable = true;
+    eza = {
+      enable = true;
+      icons = "auto";
+      git = true;
+      extraOptions = [
+        "--group-directories-first"
+        "--header"
+      ];
+    };
+    bat = {
+      enable = true;
+      config = {
+        pager = "less -FR";
+        theme = "TwoDark";
+        style = "numbers,changes";
+        color = "always";
+      };
+    };
+    info.enable = true;
+    nix-index.enable = true;
+    jq.enable = true;
+    home-manager.enable = true;
   };
-
-  programs.info.enable = true;
-  programs.nix-index.enable = true;
-  programs.jq.enable = true;
 
   manual = {
     html.enable = false;
     json.enable = false;
     manpages.enable = false;
   };
-
-  programs.home-manager.enable = true;
 }

@@ -99,7 +99,6 @@ M.base46 = {
   },
 
   integrations = {
-    'cmp',
     'defaults',
     'devicons',
     'git',

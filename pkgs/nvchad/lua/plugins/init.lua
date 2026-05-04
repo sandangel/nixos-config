@@ -11,7 +11,7 @@ local plugins = {
           vim.fn.stdpath 'data' .. '/lazy/lazy.nvim/lua/lazy',
         },
       },
-    }, 'b0o/schemastore.nvim', { 'nvimtools/none-ls.nvim', dependencies = { 'nvimtools/none-ls-extras.nvim', }, }, },
+    }, 'b0o/schemastore.nvim', },
     event = 'VeryLazy',
     config = function()
       require 'configs.lspconfig'
@@ -35,11 +35,18 @@ local plugins = {
         'mfussenegger/nvim-dap',
         config = function()
           local map = vim.keymap.set
-          map('n', '<leader>ht', function() require 'dap'.toggle_breakpoint() end, { desc = 'Dap toggle breakpoint', })
-          map('n', '<leader>hc', function() require 'dap'.continue() end, { desc = 'Dap continue', })
-          map('n', '<leader>ho', function() require 'dap'.step_over() end, { desc = 'Dap step over', })
-          map('n', '<leader>hi', function() require 'dap'.step_into() end, { desc = 'Dap step into', })
-          map('n', '<leader>hr', function() require 'dap'.repl.open() end, { desc = 'Dap repl open', })
+          map('n', '<leader>ht', function() require 'dap'.toggle_breakpoint() end, { desc = 'Dap Toggle breakpoint', })
+          map('n', '<leader>hT', function() require 'dap'.set_breakpoint(vim.fn.input 'Condition: ') end,
+            { desc = 'Dap Breakpoint condition', })
+          map('n', '<leader>hc', function() require 'dap'.continue() end, { desc = 'Dap Continue', })
+          map('n', '<leader>ho', function() require 'dap'.step_over() end, { desc = 'Dap Step over', })
+          map('n', '<leader>hi', function() require 'dap'.step_into() end, { desc = 'Dap Step into', })
+          map('n', '<leader>hO', function() require 'dap'.step_out() end, { desc = 'Dap Step out', })
+          map('n', '<leader>hr', function() require 'dap'.repl.toggle() end, { desc = 'Dap Toggle REPL', })
+          map('n', '<leader>hl', function() require 'dap'.run_last() end, { desc = 'Dap Run last', })
+          map('n', '<leader>hx', function() require 'dap'.terminate() end, { desc = 'Dap Terminate', })
+          map('n', '<leader>hu', function() require 'dapui'.toggle() end, { desc = 'Dap UI toggle', })
+          map({ 'n', 'x' }, '<leader>he', function() require 'dapui'.eval() end, { desc = 'Dap Eval', })
         end,
       },
       {
@@ -49,17 +56,6 @@ local plugins = {
           require 'dap-python'.setup()
         end,
         dependencies = { 'mfussenegger/nvim-dap', },
-      },
-      {
-        'rcarriga/cmp-dap',
-        dependencies = { 'hrsh7th/nvim-cmp', },
-        config = function(_, _)
-          require 'cmp'.setup.filetype({ 'dap-repl', 'dapui_watches', 'dapui_hover', }, {
-            sources = {
-              { name = 'dap', },
-            },
-          })
-        end,
       },
     },
   },
@@ -83,34 +79,16 @@ local plugins = {
     cmd = { 'GithubPreviewToggle', },
     config = true,
   },
-  -- {
-  --   'Juksuu/worktrees.nvim',
-  --   cmd = {
-  --     'GitWorktreeCreate',
-  --     'GitWorktreeSwitch',
-  --     'GitWorktreeCreateExisting',
-  --     'GitWorktreeRemove',
-  --   },
-  --   dependencies = {
-  --     "nvim-telescope/telescope.nvim",
-  --   },
-  --   config = function()
-  --     require("worktrees").setup()
-  --     require("telescope").load_extension("worktrees")
-  --   end,
-  -- },
   {
     'stevearc/conform.nvim',
     ---@type conform.setupOpts
     opts = {
       formatters_by_ft = {
-        -- Use the "*" filetype to run formatters on all filetypes.
         python = { "ruff_format", "ruff_fix", "ruff_organize_imports", lsp_format = "fallback" },
         typescriptreact = { "prettier", lsp_format = "fallback" },
         ["*"] = { "trim_whitespace" },
       },
       format_on_save = {
-        -- These options will be passed to conform.format()
         timeout_ms = 500,
         lsp_format = "prefer",
       },
@@ -122,15 +100,10 @@ local plugins = {
   {
     'zbirenbaum/copilot.lua',
     event = 'VeryLazy',
-    dependencies = { { 'zbirenbaum/copilot-cmp', config = true, }, 'hrsh7th/nvim-cmp', },
     config = function()
       require 'copilot'.setup {
-        panel = {
-          enabled = false,
-        },
-        suggestion = {
-          enabled = false,
-        },
+        panel = { enabled = false, },
+        suggestion = { enabled = false, },
         filetypes = {
           yaml = true,
           markdown = true,
@@ -140,16 +113,48 @@ local plugins = {
     end,
   },
   {
+    'saghen/blink.cmp',
+    build = function() require('blink.cmp').build():wait(60000) end,
+    dependencies = {
+      'saghen/blink.lib',
+      'fang2hou/blink-copilot',
+    },
+    event = 'InsertEnter',
+    opts = {
+      keymap = {
+        preset = 'enter',
+        ['<Tab>'] = { 'select_and_accept', 'snippet_forward', 'fallback' },
+        ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
+        ['<C-p>'] = {},
+        ['<C-n>'] = {},
+        ['<C-c>'] = { 'show', 'fallback' },
+        ['<C-e>'] = { 'cancel', 'fallback' },
+        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+        providers = {
+          copilot = {
+            name = 'copilot',
+            module = 'blink-copilot',
+            score_offset = 100,
+            async = true,
+          },
+        },
+      },
+      completion = {
+        accept = { auto_brackets = { enabled = true } },
+        documentation = { auto_show = true, auto_show_delay_ms = 200 },
+      },
+    },
+  },
+  {
     'rust-lang/rust.vim',
     ft = 'rust',
     init = function()
       vim.g.rustfmt_autosave = 1
     end,
-  },
-  {
-    'mrjones2014/smart-splits.nvim',
-    event = 'VeryLazy',
-    build = './kitty/install-kittens.bash',
   },
   {
     'AckslD/nvim-neoclip.lua',
@@ -161,15 +166,6 @@ local plugins = {
       continuous_sync = true,
     },
   },
-  -- {
-  --   'brenton-leighton/multiple-cursors.nvim',
-  --   config = true,
-  --   keys = {
-  --     { '<C-Down>',      '<cmd>MultipleCursorsAddDown<CR>',        mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line down', },
-  --     { '<C-Up>',        '<cmd>MultipleCursorsAddUp<CR>',          mode = { 'n', 'i', }, desc = 'Cursors Add cursor one line up', },
-  --     { '<C-LeftMouse>', '<cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i', }, desc = 'Cursors Add or delete cursor at mouse position', },
-  --   },
-  -- },
   {
     'rcarriga/nvim-notify',
     opts = {
@@ -183,26 +179,48 @@ local plugins = {
       end,
     },
   },
-  -- {
-  --   'folke/noice.nvim', -- codespell:ignore noice
-  --   dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', },
-  --   lazy = false,
-  --   ---@type NoiceConfig
-  --   opts = {
-  --     lsp = {
-  --       progress = { enabled = false, },
-  --       signature = { enabled = false, silent = true, },
-  --       hover = { enabled = false, silent = true, },
-  --     },
-  --     presets = {
-  --       command_palette = true, -- position the cmdline and popupmenu together
-  --     },
-  --   },
-  --   config = function(_, opts)
-  --     dofile(vim.g.base46_cache .. 'notify')
-  --     require 'noice'.setup(opts)
-  --   end,
-  -- },
+  {
+    'folke/noice.nvim', -- codespell:ignore noice
+    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', },
+    event = 'VeryLazy',
+    ---@type NoiceConfig
+    opts = {
+      lsp = {
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+        },
+        progress = { enabled = false, },
+        signature = { enabled = false, silent = true, },
+        hover = { enabled = false, silent = true, },
+      },
+      routes = {
+        {
+          filter = {
+            event = 'msg_show',
+            any = {
+              { find = '%d+L, %d+B', },
+              { find = '; after #%d+', },
+              { find = '; before #%d+', },
+            },
+          },
+          view = 'mini',
+        },
+      },
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+      },
+    },
+    config = function(_, opts)
+      dofile(vim.g.base46_cache .. 'notify')
+      if vim.o.filetype == 'lazy' then
+        vim.cmd 'messages clear'
+      end
+      require 'noice'.setup(opts)
+    end,
+  },
   {
     'windwp/nvim-autopairs',
     config = function(_, opts)
@@ -210,18 +228,6 @@ local plugins = {
       require 'configs.autopairs'
     end,
   },
-  {
-    'hrsh7th/nvim-cmp',
-    dependencies = { 'lukas-reineke/cmp-rg', },
-    opts = require 'configs.cmp',
-  },
-  -- {
-  --   'garyhurtz/cmp_kitty',
-  --   dependencies = { 'hrsh7th/nvim-cmp', },
-  --   init = function()
-  --     require 'cmp_kitty':setup()
-  --   end,
-  -- },
   {
     'ibhagwan/fzf-lua',
     config = function()
@@ -242,7 +248,7 @@ local plugins = {
     end,
   },
   {
-    'nvim-pack/nvim-spectre',
+    'MagicDuck/grug-far.nvim',
     event = 'VeryLazy',
     config = true,
   },
@@ -252,11 +258,6 @@ local plugins = {
     init = function()
       vim.g.abolish_no_mappings = 1
     end,
-  },
-  {
-    'fladson/vim-kitty',
-    ft = 'kitty',
-    event = 'VeryLazy',
   },
   { 'towolf/vim-helm', ft = 'helm', },
   { 'mhinz/vim-sayonara', cmd = 'Sayonara', },

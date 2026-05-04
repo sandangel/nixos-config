@@ -1,14 +1,15 @@
-{ ... }:
+_:
 {
-  programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
-  programs.direnv.config = {
-    global = {
-      log_format = "-";
-      log_filter = "^$";
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    config = {
+      global = {
+        log_format = "-";
+        log_filter = "^$";
+      };
     };
-  };
-  programs.direnv.stdlib = ''
+    stdlib = ''
     : ''${XDG_CACHE_HOME:=$HOME/.cache}
     declare -A direnv_layout_dirs
     direnv_layout_dir() {
@@ -20,4 +21,5 @@
         )}"
     }
   '';
+  };
 }

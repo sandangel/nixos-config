@@ -47,17 +47,6 @@ M.General = {
   },
 }
 
-M.Notify = {
-  n = {
-    ['<leader>nd'] = {
-      function()
-        require 'notify'.dismiss { silent = true, pending = true, }
-      end,
-      'Delete all notifications',
-    },
-  },
-}
-
 M.Telescope = {
   n = {
     -- theme switcher
@@ -71,36 +60,17 @@ M.UndoTree = {
   },
 }
 
-M.SmartSplits = {
-  i = {
-    ['<C-h>'] = { function() require 'smart-splits'.move_cursor_left() end, 'Window left', },
-    ['<C-l>'] = { function() require 'smart-splits'.move_cursor_right() end, 'Window right', },
-    ['<C-j>'] = { function() require 'smart-splits'.move_cursor_down() end, 'Window down', },
-    ['<C-k>'] = { function() require 'smart-splits'.move_cursor_up() end, 'Window up', },
-  },
-  n = {
-    ['<C-h>'] = { function() require 'smart-splits'.move_cursor_left() end, 'Window left', },
-    ['<C-l>'] = { function() require 'smart-splits'.move_cursor_right() end, 'Window right', },
-    ['<C-j>'] = { function() require 'smart-splits'.move_cursor_down() end, 'Window down', },
-    ['<C-k>'] = { function() require 'smart-splits'.move_cursor_up() end, 'Window up', },
-  },
-  t = {
-    ['<C-h>'] = { function() require 'smart-splits'.move_cursor_left() end, 'Window left', },
-    ['<C-l>'] = { function() require 'smart-splits'.move_cursor_right() end, 'Window right', },
-    ['<C-j>'] = { function() require 'smart-splits'.move_cursor_down() end, 'Window down', },
-    ['<C-k>'] = { function() require 'smart-splits'.move_cursor_up() end, 'Window up', },
-  },
-}
-
 M.Noice = { -- codespell:ignore noice
   n = {
+    ['<leader>nd'] = { function() require 'noice'.cmd 'dismiss' end, 'Noice Dismiss all notifications', },
+    ['<leader>nh'] = { function() require 'noice'.cmd 'history' end, 'Noice history', },
     ['<C-f>'] = {
       function()
         if not require 'noice.lsp'.scroll(4) then
           return '<C-f>'
         end
       end,
-      'Scroll lsp down',
+      'Noice Scroll lsp doc down',
       opts = { silent = true, expr = true, },
     },
     ['<C-b>'] = {
@@ -109,9 +79,15 @@ M.Noice = { -- codespell:ignore noice
           return '<C-b>'
         end
       end,
-      'Scroll lsp up',
+      'Noice Scroll lsp doc down',
       opts = { silent = true, expr = true, },
     },
+  },
+}
+
+M.UndoTree = {
+  n = {
+    ['<F2>'] = { '<cmd>UndotreeToggle<CR>', 'Toggle undotree', },
   },
 }
 
@@ -183,14 +159,13 @@ M.LspConfig = {
     ['K'] = { '', },
     ['[d'] = {
       function()
-        vim.diagnostic.get_prev({ float = { border = 'rounded', }, severity = vim.diagnostic.severity.ERROR, })
+        vim.diagnostic.jump { count = -1, float = { border = 'rounded', }, severity = vim.diagnostic.severity.ERROR, }
       end,
       'Goto prev diagnostic',
     },
-
     [']d'] = {
       function()
-        vim.diagnostic.get_next { float = { border = 'rounded', }, severity = vim.diagnostic.severity.ERROR, }
+        vim.diagnostic.jump { count = 1, float = { border = 'rounded', }, severity = vim.diagnostic.severity.ERROR, }
       end,
       'Goto next diagnostic',
     },
@@ -240,7 +215,7 @@ M.Gitsigns = {
           return ']c'
         end
         vim.schedule(function()
-          require 'gitsigns'.nav_hunk('next', { preview = true })
+          require 'gitsigns'.nav_hunk('next', { preview = true, target = 'all', })
         end)
         return '<Ignore>'
       end,
@@ -254,7 +229,7 @@ M.Gitsigns = {
           return '[c'
         end
         vim.schedule(function()
-          require 'gitsigns'.nav_hunk('prev', { preview = true })
+          require 'gitsigns'.nav_hunk('prev', { preview = true, target = 'all', })
         end)
         return '<Ignore>'
       end,
@@ -277,9 +252,26 @@ M.Gitsigns = {
   },
 }
 
-M.Spectre = {
+M.GrugFar = {
   n = {
-    ['<leader>S'] = { '<cmd>lua require("spectre").toggle()<CR>', 'Toggle Spectre', },
+    ['<leader>S'] = {
+      function()
+        local grug = require 'grug-far'
+        local ext = vim.bo.buftype == '' and vim.fn.expand '%:e'
+        grug.open { transient = true, prefills = { filesFilter = ext and ext ~= '' and '*.' .. ext or nil } }
+      end,
+      'Search and replace',
+    },
+  },
+  x = {
+    ['<leader>S'] = {
+      function()
+        local grug = require 'grug-far'
+        local ext = vim.bo.buftype == '' and vim.fn.expand '%:e'
+        grug.open { transient = true, prefills = { filesFilter = ext and ext ~= '' and '*.' .. ext or nil } }
+      end,
+      'Search and replace',
+    },
   },
 }
 
@@ -313,3 +305,21 @@ for group, configs in pairs(M) do
     end
   end
 end
+
+-- Window navigation with compositor passthrough
+local function nav(hypr_dir, niri_dir, wincmd)
+  return function()
+    if vim.env.HYPRLAND_INSTANCE_SIGNATURE then
+      vim.cmd('HyprNavigate ' .. hypr_dir)
+    elseif vim.env.NIRI_SOCKET then
+      vim.cmd('NiriNavigate ' .. niri_dir)
+    else
+      vim.cmd('wincmd ' .. wincmd)
+    end
+  end
+end
+
+map({ 'n', 'i', 't' }, '<C-h>', nav('l', 'column-left', 'h'), { desc = 'Window left', })
+map({ 'n', 'i', 't' }, '<C-l>', nav('r', 'column-right', 'l'), { desc = 'Window right', })
+map({ 'n', 'i', 't' }, '<C-j>', nav('d', 'window-down', 'j'), { desc = 'Window down', })
+map({ 'n', 'i', 't' }, '<C-k>', nav('u', 'window-up', 'k'), { desc = 'Window up', })

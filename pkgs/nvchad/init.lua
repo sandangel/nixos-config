@@ -9,7 +9,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
+      { out,                            "WarningMsg" },
       { "\nPress any key to exit..." },
     }, true, {})
     vim.fn.getchar()
@@ -26,7 +26,7 @@ if not (vim.uv or vim.loop).fs_stat(nvchadpath) then
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { "Failed to clone NvChad:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
+      { out,                         "WarningMsg" },
       { "\nPress any key to exit..." },
     }, true, {})
     vim.fn.getchar()
@@ -58,7 +58,7 @@ require 'lazy'.setup({
     notify = false,
   },
   rocks = { enabled = false },
-  defaults = { lazy = true },
+  defaults = { lazy = true, version = false, },
   install = { colorscheme = { "nvchad" } },
   ui = {
     icons = {
