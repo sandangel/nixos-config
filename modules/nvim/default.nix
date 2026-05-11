@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }:
 let
-  nvchad = pkgs.callPackage ../../pkgs/nvchad { };
-  rustToolchain = inputs.fenix.packages.${pkgs.system}.default.toolchain;
+  lazyvim = pkgs.callPackage ../../pkgs/lazyvim { };
+  rustToolchain = inputs.fenix.packages.${pkgs.stdenv.hostPlatform.system}.default.toolchain;
 in
 {
   home.packages = with pkgs; [
@@ -11,7 +11,7 @@ in
     # corepack
     nixfmt
     nodejs
-    nvchad
+    lazyvim
     stylelint
     tflint
     # tfsec
@@ -58,7 +58,7 @@ in
   ];
 
   xdg.configFile."nvim" = {
-    source = "${nvchad}";
+    source = "${lazyvim}";
     recursive = true;
   };
 }
