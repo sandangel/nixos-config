@@ -108,10 +108,23 @@
             git checkout master
           end
           git pull
-          if string match -q "Darwin" (uname -s)
-            comm -12 (git branch | sed "s/ *//g" | psub) (git remote prune origin | sed "s/^.*origin\///g" | psub) | xargs -L1 -J % git branch -D %
-          else if string match -q "Linux" (uname -s)
-            comm -12 (git branch | sed "s/ *//g" | sort | psub) (git remote prune origin | sed "s/^.*origin\///g" | sort | psub) | xargs -r -I % git branch -D %
+          git worktree prune >/dev/null 2>&1
+
+          set -f main_branch (git branch --show-current)
+          set -f worktree_branches (git worktree list --porcelain | sed -n 's/^branch refs\/heads\///p' | sort)
+          set -f cleanup_branches (comm -12 (git branch --format='%(refname:short)' | sort | psub) (git remote prune origin | sed 's/^.*origin\///g' | sort | psub))
+
+          for branch in $cleanup_branches
+            if test "$branch" = "$main_branch"; or test "$branch" = main; or test "$branch" = master
+              continue
+            end
+
+            if contains -- "$branch" $worktree_branches
+              echo "skipping branch checked out in worktree: $branch" >&2
+              continue
+            end
+
+            git branch -D "$branch"
           end
         '';
       };

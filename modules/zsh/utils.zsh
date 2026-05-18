@@ -90,7 +90,9 @@ function _git_is_main_named_worktree() {
 
 function _git_worktree_for_branch() {
   local branch="$1"
-  git worktree list --porcelain 2>/dev/null | awk -v branch="refs/heads/$branch" '
+  local root="${2:-.}"
+
+  git -C "$root" worktree list --porcelain 2>/dev/null | awk -v branch="refs/heads/$branch" '
     /^worktree / { path = substr($0, 10) }
     /^branch / {
       if (substr($0, 8) == branch) {
@@ -120,9 +122,16 @@ function _git_delete_branch() {
   local branch="$1"
   local main_branch="$2"
   local root="$3"
+  local worktree_path
 
   if _git_protected_branch "$branch" "$main_branch"; then
     echo "refusing to delete protected branch: $branch" >&2
+    return 0
+  fi
+
+  worktree_path=$(_git_worktree_for_branch "$branch" "$root")
+  if [[ -n "$worktree_path" ]]; then
+    echo "skipping branch checked out in worktree: $branch ($worktree_path)" >&2
     return 0
   fi
 
@@ -153,6 +162,8 @@ function _git_cleanup_merged_branches() {
   else
     pruned=""
   fi
+
+  git -C "$root" worktree prune >/dev/null 2>&1
 
   local_branches=$(git -C "$root" for-each-ref --format='%(refname:short)' refs/heads | sort -u)
   pruned_branches=$(comm -12 <(print -r -- "$local_branches") <(print -r -- "$pruned"))
@@ -248,7 +259,7 @@ function gdmb() {
   fi
 
   # Pull main wherever it's checked out (avoids "already used by worktree" error)
-  local main_branch_wt=$(_git_worktree_for_branch "$main_branch")
+  local main_branch_wt=$(_git_worktree_for_branch "$main_branch" "$current_worktree")
   local main_named_wt=$(_git_main_named_worktree "$main_branch" "$current_worktree")
   local dest="${main_branch_wt:-$main_named_wt}"
 
@@ -376,7 +387,7 @@ function gwt-rm() {
     return 1
   fi
 
-  local wt_path=$(_git_worktree_for_branch "$branch")
+  local wt_path=$(_git_worktree_for_branch "$branch" "$current_worktree")
   wt_path="${wt_path:-$root/$branch}"
 
   if [[ "$wt_path" == "$root" ]]; then

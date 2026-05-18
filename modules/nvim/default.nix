@@ -36,8 +36,8 @@ in
     vscode-langservers-extracted
     yaml-language-server
     vtsls
-    # gopls
-    # rust-analyzer
+    gopls
+    rust-analyzer
     terraform-ls
     tree-sitter
     tailwindcss-language-server
