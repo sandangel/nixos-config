@@ -54,7 +54,10 @@ return {
         tflint           = { mason = false },
         terraformls      = { mason = false },
         vtsls            = { mason = false },
-        tailwindcss      = { mason = false },
+        tailwindcss      = {
+          mason = false,
+          filetypes = vim.tbl_filter(function(ft) return ft ~= 'markdown' end, vim.lsp.config.tailwindcss.filetypes),
+        },
         lua_ls           = {
           mason = false,
           settings = {

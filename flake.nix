@@ -19,7 +19,7 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    niri.url = "github:sodiboo/niri-flake";
+    niri.url = "github:epireyn/niri-flake";
     niri.inputs.nixpkgs.follows = "nixpkgs";
 
     # For running GUI apps
@@ -113,14 +113,12 @@
 
         imports = [ inputs.devenv.flakeModule ];
 
-        perSystem =
-          _:
-          {
-            devenv.shells.default = {
-              # languages.nix.enable = true;
-            };
-            # packages.default = ghostty.packages.${system}.ghostty;
+        perSystem = _: {
+          devenv.shells.default = {
+            # languages.nix.enable = true;
           };
+          # packages.default = ghostty.packages.${system}.ghostty;
+        };
 
         flake = {
           overlays.default = final: prev: {

@@ -102,10 +102,14 @@ local servers = {
   },
 }
 
+vim.lsp.config("*", {
+  on_init = on_init,
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
 for name, opts in pairs(servers) do
-  opts.on_init      = on_init
-  opts.on_attach    = on_attach
-  opts.capabilities = capabilities
   vim.lsp.config(name, opts)
-  vim.lsp.enable(name)
 end
+
+vim.lsp.enable(vim.tbl_keys(servers))
