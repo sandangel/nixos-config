@@ -122,6 +122,9 @@
 
         flake = {
           overlays.default = final: prev: {
+            wails3 = prev.callPackage ./pkgs/wails3 {
+              upstreamWails3 = prev.wails3;
+            };
             # neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
             # comic-code = prev.callPackage ./pkgs/comic-code { };
             # nvchad = prev.callPackage ./pkgs/nvchad { };
