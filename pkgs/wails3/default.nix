@@ -54,9 +54,10 @@ stdenv.mkDerivation {
 
   # Keep the system dependencies and propagation behavior in sync with nixpkgs.
   nativeBuildInputs = upstreamWails3.nativeBuildInputs ++ [ makeWrapper ];
-  buildInputs = upstreamWails3.buildInputs;
-  propagatedBuildInputs = upstreamWails3.propagatedBuildInputs;
-  depsTargetTargetPropagated = upstreamWails3.depsTargetTargetPropagated;
+  inherit (upstreamWails3)
+    buildInputs
+    propagatedBuildInputs
+    depsTargetTargetPropagated;
 
   installPhase = ''
     makeWrapper ${script} "$out/bin/wails3" \
