@@ -17,9 +17,13 @@ function gfcm() {
 }
 
 function gfco() {
-  local branch=$(git branch -a --color | fzf --ansi | awk '{print $1}')
-  local strip_remote_branch="${branch/remotes\/origin\//}"
-  git checkout $strip_remote_branch
+  local branch
+  branch=$(git for-each-ref --format='%(refname)' refs/heads refs/remotes | grep -v '/HEAD$' | fzf) || return
+  [[ -n "$branch" ]] || return
+  case "$branch" in
+    refs/heads/*) git switch -- "${branch#refs/heads/}" ;;
+    refs/remotes/*) git switch --track -- "${branch#refs/remotes/}" ;;
+  esac
 }
 
 function _git_default_branch() {
@@ -52,42 +56,6 @@ function _git_primary_worktree() {
   print -r -- "${primary:-$fallback}"
 }
 
-function _git_is_primary_worktree() {
-  local root git_dir git_common_dir
-
-  root=$(git rev-parse --show-toplevel 2>/dev/null) || return 1
-  git_dir=$(git rev-parse --absolute-git-dir 2>/dev/null) || return 1
-  git_common_dir=$(git rev-parse --git-common-dir 2>/dev/null) || return 1
-
-  [[ "$git_common_dir" == /* ]] || git_common_dir="$root/$git_common_dir"
-  [[ "$git_dir" == "$git_common_dir" ]]
-}
-
-function _git_is_working_tree_path() {
-  local target_path="$1"
-  [[ "$(git -C "$target_path" rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]
-}
-
-function _git_main_named_worktree() {
-  local main_branch="$1"
-  local current_worktree="$2"
-  local common_dir candidate
-
-  common_dir=$(git -C "$current_worktree" rev-parse --git-common-dir 2>/dev/null) || return
-  [[ "$common_dir" == /* ]] || common_dir="$current_worktree/$common_dir"
-  candidate="$common_dir/$main_branch"
-
-  if [[ -d "$candidate" ]] && _git_is_working_tree_path "$candidate"; then
-    print -r -- "$candidate"
-  fi
-}
-
-function _git_is_main_named_worktree() {
-  local main_branch="$1"
-  local current_worktree="$2"
-  [[ "${current_worktree:t}" == "$main_branch" ]]
-}
-
 function _git_worktree_for_branch() {
   local branch="$1"
   local root="${2:-.}"
@@ -116,66 +84,6 @@ function _git_cleanup_empty_parents() {
     rmdir "$dir" 2>/dev/null || break
     dir=$(dirname "$dir")
   done
-}
-
-function _git_delete_branch() {
-  local branch="$1"
-  local main_branch="$2"
-  local root="$3"
-  local worktree_path
-
-  if _git_protected_branch "$branch" "$main_branch"; then
-    echo "refusing to delete protected branch: $branch" >&2
-    return 0
-  fi
-
-  worktree_path=$(_git_worktree_for_branch "$branch" "$root")
-  if [[ -n "$worktree_path" ]]; then
-    echo "skipping branch checked out in worktree: $branch ($worktree_path)" >&2
-    return 0
-  fi
-
-  git -C "$root" branch -D "$branch"
-}
-
-function _git_branch_ready_to_delete() {
-  local branch="$1"
-  local main_branch="$2"
-  local root="$3"
-  local upstream
-
-  git -C "$root" merge-base --is-ancestor "$branch" "$main_branch" 2>/dev/null && return 0
-
-  upstream=$(git -C "$root" for-each-ref --format='%(upstream:short)' "refs/heads/$branch")
-  [[ -n "$upstream" ]] || return 1
-
-  ! git -C "$root" show-ref --verify --quiet "refs/remotes/$upstream"
-}
-
-function _git_cleanup_merged_branches() {
-  local root="$1"
-  local main_branch="$2"
-  local branch pruned local_branches pruned_branches gone_upstream_branches merged_branches cleanup_branches
-
-  if git -C "$root" remote get-url origin >/dev/null 2>&1; then
-    pruned=$(git -C "$root" remote prune origin | sed -n "s/^.*origin\///p" | sort -u)
-  else
-    pruned=""
-  fi
-
-  git -C "$root" worktree prune >/dev/null 2>&1
-
-  local_branches=$(git -C "$root" for-each-ref --format='%(refname:short)' refs/heads | sort -u)
-  pruned_branches=$(comm -12 <(print -r -- "$local_branches") <(print -r -- "$pruned"))
-  gone_upstream_branches=$(git -C "$root" for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | sed -n 's/^\(.*\) \[gone\]$/\1/p' | sort -u)
-  merged_branches=$(git -C "$root" for-each-ref --format='%(refname:short)' --merged "$main_branch" refs/heads | sort -u)
-  cleanup_branches=$(printf '%s\n%s\n%s\n' "$pruned_branches" "$gone_upstream_branches" "$merged_branches" | sed '/^$/d' | sort -u)
-
-  while IFS= read -r branch; do
-    [[ -z "$branch" ]] && continue
-    _git_protected_branch "$branch" "$main_branch" && continue
-    _git_delete_branch "$branch" "$main_branch" "$root"
-  done <<< "$cleanup_branches"
 }
 
 function _git_copy_worktree_files() {
@@ -226,75 +134,17 @@ function _git_exclude_nested_worktree() {
 }
 
 function gdmb() {
-  if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" != "true" ]]; then
-    echo "gdmb: not inside a git working tree" >&2
-    return 1
-  fi
-
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 1
   local main_branch=$(_git_default_branch)
-  local current_worktree=$(git rev-parse --show-toplevel 2>/dev/null)
-  local current_branch=$(git branch --show-current)
+  local branch
 
-  if [[ -z "$current_worktree" ]]; then
-    echo "gdmb: could not determine git worktree path" >&2
-    return 1
-  fi
+  git switch -- "$main_branch" || return
+  git pull --ff-only || return
 
-  if [[ -z "$current_branch" ]]; then
-    echo "gdmb: current worktree is detached; refusing to delete a branch" >&2
-    return 1
-  fi
-
-  if [[ -d "$current_worktree/.git" ]] || _git_is_primary_worktree || _git_is_main_named_worktree "$main_branch" "$current_worktree"; then
-    git -C "$current_worktree" checkout "$main_branch" || return
-    git -C "$current_worktree" pull || return
-    _git_cleanup_merged_branches "$current_worktree" "$main_branch"
-    return
-  fi
-
-  local primary_worktree=$(_git_primary_worktree "$current_worktree")
-  if [[ -z "$primary_worktree" ]]; then
-    echo "gdmb: could not determine primary worktree path" >&2
-    return 1
-  fi
-
-  # Pull main wherever it's checked out (avoids "already used by worktree" error)
-  local main_branch_wt=$(_git_worktree_for_branch "$main_branch" "$current_worktree")
-  local main_named_wt=$(_git_main_named_worktree "$main_branch" "$current_worktree")
-  local dest="${main_branch_wt:-$main_named_wt}"
-
-  if [[ -n "$main_branch_wt" ]]; then
-    git -C "$main_branch_wt" pull || return
-  elif [[ -n "$main_named_wt" ]]; then
-    git -C "$main_named_wt" checkout "$main_branch" || return
-    git -C "$main_named_wt" pull || return
-  elif _git_is_working_tree_path "$primary_worktree"; then
-    dest="$primary_worktree"
-    git -C "$primary_worktree" checkout "$main_branch" || return
-    git -C "$primary_worktree" pull || return
-  else
-    echo "gdmb: could not find a working tree for $main_branch" >&2
-    return 1
-  fi
-
-  if [[ "$current_worktree" != "$primary_worktree" ]]; then
-    if _git_protected_branch "$current_branch" "$main_branch"; then
-      cd "$dest" || return
-      echo "gdmb: refusing to remove protected branch worktree: $current_branch" >&2
-      return 0
-    fi
-
-    cd "$dest" || return
-    git -C "$dest" remote prune origin >/dev/null 2>&1
-    if ! _git_branch_ready_to_delete "$current_branch" "$main_branch" "$primary_worktree"; then
-      echo "gdmb: refusing to remove unmerged branch worktree: $current_branch" >&2
-      return 1
-    fi
-
-    git worktree remove --force "$current_worktree"
-    _git_cleanup_empty_parents "$current_worktree" "$primary_worktree"
-    _git_delete_branch "$current_branch" "$main_branch" "$primary_worktree"
-  fi
+  while IFS= read -r branch; do
+    _git_protected_branch "$branch" "$main_branch" && continue
+    git branch -d -- "$branch" || return
+  done < <(git for-each-ref --format='%(refname:short)' --merged "$main_branch" refs/heads)
 }
 
 function krj() {

@@ -94,37 +94,36 @@
       gfco = {
         description = "Git checkout local or remote branch with fzf interactive select";
         body = ''
-          set -f branch (git branch -a --color | fzf --ansi | awk '{print $1}')
-          set -f strip_remote_branch (echo $branch | sed 's/remotes\/origin\///')
-          git checkout $strip_remote_branch
+          set -f branch (git for-each-ref --format='%(refname)' refs/heads refs/remotes | string match -v '*/HEAD' | fzf)
+          test -n "$branch"; or return
+          switch "$branch"
+            case 'refs/heads/*'
+              git switch -- (string replace 'refs/heads/' "" -- "$branch")
+            case 'refs/remotes/*'
+              git switch --track -- (string replace 'refs/remotes/' "" -- "$branch")
+          end
         '';
       };
       gdmb = {
         description = "Git delete merged branch";
         body = ''
-          if string match -q "* main" (git branch)
-            git checkout main
-          else
-            git checkout master
+          git rev-parse --is-inside-work-tree >/dev/null 2>&1; or return 1
+          set -f main_branch (git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | string replace 'origin/' "")
+          if test -z "$main_branch"
+            if git show-ref --verify --quiet refs/heads/main
+              set main_branch main
+            else
+              set main_branch master
+            end
           end
-          git pull
-          git worktree prune >/dev/null 2>&1
+          git switch -- "$main_branch"; or return
+          git pull --ff-only; or return
 
-          set -f main_branch (git branch --show-current)
-          set -f worktree_branches (git worktree list --porcelain | sed -n 's/^branch refs\/heads\///p' | sort)
-          set -f cleanup_branches (comm -12 (git branch --format='%(refname:short)' | sort | psub) (git remote prune origin | sed 's/^.*origin\///g' | sort | psub))
-
-          for branch in $cleanup_branches
-            if test "$branch" = "$main_branch"; or test "$branch" = main; or test "$branch" = master
+          for branch in (git for-each-ref --format='%(refname:short)' --merged "$main_branch" refs/heads)
+            if contains -- "$branch" "$main_branch" main master
               continue
             end
-
-            if contains -- "$branch" $worktree_branches
-              echo "skipping branch checked out in worktree: $branch" >&2
-              continue
-            end
-
-            git branch -D "$branch"
+            git branch -d -- "$branch"; or return
           end
         '';
       };
