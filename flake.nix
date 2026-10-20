@@ -1,7 +1,7 @@
 {
   inputs = {
     # Mirroring nixpkgs unstable
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "https://flakehub.com/f/DeterminateSystems/nixpkgs-weekly/0.1";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -80,7 +80,7 @@
           gc = {
             automatic = true;
             dates = "daily";
-            options = "--delete-older-than +5";
+            options = "--delete-older-than 14d";
           };
         };
       };
@@ -122,9 +122,9 @@
 
         flake = {
           overlays.default = final: prev: {
-            wails3 = prev.callPackage ./pkgs/wails3 {
-              upstreamWails3 = prev.wails3;
-            };
+            # wails3 = prev.callPackage ./pkgs/wails3 {
+            #   inherit (prev) wails3;
+            # };
             # neovim-nightly = neovim.packages.${final.stdenv.system}.neovim;
             # comic-code = prev.callPackage ./pkgs/comic-code { };
             # nvchad = prev.callPackage ./pkgs/nvchad { };
@@ -152,15 +152,17 @@
               ./machines/common.nix
               dms.nixosModules.dank-material-shell
               {
-                nixpkgs.overlays = [
-                  self.overlays.default
-                  self.overlays.linux
-                  fenix.overlays.default
-                  niri.overlays.niri
-                ];
-                nixpkgs.config.permittedInsecurePackages = [
-                  "beekeeper-studio-5.5.7"
-                ];
+                nixpkgs = {
+                  overlays = [
+                    self.overlays.default
+                    self.overlays.linux
+                    fenix.overlays.default
+                    niri.overlays.niri
+                  ];
+                  config.permittedInsecurePackages = [
+                    "beekeeper-studio-6.1.4"
+                  ];
+                };
               }
               {
                 disko.devices.disk.primary.device = "/dev/sda";

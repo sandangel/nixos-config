@@ -43,6 +43,7 @@ in
     tailwindcss-language-server
     docker-compose-language-service
     dockerfile-language-server
+    go
   ];
   programs.fd.enable = true;
 

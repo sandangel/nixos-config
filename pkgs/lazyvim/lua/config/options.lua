@@ -19,6 +19,7 @@ vim.lsp.log.set_level(vim.log.levels.OFF)
 
 vim.g.neovide_opacity = 0.9
 vim.g.neovide_normal_opacity = 0.9
+vim.g.neovide_no_custom_clipboard = true
 
 -- Use fzf-lua as the LazyVim picker (also set in init.lua spec, belt-and-suspenders)
 vim.g.lazyvim_picker = 'fzf'

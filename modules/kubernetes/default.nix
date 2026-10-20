@@ -11,7 +11,9 @@
     kustomize
     pinniped
     skaffold
-    # vcluster
+    vcluster
+    tilt
+    mkcert
   ];
 
   # imports = [ ../programs/kubeswitch.nix ];
