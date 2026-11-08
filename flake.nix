@@ -4,6 +4,9 @@
     nixpkgs.url = "https://flakehub.com/f/DeterminateSystems/nixpkgs-weekly/0.1";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 
+    # nixos-unstable, used only for python fabric (broken in current weekly; fixed upstream)
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
@@ -122,6 +125,13 @@
 
         flake = {
           overlays.default = final: prev: {
+            # Use fabric from nixos-unstable (fixed there) for every python version.
+            # Recipe is built against the weekly python set so python versions match.
+            pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+              (pyfinal: pyprev: {
+                fabric = pyfinal.callPackage "${inputs.nixpkgs-unstable}/pkgs/development/python-modules/fabric/default.nix" { };
+              })
+            ];
             # wails3 = prev.callPackage ./pkgs/wails3 {
             #   inherit (prev) wails3;
             # };

@@ -194,7 +194,7 @@ in
       enable = true;
       enableSSHSupport = true;
     };
-    dsearch = {
+    dux-search = {
       enable = true;
       systemd.enable = true;
     };
